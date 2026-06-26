@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fmis.gov.kh">
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=5, user-scalable=1"
+        name="viewport">
+    <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet" type="text/css">
+    <style>
+        :root {
+            --primary-color: #2D4F85;
+            --primary-hover-color: #187AD1;
+            --secondary-color: #066A4C;
+            --success-color: #06D6A0;
+            --danger-color: #EF476F;
+            --warning-color: #FFD166;
+            --primary-font: 'Hanuman', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--primary-font);
+            overflow-x: hidden;
+        }
+
+        .dashboard-frame-wrapper {
+            width: 100%;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+            background: #080d1a;
+        }
+
+        .dashboard-frame-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .dashboard-frame-wrapper {
+            height: 100vh;
+            /* full height since header is now hidden */
+            margin-top: 0;
+        }
+
+        .bg-background {
+  position: relative;
+}
+.bg-background::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/bg.png');
+  background-size: cover;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+    </style>
+    <title>Data – FMIS Cambodia</title>
+    <meta name="description" content="FMIS Data Dashboard – User & Report Statistics">
+    <link href="https://fmis.gov.kh/storage/logo/logo-fmis-v2-300x190-1.png" rel="shortcut icon">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/bootstrap/bootstrap.min.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/swiper/swiper-bundle.min.css">
+    <link media="all" type="text/css" rel="stylesheet" href="https://fmis.gov.kh/themes/fmis/plugins/slick/slick.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/toastr.js/toastr.min.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/magnific-popup/magnific-popup.css">
+    <link media="all" type="text/css" rel="stylesheet" href="https://fmis.gov.kh/themes/fmis/css/style.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/uicons-regular-rounded.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/plugins/animate/animate.min.css">
+    <link media="all" type="text/css" rel="stylesheet"
+        href="https://fmis.gov.kh/themes/fmis/css/style.integration.css?v=1780277604">
+
+        
+</head>
+
+<body>
+    <div class="body-overlay-1"></div>
+
+    <!-- ========== MOBILE HEADER ========== -->
+    <div class="mobile-header-active mobile-header-wrapper-style perfect-scrollbar">
+        <div class="mobile-header-wrapper-inner">
+            <div class="mobile-header-content-area">
+                <div class="mobile-logo">
+                    <a class="d-flex" href="Frontpage.html">
+                        <img src="https://fmis.gov.kh/storage/logo/new-fmis-site-logo-1.png" alt="logo">
+                    </a>
+                </div>
+                <div class="burger-icon burger-icon-white">
+                    <span class="burger-icon-top"></span>
+                    <span class="burger-icon-mid"></span>
+                    <span class="burger-icon-bottom"></span>
+                </div>
+                <div class="perfect-scroll">
+                    <div class="mobile-menu-wrap mobile-header-border w-full">
+                        <ul class="nav nav-tabs nav-tabs-mobile mt-25" role="tablist">
+                            <li>
+                                <a class="active" href="#tab-menu" data-bs-toggle="tab" role="tab"
+                                    aria-controls="tab-menu" aria-selected="true">
+                                    <svg class="w-6 h-6 icon-16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>Menu
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane fade active show" id="tab-menu" role="tabpanel"
+                                aria-labelledby="tab-menu">
+                                <nav class="mt-15">
+                                    <ul class="mobile-menu font-heading">
+                                        <ul>
+                                            <li class=""><a href="Frontpage.html" title="Home"> Home </a></li>
+                                            <li class="has-children">
+                                                <span class="menu-expand"><svg class="w-6 h-6 icon-16" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                    </svg></span>
+                                                <a href="https://fmis.gov.kh/en/ " title="About Us"> About Us </a>
+                                                <ul class="sub-menu" style="display: none;">
+                                                    <li class=""><a href="https://fmis.gov.kh/en/about-fmis"
+                                                            title="FMIS"> FMIS </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/fmwg" title="FMWG">
+                                                            FMWG </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/contact"
+                                                            title="Contact"> Contact </a></li>
+                                                </ul>
+                                            </li>
+                                            <li class=""><a href="https://fmis.gov.kh/en/news" title="News"> News </a>
+                                            </li>
+                                            <li class="has-children">
+                                                <span class="menu-expand"><svg class="w-6 h-6 icon-16" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                    </svg></span>
+                                                <a href="https://fmis.gov.kh/en/ " title="Archives"> Archives </a>
+                                                <ul class="sub-menu" style="display: none;">
+                                                    <li class=""><a href="https://fmis.gov.kh/en/newsletter-1"
+                                                            title="Newsletters"> Newsletters </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/law-and-regulation"
+                                                            title="Laws and Regulations"> Laws and Regulations </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/instruction"
+                                                            title="Instructions"> Instructions </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/circular"
+                                                            title="Circulars"> Circulars </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/posts"
+                                                            title="Press Releases"> Press Releases </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/notification"
+                                                            title="Notices"> Notices </a></li>
+                                                </ul>
+                                            </li>
+                                            <li class=""><a href="https://fmis.gov.kh/en/knowledge-hub"
+                                                    title="Knowledge Hub"> Knowledge Hub </a></li>
+                                            <li class="has-children">
+                                                <span class="menu-expand"><svg class="w-6 h-6 icon-16" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                    </svg></span>
+                                                <a href="https://fmis.gov.kh/en/ " title="FAQ"> FAQ </a>
+                                                <ul class="sub-menu" style="display: none;">
+                                                    <li class=""><a href="https://fmis.gov.kh/en/faq-about-fmis"
+                                                            title="About FMIS"> About FMIS </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/pkthehelper"
+                                                            title="PK The Helper"> PK The Helper </a></li>
+                                                    <li class=""><a href="https://fmis.gov.kh/en/fmis-modules"
+                                                            title="FMIS Core Modules"> FMIS Core Modules </a></li>
+                                                </ul>
+                                            </li>
+                                            <li class=""><a href="https://fmis.gov.kh/en/fmis-request-form"
+                                                    title="Forms"> Forms </a></li>
+                                            <li class=""><a href="https://fmis.gov.kh/en/career" title="Career"> Career
+                                                </a></li>
+                                            <li class="active"><a href="data.html" title="Data"
+                                                    style="color: var(--primary-hover-color); font-weight: 600;"> Data
+                                                </a></li>
+                                        </ul>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== MAIN HEADER ========== -->
+    <header>
+        <div class="header-top">
+            <div class="header-wrap">
+                <div class="container">
+                    <div class="top-bar">
+                        <div class="text-white header-top-left"></div>
+                        <div class="text-white header-top-right"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <header class="header sticky-bar stick">
+            <div class="container">
+                <div class="main-header">
+                    <div class="header-left">
+                        <div class="col-md-3 header-logos">
+                            <a class="d-flex" href="Frontpage.html">
+                                <img alt="FMIS Logo" src="https://fmis.gov.kh/storage/logo/new-fmis-site-logo-1.png">
+                            </a>
+                        </div>
+                        <div class="col-md-9 header-navs">
+                            <nav class="nav-main-menu d-none d-xl-block">
+                                <ul class="main-menu">
+                                    <li class=""><a href="data.html" title="Home"> Home </a></li>
+                                    <li class="has-children"><a href="data.html" title="About Us"> About
+                                            Us </a>
+                                        <ul class="sub-menu">
+                                            <li class=""><a href="data.html" title="FMIS"> FMIS
+                                                </a></li>
+                                            <li class=""><a href="data.html" title="FMWG"> FMWG </a>
+                                            </li>
+                                            <li class="has-children"><a href="data.html" title="GDPFMIT"> GDPFMIT </a>
+                                                <ul class="sub-menu">
+                                                    <li class=""><a href="data.html" title="Structure"> Structure </a>
+                                                    </li>
+                                                    <li class=""><a href="data.html" title="Management"> Management </a>
+                                                    </li>
+                                                    <li class=""><a href="data.html" title="Secretariat"> Secretariat
+                                                        </a></li>
+                                                </ul>
+                                            </li>
+                                            <li class=""><a href="data.html" title="Contact">
+                                                    Contact </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="data.html" title="News"> News </a></li>
+                                    <li class="has-children"><a href="data.html" title="Archives">
+                                            Archives </a>
+                                        <ul class="sub-menu">
+                                            <li class=""><a href="data.html" title="Newsletters"> Newsletters </a></li>
+                                            <li class=""><a href="data.html" title="Laws and Regulations"> Laws and
+                                                    Regulations </a></li>
+                                            <li class=""><a href="data.html" title="Instructions"> Instructions </a>
+                                            </li>
+                                            <li class=""><a href="data.html" title="Circulars">
+                                                    Circulars </a></li>
+                                            <li class=""><a href="data.html" title="Press Releases">
+                                                    Press Releases </a></li>
+                                            <li class=""><a href="data.html" title="Notices">
+                                                    Notices </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="data.html" title="Knowledge Hub">
+                                            Knowledge Hub </a></li>
+                                    <li class="has-children"><a href="data.html" title="FAQ"> FAQ </a>
+                                        <ul class="sub-menu">
+                                            <li class=""><a href="data.html" title="About FMIS"> About FMIS </a></li>
+                                            <li class=""><a href="data.html" title="PK The Helper"> PK The Helper </a>
+                                            </li>
+                                            <li class=""><a href="data.html" title="FMIS Core Modules"> FMIS Core
+                                                    Modules </a></li>
+                                        </ul>
+                                    </li>
+                                    <li class=""><a href="data.html" title="Forms"> Forms
+                                        </a></li>
+                                    <li class=""><a href="data.html" title="Career"> Career </a>
+                                    </li>
+                                    <li class="active"><a href="data.html" title="Data"
+                                            style="color: var(--primary-hover-color); font-weight: 600;"> Data </a></li>
+                                </ul>
+                            </nav>
+                            <div class="burger-icon burger-icon-white">
+                                <span class="burger-icon-top"></span>
+                                <span class="burger-icon-mid"></span>
+                                <span class="burger-icon-bottom"></span>
+                            </div>
+                        </div>
+                        <div class="header-right">
+                            <div class="me-1 d-inline-block box-search-top">
+                                <div class="form-search-top">
+                                    <form action="https://fmis.gov.kh/en/search">
+                                        <input class="input-search" name="q" type="text" placeholder="Search...">
+                                        <button class="btn btn-search">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </div>
+                                <span class="font-lg icon-list search-post">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="d-none d-xl-inline-block">
+                                <div class="d-none d-lg-block box-dropdown-cart me-2">
+                                    <span class="font-lg icon-list icon-account">
+                                        <img src="https://fmis.gov.kh/vendor/core/core/base/img/flags/us.svg"
+                                            class="flag" style="height: 16px" alt="flag">
+                                        <span class="color-grey-900 arrow-down ms-1">English</span>
+                                    </span>
+                                    <div class="dropdown-account">
+                                        <ul class="p-0">
+                                            <li><a class="font-md d-flex align-items-center"
+                                                    href="https://fmis.gov.kh/kh"><img
+                                                        src="https://fmis.gov.kh/vendor/core/core/base/img/flags/kh.svg"
+                                                        class="flag" style="height: 16px"
+                                                        alt="flag"><span>ខ្មែរ</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </header>
+
+    <!-- ========== DASHBOARD IFRAME ========== -->
+    <div class="dashboard-frame-wrapper">
+        <iframe src="http://localhost:5173" title="FMIS Data Dashboard" allowfullscreen></iframe>
+    </div>
+
+    <!-- ========== SCRIPTS ========== -->
+    <script>'use strict'; window.isRtl = false; window.siteConfig = { "url": "https://fmis.gov.kh/en" };</script>
+    <script src="https://fmis.gov.kh/themes/fmis/plugins/jquery.min.js"></script>
+    <script src="https://fmis.gov.kh/themes/fmis/plugins/jquery.theia.sticky.js"></script>
+    <script src="https://fmis.gov.kh/themes/fmis/plugins/perfect-scrollbar.min.js"></script>
+    <script src="https://fmis.gov.kh/themes/fmis/plugins/bootstrap/bootstrap.bundle.min.js"></script>
+    <script src="https://fmis.gov.kh/themes/fmis/js/main.js"></script>
+    <script src="https://fmis.gov.kh/themes/fmis/js/custom.js"></script>
+</body>
+
+</html>
