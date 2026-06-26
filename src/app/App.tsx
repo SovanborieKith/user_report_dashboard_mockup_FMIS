@@ -525,6 +525,16 @@ export default function App() {
           </>
         )}
 
+        {/* Footer */}
+        <footer className="border-t border-border mt-10 pt-6 pb-4 flex flex-col items-center gap-1.5">
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: "Kantumruy Pro" }}>
+            រៀបចំឡើងដោយការិយាល័យគ្រប់គ្រងព័ត៌មាន · Developed by OIM
+          </p>
+          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "Kantumruy Pro" }}>
+            ទិន្នន័យក្នុងឆ្នាំ ២០២៦ (មករា-មិថុនា)
+          </p>
+
+        </footer>
       </div>
     </div>
   );
