@@ -8,14 +8,12 @@ type Metric = "users" | "sites" | "queries";
 import { provinces } from "../data/provinces";
 
 const METRIC_CONFIG: Record<Metric, { color: string; label: string; icon: React.ReactNode; gradientFrom: string; gradientTo: string }> = {
-  users: { color: "#0ea5e9", label: "Users", icon: <Users className="w-3.5 h-3.5" />, gradientFrom: "rgb(16,42,82)", gradientTo: "rgb(8,165,233)" },
-  sites: { color: "#10b981", label: "Sites", icon: <Globe2 className="w-3.5 h-3.5" />, gradientFrom: "rgb(6,46,30)", gradientTo: "rgb(16,185,129)" },
-  queries: { color: "#8b5cf6", label: "Queries", icon: <Search className="w-3.5 h-3.5" />, gradientFrom: "rgb(30,15,60)", gradientTo: "rgb(139,92,246)" },
+  users: { color: "#0ea5e9", label: "Users: អ្នកប្រើប្រាស់សរុប", icon: <Users className="w-3.5 h-3.5" />, gradientFrom: "rgb(16,42,82)", gradientTo: "rgb(8,165,233)" },
+  sites: { color: "#10b981", label: "Sites: ការដ្ឋានសរុប", icon: <Globe2 className="w-3.5 h-3.5" />, gradientFrom: "rgb(6,46,30)", gradientTo: "rgb(16,185,129)" },
+  queries: { color: "#8b5cf6", label: "Queries: ការទាញរបាយការណ៍សរុប", icon: <Search className="w-3.5 h-3.5" />, gradientFrom: "rgb(30,15,60)", gradientTo: "rgb(139,92,246)" },
 };
 
 function fmt(n: number): string {
-  // if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
-  // if (n >= 1_000) return Math.round(n / 1_000) + "K";
   return n.toString();
 }
 
@@ -93,29 +91,29 @@ export default function CambodiaMap() {
         weight: 1.5,
       }).addTo(map);
 
-      // Popup styled to match your existing tooltip design
-      circle.bindPopup(
-        `<div style="background:#111c33;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;width:200px;font-family:inherit">
-          <p style="color:#fff;font-weight:600;font-size:13px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1);font-family:'Inter',sans-serif">${p.name}</p>
-          <div style="display:flex;flex-direction:column;gap:8px;font-family:'Inter',sans-serif">
+      circle.bindTooltip(
+        `<div style="background:#111c33;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;width:250px;font-family:'Kantumruy Pro',sans-serif">
+          <p style="color:#fff;font-weight:600;font-size:13px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1)">${p.name}</p>
+          <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="color:#38bdf8;font-size:12px">Users</span>
+              <span style="color:#38bdf8;font-size:12px">Users: អ្នកប្រើប្រាស់សរុប</span>
               <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.users)}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="color:#34d399;font-size:12px">Sites</span>
+              <span style="color:#34d399;font-size:12px">Sites: ការដ្ឋានសរុប</span>
               <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.sites)}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="color:#a78bfa;font-size:12px">Queries</span>
+              <span style="color:#a78bfa;font-size:12px">Queries: ការទាញរបាយការណ៍សរុប</span>
               <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.queries)}</span>
             </div>
           </div>
         </div>`,
         {
-          closeButton: false,
-          className: "leaflet-popup-clean",
-          offset: [0, -4],
+          sticky: true,
+          opacity: 1,
+          className: "leaflet-tooltip-clean",
+          offset: [12, 0],
         }
       );
 
@@ -127,16 +125,16 @@ export default function CambodiaMap() {
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
-      {/* Hide default Leaflet popup chrome */}
       <style>{`
-        .leaflet-popup-clean .leaflet-popup-content-wrapper,
-        .leaflet-popup-clean .leaflet-popup-tip-container {
+        .leaflet-tooltip-clean {
           background: transparent !important;
+          border: none !important;
           box-shadow: none !important;
           padding: 0 !important;
         }
-        .leaflet-popup-clean .leaflet-popup-content { margin: 0 !important; }
-        .leaflet-popup-clean .leaflet-popup-tip { display: none !important; }
+        .leaflet-tooltip-clean::before {
+          display: none !important;
+        }
         .leaflet-container { background: #e8edf2; }
       `}</style>
 

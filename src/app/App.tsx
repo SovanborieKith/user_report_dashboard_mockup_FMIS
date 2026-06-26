@@ -17,6 +17,17 @@ const categoryData = [
   { name: "របាយការណ៍ស្តង់ដារអន្តរជាតិ - Standard Report", reports: 5 },
 ];
 
+const categoryQueryLabels: Record<string, string> = {
+  BA: "មុខងារវិភាជន៍ថវិកា",
+  PR: "មុខងារលទ្ធកម្ម",
+  PO: "មុខងារការទិញ",
+  AP: "មុខងារគណនីត្រូវសង",
+  AR: "មុខងារគណនីត្រូវទារ",
+  CM: "មុខងារគ្រប់គ្រងសាច់ប្រាក់",
+  GL: "មុខងារសៀវភៅធំ",
+  "For Approver": "មុខងារសម្រាប់អ្នកត្រួតពិនិត្យ",
+};
+
 const categoryQueryData = [
   { name: "BA", queries: 6 },
   { name: "PR", queries: 1 },
@@ -29,75 +40,75 @@ const categoryQueryData = [
 ];
 
 const BUData = [
-  { name: "GDNT", reports: 123663, queries: 33960 },
-  { name: "PT012", reports: 35555, queries: 6737 },
-  { name: "PT006", reports: 32312, queries: 6440 },
-  { name: "PT008", reports: 29192, queries: 3101 },
-  { name: "PT018", reports: 22175, queries: 5638 },
+  { name: "GDNT: អគ្គ.រតនាគារជាតិ", reports: 123663, queries: 33960 },
+  { name: "PT012: រតនាគាររាជធានីភ្នំពេញ", reports: 35555, queries: 6737 },
+  { name: "PT006: រតនាគារខេត្តកំពង់ធំ", reports: 32312, queries: 6440 },
+  { name: "PT008: រតនាគារខេត្តកណ្តាល", reports: 29192, queries: 3101 },
+  { name: "PT018: រតនាគារខេត្តព្រះសីហនុ", reports: 22175, queries: 5638 },
 ];
 
 const reportNatBUData = [
-  { name: "GDNT", reports: 11126 },
-  { name: "GID", reports: 2350 },
-  { name: "GDPFMIT", reports: 1399 },
-  { name: "DEF01", reports: 740 },
-  { name: "LM10", reports: 622 },
-  { name: "DEF08", reports: 572 },
-  { name: "LM16", reports: 529 },
-  { name: "LM22", reports: 373 },
-  { name: "LM72", reports: 365 },
-  { name: "DEF05", reports: 321 },
+  { name: "GDNT: អគ្គ.រតនាគារជាតិ", reports: 11126 },
+  { name: "GID: អគ្គ.សវនកម្ម", reports: 2350 },
+  { name: "GDPFMIT: អគ្គ.បច្ចេកវិទ្យាព័ត៌មាន", reports: 1399 },
+  { name: "DEF01: មន្ទីរសេដ្ឋកិច្ចខេត្តបន្ទាយមានជ័យ", reports: 740 },
+  { name: "LM10: ក្រសួងសេដ្ឋកិច្ចនិងហិរញ្ញវត្ថុ", reports: 622 },
+  { name: "DEF08: មន្ទីរសេដ្ឋកិច្ចខេត្តកណ្តាល", reports: 572 },
+  { name: "LM16: ក្រសួងអប់រំ យុវជន និងកីឡា", reports: 529 },
+  { name: "LM22: ក្រសួងប្រៃសនីយ៍", reports: 373 },
+  { name: "LM72: ក្រសួងមហាផ្ទៃ", reports: 365 },
+  { name: "DEF05: មន្ទិរសេដ្ឋកិច្ចខេត្តកំពង់ស្ពឺ", reports: 321 },
 ];
 
 const queryNatBUData = [
-  { name: "GDNT", queries: 5734 },
-  { name: "GDPFMIT", queries: 937 },
-  { name: "LM10", queries: 904 },
-  { name: "LM17", queries: 156 },
-  { name: "GDIA", queries: 116 },
-  { name: "LM22", queries: 64 },
-  { name: "LM15", queries: 57 },
-  { name: "GDB", queries: 56 },
-  { name: "LM28", queries: 52 },
-  { name: "LM26", queries: 45 },
+  { name: "GDNT: អគ្គ.រតនាគារជាតិ", queries: 5734 },
+  { name: "GDPFMIT: អគ្គ.បច្ចេកវិទ្យាព័ត៌មាន", queries: 937 },
+  { name: "LM10: ក្រសួងសេដ្ឋកិច្ចនិងហិរញ្ញវត្ថុ", queries: 904 },
+  { name: "LM17: ក្រសួងកសិកម្ម", queries: 156 },
+  { name: "GDIA: អគ្គ.សវនកម្មបច្ចេកវិទ្យា", queries: 116 },
+  { name: "LM22: ក្រសួងប្រៃសនីយ៍", queries: 64 },
+  { name: "LM15: ក្រសួងពាណិជ្ជកម្ម", queries: 57 },
+  { name: "GDB: អគ្គថវិកា", queries: 56 },
+  { name: "LM28: ក្រសួងរៀបចំដែនដី", queries: 52 },
+  { name: "LM26: ក្រសួងយុត្តិធម៌", queries: 45 },
 ];
 
 const reportsubNatBUData = [
-  { name: "PT006", reports: 1789 },
-  { name: "PT008", reports: 1705 },
-  { name: "PT014", reports: 1598 },
-  { name: "PT018", reports: 1555 },
-  { name: "PT005", reports: 1450 },
-  { name: "PT012", reports: 1382 },
-  { name: "PT025", reports: 1320 },
-  { name: "PT010", reports: 1314 },
-  { name: "PT004", reports: 1257 },
-  { name: "PT001", reports: 1237 },
+  { name: "PT006: រតនាគារខេត្តកំពង់ធំ", reports: 1789 },
+  { name: "PT008: រតនាគារខេត្តកណ្តាល", reports: 1705 },
+  { name: "PT014: រតនាគារខេត្តព្រៃវែង", reports: 1598 },
+  { name: "PT018: រតនាគារខេត្តព្រះសីហនុ", reports: 1555 },
+  { name: "PT005: រតនាគារខេត្តកំពង់ស្ពឺ", reports: 1450 },
+  { name: "PT012: រតនាគាររាជធានីភ្នំពេញ", reports: 1382 },
+  { name: "PT025: រតនាគារខេត្តត្បូងឃ្មុំ", reports: 1320 },
+  { name: "PT010: រតនាគារខេត្តក្រចេះ", reports: 1314 },
+  { name: "PT004: រតនាគារខេត្តកំពង់ឆ្នាំង", reports: 1257 },
+  { name: "PT001: រតនាគារខេត្តបន្ទាយមានជ័យ", reports: 1237 },
 ];
 
 const querysubNatBUData = [
-  { name: "PT002", queries: 1626 },
-  { name: "PT017", queries: 959 },
-  { name: "PT020", queries: 944 },
-  { name: "PT001", queries: 775 },
-  { name: "PT006", queries: 642 },
-  { name: "PT012", queries: 615 },
-  { name: "PT018", queries: 612 },
-  { name: "PT009", queries: 520 },
-  { name: "PT004", queries: 519 },
-  { name: "PT003", queries: 518 },
+  { name: "PT002: រតនាគារខេត្តបាត់ដំបង", queries: 1626 },
+  { name: "PT017: រតនាគារខេត្តសៀមរាប", queries: 959 },
+  { name: "PT020: រតនាគារខេត្តស្វាយរៀង", queries: 944 },
+  { name: "PT001: រតនាគារខេត្តបន្ទាយមានជ័យ", queries: 775 },
+  { name: "PT006: រតនាគារខេត្តកំពង់ធំ", queries: 642 },
+  { name: "PT012: រតនាគាររាជធានីភ្នំពេញ", queries: 615 },
+  { name: "PT018: រតនាគារខេត្តព្រះសីហនុ", queries: 612 },
+  { name: "PT009: រតនាគារខេត្តកោះកុង", queries: 520 },
+  { name: "PT004: រតនាគារខេត្តកំពង់ឆ្នាំង", queries: 519 },
+  { name: "PT003: រតនាគារខេត្តកំពង់ចាម", queries: 518 },
 ];
 
 const userGroups = [
-  { label: "National Users", active: 1976, inactive: 600, terminated: 390 },
-  { label: "Sub-National Users", active: 875, inactive: 300, terminated: 120 },
-  { label: "APE Users", active: 72, inactive: 21, terminated: 19 },
+  { label: "National Users: អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600, terminated: 390 },
+  { label: "Sub-National Users: អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300, terminated: 120 },
+  { label: "APE Users: អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានសាធារណៈ", active: 72, inactive: 21, terminated: 19 },
 ];
 
 const siteGroups = [
-  { label: "National Sites", count: 229, trend: { value: 1.61, up: true } },
-  { label: "Sub-National Sites", count: 145, trend: { value: 0.84, up: true } },
-  { label: "APE Sites", count: 9, trend: { value: 0.01, up: true } },
+  { label: "National Sites: ការដ្ឋានថ្នាក់ជាតិ", count: 229, trend: { value: 1.61, up: true } },
+  { label: "Sub-National Sites: ការដ្ឋានថ្នាក់ក្រោមជាតិ", count: 145, trend: { value: 0.84, up: true } },
+  { label: "APE Sites: ការដ្ឋានគ្រឹះស្ថានសាធារណៈ", count: 9, trend: { value: 0.01, up: true } },
 ];
 
 const CAT_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fb923c", "#f472b6", "#facc15"];
@@ -138,8 +149,6 @@ const TrendBadge = ({ value, up, size = "md" }: { value: number; up: boolean; si
   );
 };
 
-
-
 // ─── Tooltips ────────────────────────────────────────────────────────────────
 
 const CustomBarTooltip = ({ active, payload, label }: any) => {
@@ -170,23 +179,34 @@ const KpiCard = ({ label, value, icon: Icon, color, bg }: {
 
 // ─── Reusable Horizontal Bar Chart ───────────────────────────────────────────
 
-const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAxisOrientation, title }: {
-  data: any[]; dataKey: string; color: string; reversed?: boolean;
-  labelPosition: "right" | "insideLeft"; yAxisOrientation: "left" | "right"; title: string;
+const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAxisOrientation, title, margin }: {
+  data: any[];
+  dataKey: string;
+  color: string;
+  reversed?: boolean;
+  labelPosition: "right" | "insideLeft";
+  yAxisOrientation: "left" | "right";
+  title: string;
+  margin?: { top?: number; right?: number; left?: number; bottom?: number };
 }) => (
   <div className="bg-card border border-border rounded-xl p-5">
     <h2 className="text-sm font-semibold text-foreground mb-3">{title}</h2>
     <ResponsiveContainer width="100%" height={280}>
-      <BarChart data={data} layout="vertical" margin={{ top: 0, right: 60, left: 8, bottom: 0 }} barSize={10}>
+      <BarChart
+        data={data}
+        layout="vertical"
+        margin={{ top: 0, right: 60, left: 8, bottom: 0, ...margin }}
+        barSize={10}
+      >
         <XAxis type="number" hide reversed={reversed} />
         <YAxis
           type="category"
           dataKey="name"
           orientation={yAxisOrientation}
-          tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Kantumruy Pro" }}
+          tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Kantumruy Pro" }}
           axisLine={false}
           tickLine={false}
-          width={52}
+          width={200}
         />
         <Tooltip
           content={({ active, payload, label }) => {
@@ -212,6 +232,7 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
   </div>
 );
 
+// ─── App ─────────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [page, setPage] = useState<"users" | "reports">("users");
@@ -267,7 +288,7 @@ export default function App() {
           </div>
         </div>
 
-        {/* PAGE: Users & Sites*/}
+        {/* ── PAGE: Users & Sites ── */}
         {page === "users" && (
           <>
             <div className="grid grid-cols-2 gap-4 mb-6">
@@ -340,7 +361,7 @@ export default function App() {
             <CambodiaMap />
 
             {/* Province Ranking Table */}
-            <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">Detailed Geographic Data</h2>
+            <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">Detailed Geographic Data: ទិន្នន័យលម្អិតអ្នកប្រើប្រាស់តាមរាជធានី/ខេត្ត</h2>
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-xs">
@@ -378,7 +399,7 @@ export default function App() {
           </>
         )}
 
-        {/*PAGE: Reports & Queries*/}
+        {/* ── PAGE: Reports & Queries ── */}
         {page === "reports" && (
           <>
             {/* Unique Types KPI Cards */}
@@ -389,8 +410,12 @@ export default function App() {
 
             {/* Category Charts */}
             <div className="grid grid-cols-2 gap-4 mb-4">
+
+              {/* Reports by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3">Reports by Category</h2>
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Kantumruy Pro" }}>
+                  Reports by Category - របាយការណ៍តាមប្រភេទ
+                </h2>
                 <ResponsiveContainer width="100%" height={320}>
                   <BarChart data={categoryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
@@ -404,9 +429,13 @@ export default function App() {
                   </BarChart>
                 </ResponsiveContainer>
               </div>
+
+              {/* FMIS Queries by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3">FMIS Queries by Category</h2>
-                <ResponsiveContainer width="100%" height={320}>
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Kantumruy Pro" }}>
+                  FMIS Queries by Category - របាយការណ៍លម្អិតតាមប្រភេទ
+                </h2>
+                <ResponsiveContainer width="100%" height={360}>
                   <BarChart data={categoryQueryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={100} />
@@ -416,58 +445,31 @@ export default function App() {
                       <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Kantumruy Pro" }} />
                       {categoryQueryData.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
                     </Bar>
+                    <Legend
+                      verticalAlign="bottom"
+                      content={() => (
+                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                          {categoryQueryData.map((entry, i) => (
+                            <div key={entry.name} className="flex items-center gap-1.5">
+                              <span
+                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
+                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
+                              />
+                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Kantumruy Pro" }}>
+                                {entry.name} — {categoryQueryLabels[entry.name]}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* BU Stacked Chart */}
-            <div className="bg-card border border-border rounded-xl p-5 mb-6">
-              <h2 className="text-sm font-semibold text-foreground mb-3">Top 10 Most Report/Query Generated by Business Unit</h2>
-              <ResponsiveContainer width="100%" height={240}>
-                <BarChart data={BUData} layout="vertical" margin={{ top: 24, right: 120, left: 8, bottom: 0 }} barSize={10}>
-                  <XAxis type="number" hide />
-                  <YAxis type="category" dataKey="name" tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Kantumruy Pro" }} axisLine={false} tickLine={false} width={48} />
-                  <Tooltip
-                    content={({ active, payload, label }) => {
-                      if (!active || !payload?.length) return null;
-                      return (
-                        <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
-                          <p className="text-foreground font-semibold mb-1">{label}</p>
-                          {payload.map((p: any) => (
-                            <p key={p.dataKey} style={{ color: p.fill }}>{p.name}: {p.value.toLocaleString()}</p>
-                          ))}
-                        </div>
-                      );
-                    }}
-                  />
-                  <Bar dataKey="reports" name="Reports" stackId="a" fill="#facc15" radius={[4, 0, 0, 4]} />
-                  <Bar dataKey="queries" name="Queries" stackId="a" fill="#38bdf8" radius={[0, 4, 4, 0]}>
-                    <LabelList
-                      dataKey="queries"
-                      position="right"
-                      style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Kantumruy Pro" }}
-                      formatter={(v: number, entry: any) => {
-                        const row = BUData.find(d => d.queries === v);
-                        const total = row ? row.reports + row.queries : v;
-                        return total.toLocaleString();
-                      }}
-                    />
-                  </Bar>
-                  <Legend
-                    iconType="circle"
-                    iconSize={6}
-                    verticalAlign="top"
-                    align="center"
-                    formatter={(value) => (
-                      <span style={{ color: "#94a3b8", fontSize: 12, fontFamily: "Kantumruy Pro" }}>{value}</span>
-                    )}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
 
-            {/* Generated Report/ Query Totals KPI Cards */}
+            {/* Generated Report / Query Totals KPI Cards */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <KpiCard label="Total Queries Generated - ចំនួនការទាញរបាយការណ៍លម្អិតសរុប" value={fmt(totals.queries)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
               <KpiCard label="Total Reports Generated - ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(totalReports)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
@@ -477,21 +479,23 @@ export default function App() {
             <h2 className="text-sm font-semibold text-foreground mb-4">National Level</h2>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <HorizontalBarChart
-                title="Top 10 Queries by BU"
+                title="Top 10 Queries by BU: អង្គភាពដែលទាញរបាយការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
                 data={queryNatBUData}
                 dataKey="queries"
                 color="#38bdf8"
                 reversed
                 labelPosition="right"
                 yAxisOrientation="right"
+                margin={{ right: 80, left: 0 }}
               />
               <HorizontalBarChart
-                title="Top 10 Reports by BU"
+                title="Top 10 Reports by BU: អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
                 data={reportNatBUData}
                 dataKey="reports"
                 color="#facc15"
                 labelPosition="right"
                 yAxisOrientation="left"
+                margin={{ right: 80, left: 0 }}
               />
             </div>
 
@@ -499,21 +503,23 @@ export default function App() {
             <h2 className="text-sm font-semibold text-foreground mb-4">Sub-National Level</h2>
             <div className="grid grid-cols-2 gap-4 mb-6">
               <HorizontalBarChart
-                title="Top 10 Queries by BU"
+                title="Top 10 Queries by BU: អង្គភាពដែលទាញរបាយការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
                 data={querysubNatBUData}
                 dataKey="queries"
                 color="#38bdf8"
                 reversed
                 labelPosition="right"
                 yAxisOrientation="right"
+                margin={{ right: 80, left: 0 }}
               />
               <HorizontalBarChart
-                title="Top 10 Reports by BU"
+                title="Top 10 Reports by BU: អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
                 data={reportsubNatBUData}
                 dataKey="reports"
                 color="#facc15"
                 labelPosition="right"
                 yAxisOrientation="left"
+                margin={{ right: 80, left: 0 }}
               />
             </div>
           </>

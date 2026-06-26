@@ -1,6 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@400;500;600;700&display=swap');
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+* {
+    font-family: 'Kantumruy Pro', sans-serif;
+}
 
 body {
     background-image: url('/bg.png');
