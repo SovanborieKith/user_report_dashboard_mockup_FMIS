@@ -1,0 +1,10 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+body {
+    background-image: url('/bg.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
