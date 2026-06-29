@@ -96,12 +96,12 @@ export default function CambodiaMap() {
           <p style="color:#fff;font-weight:600;font-size:13px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1)">${p.name}</p>
           <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="color:#38bdf8;font-size:12px">Users: អ្នកប្រើប្រាស់សរុប</span>
-              <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.users)}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="color:#34d399;font-size:12px">Sites: ការដ្ឋានសរុប</span>
               <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.sites)}</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:#38bdf8;font-size:12px">Users: អ្នកប្រើប្រាស់សរុប</span>
+              <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.users)}</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="color:#a78bfa;font-size:12px">Queries: ការទាញរបាយការណ៍សរុប</span>
