@@ -206,7 +206,7 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
           tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Kantumruy Pro" }}
           axisLine={false}
           tickLine={false}
-          width={250}
+          width={240}
         />
         <Tooltip
           content={({ active, payload, label }) => {
@@ -372,7 +372,6 @@ export default function App() {
                       <th className="text-left px-5 py-3 text-muted-foreground font-medium">Province</th>
                       <th className="text-right px-5 py-3 text-muted-foreground font-medium">Sites</th>
                       <th className="text-right px-5 py-3 text-muted-foreground font-medium">Users</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">Report/Query</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -390,7 +389,6 @@ export default function App() {
                           <td className="px-5 py-3 font-medium text-foreground">{p.name}</td>
                           <td className="px-5 py-3 text-right text-emerald-400">{fmt(p.sites)}</td>
                           <td className="px-5 py-3 text-right text-sky-400 font-semibold">{fmt(p.users)}</td>
-                          <td className="px-5 py-3 text-right text-violet-400">{fmt(p.queries)}</td>
                         </tr>
                       ))}
                   </tbody>
