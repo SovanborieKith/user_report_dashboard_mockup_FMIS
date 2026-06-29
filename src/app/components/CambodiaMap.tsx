@@ -3,14 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { Users, Globe2, Search } from "lucide-react";
 
-type Metric = "users" | "sites" | "queries";
+type Metric = "users" | "sites";// | "queries";
 
 import { provinces } from "../data/provinces";
 
 const METRIC_CONFIG: Record<Metric, { color: string; label: string; icon: React.ReactNode; gradientFrom: string; gradientTo: string }> = {
-  users: { color: "#0ea5e9", label: "Users: អ្នកប្រើប្រាស់សរុប", icon: <Users className="w-3.5 h-3.5" />, gradientFrom: "rgb(16,42,82)", gradientTo: "rgb(8,165,233)" },
   sites: { color: "#10b981", label: "Sites: ការដ្ឋានសរុប", icon: <Globe2 className="w-3.5 h-3.5" />, gradientFrom: "rgb(6,46,30)", gradientTo: "rgb(16,185,129)" },
-  queries: { color: "#8b5cf6", label: "Queries: ការទាញរបាយការណ៍សរុប", icon: <Search className="w-3.5 h-3.5" />, gradientFrom: "rgb(30,15,60)", gradientTo: "rgb(139,92,246)" },
+  users: { color: "#0ea5e9", label: "Users: អ្នកប្រើប្រាស់សរុប", icon: <Users className="w-3.5 h-3.5" />, gradientFrom: "rgb(16,42,82)", gradientTo: "rgb(8,165,233)" }
+
+  //queries: { color: "#8b5cf6", label: "Queries: ការទាញរបាយការណ៍សរុប", icon: <Search className="w-3.5 h-3.5" />, gradientFrom: "rgb(30,15,60)", gradientTo: "rgb(139,92,246)" },
 };
 
 function fmt(n: number): string {
@@ -102,10 +103,6 @@ export default function CambodiaMap() {
             <div style="display:flex;justify-content:space-between;align-items:center">
               <span style="color:#38bdf8;font-size:12px">Users: អ្នកប្រើប្រាស់សរុប</span>
               <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.users)}</span>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="color:#a78bfa;font-size:12px">Queries: ការទាញរបាយការណ៍សរុប</span>
-              <span style="color:#fff;font-size:12px;font-weight:600">${fmt(p.queries)}</span>
             </div>
           </div>
         </div>`,
