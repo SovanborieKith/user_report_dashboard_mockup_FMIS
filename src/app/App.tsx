@@ -364,9 +364,9 @@ export default function App() {
             {/* Province Ranking Table */}
             <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">Detailed Geographic Data: ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត</h2>
             <div className="bg-card border border-border rounded-xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs">
-                  <thead>
+              <div className="overflow-auto max-h-[400px]">
+                <table className="w-full text-xs relative">
+                  <thead className="sticky top-0 bg-card z-10">
                     <tr className="border-b border-border">
                       <th className="text-left px-5 py-3 text-muted-foreground font-medium">#</th>
                       <th className="text-left px-5 py-3 text-muted-foreground font-medium">Province</th>
@@ -377,7 +377,6 @@ export default function App() {
                   <tbody>
                     {[...provinces]
                       .sort((a, b) => b.users - a.users)
-                      .slice(0, 8)
                       .map((p, i) => (
                         <tr
                           key={p.id}

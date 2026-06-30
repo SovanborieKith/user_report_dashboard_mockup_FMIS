@@ -93,7 +93,7 @@ export default function CambodiaMap() {
       }).addTo(map);
 
       circle.bindTooltip(
-        `<div style="background:#111c33;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;width:250px;font-family:'Kantumruy Pro',sans-serif">
+        `<div style="background:#111c33;border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;width:250px;font-family:'Hanuman',sans-serif">
           <p style="color:#fff;font-weight:600;font-size:13px;margin:0 0 10px;padding-bottom:8px;border-bottom:1px solid rgba(255,255,255,0.1)">${p.name}</p>
           <div style="display:flex;flex-direction:column;gap:8px">
             <div style="display:flex;justify-content:space-between;align-items:center">

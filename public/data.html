@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+<link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" type="text/css">
+
+<link media="all" type="text/css" rel="stylesheet"
+    href="https://fmis.gov.kh/themes/fmis/plugins/bootstrap/bootstrap.min.css">
+<link media="all" type="text/css" rel="stylesheet" href="https://fmis.gov.kh/themes/fmis/css/style.css">
+<link media="all" type="text/css" rel="stylesheet"
+    href="https://fmis.gov.kh/themes/fmis/css/style.integration.css?v=1780277604">
+
 <head>
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
     <link rel="dns-prefetch" href="//fmis.gov.kh">
@@ -54,18 +64,19 @@
         }
 
         .bg-background {
-  position: relative;
-}
-.bg-background::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url('/bg.png');
-  background-size: cover;
-  opacity: 0.05;
-  pointer-events: none;
-  z-index: 0;
-}
+            position: relative;
+        }
+
+        .bg-background::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('/bg.png');
+            background-size: cover;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+        }
     </style>
     <title>Data – FMIS Cambodia</title>
     <meta name="description" content="FMIS Data Dashboard – User & Report Statistics">
@@ -87,7 +98,7 @@
     <link media="all" type="text/css" rel="stylesheet"
         href="https://fmis.gov.kh/themes/fmis/css/style.integration.css?v=1780277604">
 
-        
+
 </head>
 
 <body>
@@ -220,7 +231,7 @@
                 <div class="main-header">
                     <div class="header-left">
                         <div class="col-md-3 header-logos">
-                            <a class="d-flex" href="Frontpage.html">
+                            <a class="d-flex" href="data.html">
                                 <img alt="FMIS Logo" src="https://fmis.gov.kh/storage/logo/new-fmis-site-logo-1.png">
                             </a>
                         </div>
@@ -338,7 +349,7 @@
 
     <!-- ========== DASHBOARD IFRAME ========== -->
     <div class="dashboard-frame-wrapper">
-        <iframe src="http://localhost:5173" title="FMIS Data Dashboard" allowfullscreen></iframe>
+        <iframe src="https://user-report-mockup.vercel.app/" title="FMIS Data Dashboard" allowfullscreen></iframe>
     </div>
 
     <!-- ========== SCRIPTS ========== -->
