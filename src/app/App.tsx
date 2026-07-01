@@ -542,7 +542,7 @@ export default function App() {
                   Top 5 Most Generated Reports - ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
-                  <BarChart data={reportTop5gen} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                  <BarChart data={reportTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
                     <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
@@ -578,7 +578,7 @@ export default function App() {
                   Top 5 Most Generated Queries - ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
-                  <BarChart data={queryTop5gen} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                  <BarChart data={queryTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
                     <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
