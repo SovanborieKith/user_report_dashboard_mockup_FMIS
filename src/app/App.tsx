@@ -10,8 +10,8 @@ import { provinces, ProvinceData } from "./data/provinces";
 // ─── Static Data ─────────────────────────────────────────────────────────────
 
 const categoryData = [
-  { name: "របាយការណ៍ហិរញ្ញវត្ថុ - Financial Report", reports: 36 },
-  { name: "របាយការណ៍អនុវត្តថវិកា - Budget Execution Report", reports: 1 },
+  { name: "របាយការណ៍ហិរញ្ញវត្ថុ - Financial Report", reports: 37 },
+  { name: "របាយការណ៍អនុវត្តថវិកា - Budget Execution Report", reports: 2 },
   { name: "របាយការណ៍បិទបញ្ជី - Budget Closing Report", reports: 1 },
   { name: "របាយការណ៍ច្បាប់ទូទាត់ - Budget Settlement Law Report", reports: 15 },
   { name: "របាយការណ៍ស្តង់ដារអន្តរជាតិ - Standard Report", reports: 5 },
@@ -58,6 +58,21 @@ const reportNatBUData = [
   { name: "LM22: ក្រសួងប្រៃសនីយ៍", reports: 373 },
   { name: "LM72: ក្រសួងមហាផ្ទៃ", reports: 365 },
   { name: "DEF05: មន្ទិរសេដ្ឋកិច្ចខេត្តកំពង់ស្ពឺ", reports: 321 },
+];
+const reportTop5gen = [
+  { name: "R20", fullName: "របាយការណ៍ចំណូលចំណាយថវិកា", reports: 20199 },
+  { name: "R01", fullName: "តារាងតុល្យភាព", reports: 12744 },
+  { name: "R39", fullName: "របាយការណ៍ប្រតិបត្តិការសៀវភៅធំ", reports: 10859 },
+  { name: "R33", fullName: "របាយការណ៍សរុបចំណាយតាមអាណត្តិ", reports: 3126 },
+  { name: "R17", fullName: "របាយការណ៍ចំណូលជាតិតាមក្រ-ស្ថាប័ន", reports: 1098 },
+];
+
+const queryTop5gen = [
+  { name: "Q08", fullName: "របាយការណ៍ប្រតិ.សរុបសៀវភៅធំ", queries: 10849 },
+  { name: "Q09", fullName: "របាយការណ៍ប្រតិបត្តិការចំណូល", queries: 4763 },
+  { name: "Q03", fullName: "របាយការណ៍សរុបអាណត្តិ", queries: 1630 },
+  { name: "Q07", fullName: "របាយការណ៍សរុបការទូទាត់", queries: 793 },
+  { name: "Q01", fullName: "របាយការណ៍សរុបបញ្ជាទិញ", queries: 741 },
 ];
 
 const queryNatBUData = [
@@ -153,9 +168,11 @@ const TrendBadge = ({ value, up, size = "md" }: { value: number; up: boolean; si
 
 const CustomBarTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
+  const data = payload[0].payload;
+  const displayLabel = data.fullName ? `${label}: ${data.fullName}` : label;
   return (
     <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
-      <p className="text-foreground font-semibold mb-1">{label}</p>
+      <p className="text-foreground font-semibold mb-1">{displayLabel}</p>
       <p className="text-sky-400">{payload[0].value.toLocaleString()}</p>
     </div>
   );
@@ -171,8 +188,8 @@ const KpiCard = ({ label, value, icon: Icon, color, bg }: {
       <Icon className={`w-5 h-5 ${color}`} />
     </div>
     <div>
-      <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase mb-0.5 font-kantumruy">{label}</p>
-      <p className="text-2xl font-semibold tracking-tight font-kantumruy">{value}</p>
+      <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase mb-0.5 font-hanuman">{label}</p>
+      <p className="text-2xl font-semibold tracking-tight font-hanuman">{value}</p>
     </div>
   </div>
 );
@@ -203,7 +220,7 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
           type="category"
           dataKey="name"
           orientation={yAxisOrientation}
-          tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Kantumruy Pro" }}
+          tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Hanuman" }}
           axisLine={false}
           tickLine={false}
           width={240}
@@ -223,7 +240,7 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
           <LabelList
             dataKey={dataKey}
             position={labelPosition}
-            style={{ fill: "#94a3b8", fontSize: 11, fontFamily: "Kantumruy Pro" }}
+            style={{ fill: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}
             formatter={(v: number) => v.toLocaleString()}
           />
         </Bar>
@@ -232,6 +249,58 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
   </div>
 );
 
+// const VerticalBarChart = ({ data, dataKey, color, reversed, labelPosition, xAxisOrientation, title, margin }: {
+//   data: any[];
+//   dataKey: string;
+//   color: string;
+//   reversed?: boolean;
+//   labelPosition: "top" | "insideBottom";
+//   xAxisOrientation: "top" | "bottom";
+//   title: string;
+//   margin?: { top?: number; right?: number; left?: number; bottom?: number };
+// }) => (
+//   <div className="bg-card border border-border rounded-xl p-5">
+//     <h2 className="text-sm font-semibold text-foreground mb-3">{title}</h2>
+//     <ResponsiveContainer width="100%" height={280}>
+//       <BarChart
+//         data={data}
+//         layout="horizontal"
+//         margin={{ top: 20, right: 8, left: 8, bottom: 0, ...margin }}
+//         barSize={24}
+//       >
+//         <YAxis type="number" hide reversed={reversed} />
+//         <XAxis
+//           type="category"
+//           dataKey="name"
+//           orientation={xAxisOrientation}
+//           tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Hanuman" }}
+//           axisLine={false}
+//           tickLine={false}
+//           interval={0}
+//         />
+//         <Tooltip
+//           content={({ active, payload, label }) => {
+//             if (!active || !payload?.length) return null;
+//             return (
+//               <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
+//                 <p className="text-foreground font-semibold mb-1">{label}</p>
+//                 <p style={{ color }}>{dataKey}: {payload[0].value.toLocaleString()}</p>
+//               </div>
+//             );
+//           }}
+//         />
+//         <Bar dataKey={dataKey} fill={color} radius={[4, 4, 0, 0]}>
+//           <LabelList
+//             dataKey={dataKey}
+//             position={labelPosition}
+//             style={{ fill: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}
+//             formatter={(v: number) => v.toLocaleString()}
+//           />
+//         </Bar>
+//       </BarChart>
+//     </ResponsiveContainer>
+//   </div>
+// );
 // ─── App ─────────────────────────────────────────────────────────────────────
 
 export default function App() {
@@ -256,7 +325,7 @@ export default function App() {
       <g transform={`translate(${x},${y + 8})`}>
         {lines.map((line, i) => (
           <text key={i} x={0} y={0} dy={i * 12 + 8} textAnchor="middle"
-            dominantBaseline="hanging" fill="#64748b" fontSize={12} fontFamily="Kantumruy Pro">
+            dominantBaseline="hanging" fill="#64748b" fontSize={12} fontFamily="Hanuman">
             {line}
           </text>
         ))}
@@ -295,11 +364,11 @@ export default function App() {
 
               {/* Sites Card */}
               <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
-                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-kantumruy">
+                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
                   Total Sites · ចំនួនការដ្ឋានសរុប
                 </p>
                 <div className="flex items-baseline gap-2">
-                  <p className="text-2xl font-semibold tracking-tight font-kantumruy">{fmt(totalSites)}</p>
+                  <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalSites)}</p>
                   <TrendBadge value={sitesTrend.value} up={sitesTrend.up} />
                   <span className="text-[10px] text-muted-foreground">vs last month</span>
                 </div>
@@ -317,11 +386,11 @@ export default function App() {
               </div>
               {/* User Status Card */}
               <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
-                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-kantumruy">
+                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
                   Total Users · ចំនួនអ្នកប្រើប្រាស់សរុប
                 </p>
                 <div className="flex items-baseline gap-2">
-                  <p className="text-2xl font-semibold tracking-tight font-kantumruy">{fmt(totalUsers)}</p>
+                  <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalUsers)}</p>
                   <TrendBadge value={usersTrend.value} up={usersTrend.up} />
                   <span className="text-[10px] text-muted-foreground">vs last month</span>
                 </div>
@@ -402,7 +471,7 @@ export default function App() {
           <>
             {/* Unique Types KPI Cards */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <KpiCard label="Total Reports - ចំនួនរបាយការណ៍សរុប" value={fmt(58)} icon={FileText} color="text-sky-400" bg="bg-sky-400/10" />
+              <KpiCard label="Total Reports - ចំនួនរបាយការណ៍សរុប" value={fmt(60)} icon={FileText} color="text-sky-400" bg="bg-sky-400/10" />
               <KpiCard label="Total Queries - ចំនួនរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(21)} icon={Search} color="text-emerald-400" bg="bg-emerald-400/10" />
             </div>
 
@@ -411,17 +480,17 @@ export default function App() {
 
               {/* Reports by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Kantumruy Pro" }}>
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
                   Reports by Category - របាយការណ៍តាមប្រភេទ
                 </h2>
                 <ResponsiveContainer width="100%" height={320}>
                   <BarChart data={categoryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={100} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Kantumruy Pro" }} axisLine={false} tickLine={false} width={30} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
                     <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
                     <Bar dataKey="reports" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="reports" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Kantumruy Pro" }} />
+                      <LabelList dataKey="reports" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
                       {categoryData.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
                     </Bar>
                   </BarChart>
@@ -430,17 +499,17 @@ export default function App() {
 
               {/* FMIS Queries by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Kantumruy Pro" }}>
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
                   Queries by Module - របាយការណ៍ប្រតិបត្តិការណ៍លម្អិតតាមមុខងារ
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
                   <BarChart data={categoryQueryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
                     <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={100} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Kantumruy Pro" }} axisLine={false} tickLine={false} width={30} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
                     <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
                     <Bar dataKey="queries" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Kantumruy Pro" }} />
+                      <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
                       {categoryQueryData.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
                     </Bar>
                     <Legend
@@ -453,7 +522,7 @@ export default function App() {
                                 className="w-2 h-2 rounded-full inline-block flex-shrink-0"
                                 style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
                               />
-                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Kantumruy Pro" }}>
+                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
                                 {entry.name} — {categoryQueryLabels[entry.name]}
                               </span>
                             </div>
@@ -465,12 +534,87 @@ export default function App() {
                 </ResponsiveContainer>
               </div>
             </div>
+            {/* Category Charts */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              {/* Top 5 Generated Report */}
+              <div className="bg-card border border-border rounded-xl p-5">
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
+                  Top 5 Most Generated Reports - ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥
+                </h2>
+                <ResponsiveContainer width="100%" height={360}>
+                  <BarChart data={reportTop5gen} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                    <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <Bar dataKey="reports" radius={[5, 5, 0, 0]}>
+                      <LabelList dataKey="reports" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
+                      {reportTop5gen.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                    </Bar>
+                    <Legend
+                      verticalAlign="bottom"
+                      content={() => (
+                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                          {reportTop5gen.map((entry, i) => (
+                            <div key={entry.name} className="flex items-center gap-1.5">
+                              <span
+                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
+                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
+                              />
+                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
+                                {entry.name}: {entry.fullName}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+              {/* Top 5 Generated Queries */}
+              <div className="bg-card border border-border rounded-xl p-5">
+                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
+                  Top 5 Most Generated Queries - ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥
+                </h2>
+                <ResponsiveContainer width="100%" height={360}>
+                  <BarChart data={queryTop5gen} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                    <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
+                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <Bar dataKey="queries" radius={[5, 5, 0, 0]}>
+                      <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
+                      {queryTop5gen.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                    </Bar>
+                    <Legend
+                      verticalAlign="bottom"
+                      content={() => (
+                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                          {queryTop5gen.map((entry, i) => (
+                            <div key={entry.name} className="flex items-center gap-1.5">
+                              <span
+                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
+                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
+                              />
+                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
+                                {entry.name}: {entry.fullName}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
 
+            </div>
 
             {/* Generated Report / Query Totals KPI Cards */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <KpiCard label="Total Reports Generated - ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(totalReports)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
-              <KpiCard label="Total Queries Generated - ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(totals.queries)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
+              <KpiCard label="Total Reports Generated - ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(63516)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
+              <KpiCard label="Total Queries Generated - ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(25331)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
             </div>
 
             {/* National Level */}
@@ -485,7 +629,7 @@ export default function App() {
                 color="#facc15"
                 labelPosition="right"
                 yAxisOrientation="left"
-                margin={{ right: 80, left: 0 }}
+                margin={{ right: 60, left: 0 }}
               />
               <HorizontalBarChart
                 title="Top 10 Entities Generated Queries: អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
@@ -495,7 +639,7 @@ export default function App() {
                 reversed
                 labelPosition="right"
                 yAxisOrientation="right"
-                margin={{ right: 80, left: 0 }}
+                margin={{ right: 60, left: 20 }}
               />
             </div>
 
@@ -529,10 +673,10 @@ export default function App() {
 
         {/* Footer */}
         <footer className="border-t border-border mt-10 pt-6 pb-4 flex flex-col items-center gap-1.5">
-          <p className="text-xs text-muted-foreground" style={{ fontFamily: "Kantumruy Pro" }}>
+          <p className="text-xs text-muted-foreground" style={{ fontFamily: "Hanuman" }}>
             រៀបចំឡើងដោយការិយាល័យគ្រប់គ្រងព័ត៌មាន · Developed by OIM
           </p>
-          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "Kantumruy Pro" }}>
+          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "Hanuman" }}>
             ទិន្នន័យក្នុងឆ្នាំ ២០២៦ (មករា-មិថុនា)
           </p>
 
