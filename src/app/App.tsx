@@ -115,9 +115,9 @@ const querysubNatBUData = [
 ];
 
 const userGroups = [
-  { label: "National Users: អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600, terminated: 390 },
-  { label: "Sub-National Users: អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300, terminated: 120 },
-  { label: "APE Users: អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", active: 72, inactive: 21, terminated: 19 },
+  { label: "National Users: អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600 },
+  { label: "Sub-National Users: អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300 },
+  { label: "APE Users: អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", active: 72, inactive: 21 },
 ];
 
 const siteGroups = [
@@ -132,8 +132,7 @@ const CAT_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fb923c", "#f472b6", "#fac
 
 const totalActive = userGroups.reduce((s, g) => s + g.active, 0);
 const totalInactive = userGroups.reduce((s, g) => s + g.inactive, 0);
-const totalTerminated = userGroups.reduce((s, g) => s + g.terminated, 0);
-const totalUsers = totalActive + totalInactive + totalTerminated;
+const totalUsers = totalActive + totalInactive;
 const usersTrend = { value: 4.2, up: true };
 
 const totalSites = siteGroups.reduce((s, g) => s + g.count, 0);
@@ -397,12 +396,10 @@ export default function App() {
                 <div className="flex h-2 rounded-full overflow-hidden gap-[2px]">
                   <div className="bg-emerald-400" style={{ flex: totalActive }} />
                   <div className="bg-yellow-400" style={{ flex: totalInactive }} />
-                  <div className="bg-red-400" style={{ flex: totalTerminated }} />
                 </div>
                 <div className="flex gap-3 text-[10px] text-muted-foreground">
                   <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />{fmt(totalActive)} Active</span>
                   <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />{fmt(totalInactive)} Inactive</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-red-400 inline-block" />{fmt(totalTerminated)} Terminated</span>
                 </div>
                 <div className="border-t border-border pt-3 flex flex-col gap-2">
                   {userGroups.map((g) => (
@@ -412,8 +409,6 @@ export default function App() {
                         <span className="text-emerald-400 font-semibold">{fmt(g.active)}</span>
                         <span className="text-muted-foreground">·</span>
                         <span className="text-yellow-400 font-semibold">{fmt(g.inactive)}</span>
-                        <span className="text-muted-foreground">·</span>
-                        <span className="text-red-400 font-semibold">{fmt(g.terminated)}</span>
                       </div>
                     </div>
                   ))}
