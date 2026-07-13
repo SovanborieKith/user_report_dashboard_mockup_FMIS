@@ -581,13 +581,13 @@ export default function CambodiaMap() {
             className="text-sm font-semibold text-foreground"
             style={{ fontFamily: "Hanuman" }}
           >
-            Cambodia FMIS Coverage Map - ផែនទីគ្របដណ្តប់ FMIS
+            Geographic Location: ទីតាំងភូមិសាស្ត្រ
           </h2>
           <p
             className="text-xs text-muted-foreground mt-1"
             style={{ fontFamily: "Hanuman" }}
           >
-            បង្ហាញតាមរាជធានី-ខេត្តដោយផ្អែកលើចំនួនអ្នកប្រើប្រាស់ និងការដ្ឋាន
+            ចំនួនអ្នកប្រើប្រាស់ និងការដ្ឋានតាមរាជធានី-ខេត្ត
           </p>
         </div>
 
@@ -606,21 +606,6 @@ export default function CambodiaMap() {
         </button>
       </div>
 
-      {/* Legend */}
-      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-        <span>Low</span>
-        <div
-          className="w-24 h-1.5 rounded-full"
-          style={{
-            background: `linear-gradient(to right, ${cfg.gradientFrom}, ${cfg.gradientTo})`,
-            boxShadow: `0 0 12px rgba(13,148,136,0.25)`,
-          }}
-        />
-        <span>High</span>
-        <span className="text-foreground font-medium ml-1">
-          Users: អ្នកប្រើប្រាស់សរុប
-        </span>
-      </div>
 
       {/* Map */}
       <div className="fmis-map-shell">
