@@ -1009,7 +1009,7 @@ const CategoryAccordion = ({
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-medium text-muted-foreground">Details</span>
+              <span className="text-[10px] font-medium text-muted-foreground">លម្អិត</span>
               <svg
                 width="14" height="14" viewBox="0 0 16 16" fill="none"
                 className={`text-muted-foreground transition-transform flex-shrink-0 ${isOpen ? "rotate-90" : ""}`}
@@ -1210,7 +1210,15 @@ export default function App() {
             <div className="mb-2 flex items-center gap-2">
               <h2 className="text-sm font-semibold text-foreground">Geographic Distribution: របាយភូមិសាស្ត្រ</h2>
             </div>
-            <CambodiaMap />
+            <div className="h-[500px] w-full">
+              <CambodiaMap />
+            </div>
+
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
 
             {/* Province Ranking Table */}
             <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">Detailed Geographic Data: ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត</h2>
@@ -1220,9 +1228,9 @@ export default function App() {
                   <thead className="sticky top-0 bg-card z-10">
                     <tr className="border-b border-border">
                       <th className="text-left px-5 py-3 text-muted-foreground font-medium">#</th>
-                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">Province</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">Sites</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">Users</th>
+                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">រាជធានី ខេត្ត</th>
+                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">ការដ្ឋាន</th>
+                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">អ្នកប្រើប្រាស់</th>
                     </tr>
                   </thead>
                   <tbody>

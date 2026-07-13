@@ -32,7 +32,7 @@ const THEME_CONFIG: Record<
     gradientTo: "#0d9488",
     tileUrl: "https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png",
     tileOpacity: 0.9,
-    boundaryColor: "#1d79cf",
+    boundaryColor: "#e9ac1dff",
     boundaryFill: "#f0fdfa",
     boundaryFillOpacity: 0.35,
     shellBg:
@@ -46,18 +46,18 @@ const THEME_CONFIG: Record<
     zoomHoverBg: "#f0fdfa",
   },
   dark: {
-    pointColor: "#22d3ee",
+    pointColor: "#E5CB90",
     gradientFrom: "rgb(8,47,73)",
     gradientTo: "rgb(34,211,238)",
     tileUrl: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png",
     tileOpacity: 0.42,
-    boundaryColor: "#0e6ac0ff",
+    boundaryColor: "#e9ac1dff",
     boundaryFill: "#0f2f38",
     boundaryFillOpacity: 0.55,
     shellBg:
       "radial-gradient(circle at 50% 50%, rgba(20,184,166,0.10), transparent 45%), linear-gradient(180deg, #07191f 0%, #041116 100%)",
     dotBg: "#dffdf8",
-    labelColor: "#22d3ee",
+    labelColor: "#e7b019ff",
     labelShadow:
       "0 0 5px rgba(0,0,0,0.9), 0 0 8px rgba(34,211,238,0.6), 0 0 16px rgba(20,184,166,0.35)",
     zoomBg: "#0b1f26",
@@ -127,8 +127,6 @@ export default function CambodiaMap() {
 
       leafletRef.current = { map, L };
 
-      // Optional Cambodia outline.
-      // Put your GeoJSON file in: public/data/cambodia-outline.geojson
       fetch("/data/cambodia-outline.geojson")
         .then((res) => {
           if (!res.ok) throw new Error("Cambodia outline file not found");
@@ -293,7 +291,7 @@ export default function CambodiaMap() {
       <style>{`
         .fmis-map-shell {
           position: relative;
-          height: 460px;
+          height: 510px;
           border-radius: 0.75rem;
           overflow: hidden;
           border: 1px solid rgba(13, 148, 136, 0.22);
