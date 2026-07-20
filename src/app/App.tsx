@@ -698,15 +698,15 @@ const querysubNatBUData = [
 ];
 
 const userGroups = [
-  { label: "National Users: អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600 },
-  { label: "Sub-National Users: អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300 },
-  { label: "APE Users: អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", active: 72, inactive: 21 },
+  { label: "អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600 },
+  { label: "អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300 },
+  { label: "អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", active: 72, inactive: 21 },
 ];
 
 const siteGroups = [
-  { label: "National Sites: ការដ្ឋានថ្នាក់ជាតិ", count: 230, trend: { value: 1.61, up: true } },
-  { label: "Sub-National Sites: ការដ្ឋានថ្នាក់ក្រោមជាតិ", count: 145, trend: { value: 0.84, up: true } },
-  { label: "APE Sites: ការដ្ឋានគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", count: 9, trend: { value: 0.01, up: true } },
+  { label: "ការដ្ឋានថ្នាក់ជាតិ", count: 230, trend: { value: 1.61, up: true } },
+  { label: "ការដ្ឋានថ្នាក់ក្រោមជាតិ", count: 145, trend: { value: 0.84, up: true } },
+  { label: "ការដ្ឋានគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", count: 9, trend: { value: 0.01, up: true } },
 ];
 
 const CAT_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fb923c", "#f472b6", "#facc15"];
@@ -1129,7 +1129,7 @@ export default function App() {
               className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all
                 ${page === "users" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
-              Users & Sites
+              អ្នកប្រើប្រាស់ និងការដ្ឋាន
             </button>
             <button
               onClick={() => setPage("reports")}
@@ -1137,7 +1137,7 @@ export default function App() {
                 ${(page === "reports" || page === "reportTypes" || page === "queryTypes")
                   ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
             >
-              Reports & Queries
+              របាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិត
             </button>
           </div>
         </div>
@@ -1150,12 +1150,12 @@ export default function App() {
               {/* Sites Card */}
               <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
                 <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
-                  Total Sites · ចំនួនការដ្ឋានសរុប
+                  ចំនួនការដ្ឋានសរុប
                 </p>
                 <div className="flex items-baseline gap-2">
                   <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalSites)}</p>
                   <TrendBadge value={sitesTrend.value} up={sitesTrend.up} />
-                  <span className="text-[10px] text-muted-foreground">vs last month</span>
+                  <span className="text-[10px] text-muted-foreground">ធៀបនឹងខែមុន</span>
                 </div>
                 <div className="border-t border-border pt-3 flex flex-col gap-2">
                   {siteGroups.map((g) => (
@@ -1172,20 +1172,20 @@ export default function App() {
               {/* User Status Card */}
               <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
                 <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
-                  Total Users · ចំនួនអ្នកប្រើប្រាស់សរុប
+                  ចំនួនអ្នកប្រើប្រាស់សរុប
                 </p>
                 <div className="flex items-baseline gap-2">
                   <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalUsers)}</p>
                   <TrendBadge value={usersTrend.value} up={usersTrend.up} />
-                  <span className="text-[10px] text-muted-foreground">vs last month</span>
+                  <span className="text-[10px] text-muted-foreground">ធៀបនឹងខែមុន</span>
                 </div>
                 <div className="flex h-2 rounded-full overflow-hidden gap-[2px]">
                   <div className="bg-emerald-400" style={{ flex: totalActive }} />
                   <div className="bg-yellow-400" style={{ flex: totalInactive }} />
                 </div>
                 <div className="flex gap-3 text-[10px] text-muted-foreground">
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />{fmt(totalActive)} Active</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />{fmt(totalInactive)} Inactive</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />{fmt(totalActive)} សកម្ម</span>
+                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />{fmt(totalInactive)} អសកម្ម</span>
                 </div>
                 <div className="border-t border-border pt-3 flex flex-col gap-2">
                   {userGroups.map((g) => (
@@ -1204,7 +1204,7 @@ export default function App() {
 
             {/* Cambodia Map */}
             <div className="mb-2 flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-foreground">Geographic Distribution: របាយភូមិសាស្ត្រ</h2>
+              <h2 className="text-sm font-semibold text-foreground">របាយភូមិសាស្ត្រ</h2>
             </div>
             <div className="h-[500px] w-full">
               <CambodiaMap />
@@ -1217,7 +1217,7 @@ export default function App() {
             <br />
 
             {/* Province Ranking Table */}
-            <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">Detailed Geographic Data: ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត</h2>
+            <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត</h2>
             <div className="bg-card border border-border rounded-xl overflow-hidden">
               <div className="overflow-auto max-h-[400px]">
                 <table className="w-full text-xs relative">
@@ -1258,7 +1258,7 @@ export default function App() {
             {/* Unique Types KPI Cards (clickable → drill into type pages) */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <KpiCard
-                label="Total Reports - ចំនួនរបាយការណ៍សរុប"
+                label="ចំនួនរបាយការណ៍សរុប"
                 value={fmt(60)}
                 icon={FileText}
                 color="text-sky-400"
@@ -1266,7 +1266,7 @@ export default function App() {
                 onClick={() => setPage("reportTypes")}
               />
               <KpiCard
-                label="Total Queries - ចំនួនរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប"
+                label="ចំនួនរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប"
                 value={fmt(21)}
                 icon={Search}
                 color="text-emerald-400"
@@ -1281,7 +1281,7 @@ export default function App() {
               {/* Reports by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
                 <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  Reports by Category - របាយការណ៍តាមប្រភេទ
+                  របាយការណ៍តាមប្រភេទ
                 </h2>
                 <ResponsiveContainer width="100%" height={320}>
                   <BarChart data={categoryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
@@ -1300,7 +1300,7 @@ export default function App() {
               {/* FMIS Queries by Category */}
               <div className="bg-card border border-border rounded-xl p-5">
                 <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  Queries by Module - របាយការណ៍ប្រតិបត្តិការណ៍លម្អិតតាមមុខងារ
+                  របាយការណ៍ប្រតិបត្តិការណ៍លម្អិតតាមមុខងារ
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
                   <BarChart data={categoryQueryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
@@ -1340,7 +1340,7 @@ export default function App() {
               {/* Top 5 Generated Report */}
               <div className="bg-card border border-border rounded-xl p-5">
                 <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  Top 5 Most Generated Reports - ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥
+                  ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
                   <BarChart data={reportTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
@@ -1376,7 +1376,7 @@ export default function App() {
               {/* Top 5 Generated Queries */}
               <div className="bg-card border border-border rounded-xl p-5">
                 <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  Top 5 Most Generated Queries - ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥
+                  ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥
                 </h2>
                 <ResponsiveContainer width="100%" height={360}>
                   <BarChart data={queryTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
@@ -1413,8 +1413,8 @@ export default function App() {
 
             {/* Generated Report / Query Totals KPI Cards */}
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <KpiCard label="Total Reports Generated - ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(63516)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
-              <KpiCard label="Total Queries Generated - ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(25331)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
+              <KpiCard label="ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(63516)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
+              <KpiCard label="ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(25331)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
             </div>
 
             {/* National Level */}
@@ -1423,7 +1423,7 @@ export default function App() {
             <br />
             <div className="grid grid-cols-2 gap-4 mb-6">
               <HorizontalBarChart
-                title="Top 10 Entities Generated Reports: អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
+                title="អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
                 data={reportNatBUData}
                 dataKey="reports"
                 color="#facc15"
@@ -1432,7 +1432,7 @@ export default function App() {
                 margin={{ right: 60, left: 0 }}
               />
               <HorizontalBarChart
-                title="Top 10 Entities Generated Queries: អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
+                title="អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
                 data={queryNatBUData}
                 dataKey="queries"
                 color="#38bdf8"
@@ -1449,7 +1449,7 @@ export default function App() {
             <br />
             <div className="grid grid-cols-2 gap-4 mb-6">
               <HorizontalBarChart
-                title="Top 10 Entities Generated Reports: អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
+                title="អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
                 data={reportsubNatBUData}
                 dataKey="reports"
                 color="#facc15"
@@ -1458,7 +1458,7 @@ export default function App() {
                 margin={{ right: 80, left: 0 }}
               />
               <HorizontalBarChart
-                title="Top 10 Entities Generated Queries: អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
+                title="អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
                 data={querysubNatBUData}
                 dataKey="queries"
                 color="#38bdf8"
@@ -1478,10 +1478,10 @@ export default function App() {
               onClick={() => setPage("reports")}
               className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1"
             >
-              ← Back to Reports & Queries
+              ← ត្រឡប់ទៅក្រោយ
             </button>
-            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍ - Report Types</h2>
-            <p className="text-xs text-muted-foreground mb-6">Click a category to expand its reports</p>
+            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍</h2>
+            <p className="text-xs text-muted-foreground mb-6">ចុចលើប្រភេទនីមួយៗដើម្បីមើលលម្អិត</p>
             <CategoryAccordion
               categories={categoryData}
               expandedId={expandedReportId}
@@ -1498,10 +1498,10 @@ export default function App() {
               onClick={() => setPage("reports")}
               className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1"
             >
-              ← Back to Reports & Queries
+              ← ត្រឡប់ទៅក្រោយ
             </button>
-            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិត - Query Types</h2>
-            <p className="text-xs text-muted-foreground mb-6">Click a module to expand its queries</p>
+            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិត</h2>
+            <p className="text-xs text-muted-foreground mb-6">ចុចលើប្រភេទនីមួយៗដើម្បីមើលលម្អិត</p>
             <CategoryAccordion
               categories={categoryQueryData}
               expandedId={expandedQueryId}

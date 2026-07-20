@@ -581,7 +581,7 @@ export default function CambodiaMap() {
             className="text-sm font-semibold text-foreground"
             style={{ fontFamily: "Hanuman" }}
           >
-            Geographic Location: ទីតាំងភូមិសាស្ត្រ
+            ទីតាំងភូមិសាស្ត្រ
           </h2>
           <p
             className="text-xs text-muted-foreground mt-1"
