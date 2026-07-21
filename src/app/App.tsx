@@ -1,12 +1,21 @@
-import { Fragment, useState, useMemo } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, Cell, Legend, LabelList,
 } from "recharts";
-import { Search, FileText } from "lucide-react";
+import { Search, FileText, Sun, Moon } from "lucide-react";
 import CambodiaMap from "./components/CambodiaMap";
+import ParticleBackground from "./components/ParticleBackground";
 import { provinces, ProvinceData } from "./data/provinces";
 
+
+type Language = "km" | "en";
+type Theme = "light" | "dark";
+
+type LocalizedText = {
+  km: string;
+  en: string;
+};
 
 type CategoryDetail = {
   code: string;
@@ -427,15 +436,15 @@ const categoryData: {
     },
   ];
 
-const categoryQueryLabels: Record<string, string> = {
-  BA: "មុខងារវិភាជន៍ថវិកា",
-  PR: "មុខងារលទ្ធកម្ម",
-  PO: "មុខងារការទិញ",
-  AP: "មុខងារគណនីត្រូវសង",
-  AR: "មុខងារគណនីត្រូវទារ",
-  CM: "មុខងារគ្រប់គ្រងសាច់ប្រាក់",
-  GL: "មុខងារសៀវភៅធំ",
-  "For Approver": "មុខងារសម្រាប់អ្នកអនុម័ត",
+const categoryQueryLabels: Record<string, LocalizedText> = {
+  BA: { km: "មុខងារវិភាជន៍ថវិកា", en: "Budget Allocation" },
+  PR: { km: "មុខងារលទ្ធកម្ម", en: "Procurement" },
+  PO: { km: "មុខងារការទិញ", en: "Purchasing" },
+  AP: { km: "មុខងារគណនីត្រូវសង", en: "Accounts Payable" },
+  AR: { km: "មុខងារគណនីត្រូវទារ", en: "Accounts Receivable" },
+  CM: { km: "មុខងារគ្រប់គ្រងសាច់ប្រាក់", en: "Cash Management" },
+  GL: { km: "មុខងារសៀវភៅធំ", en: "General Ledger" },
+  "For Approver": { km: "មុខងារសម្រាប់អ្នកអនុម័ត", en: "For Approver" },
 };
 
 const entityGlossary: EntityGlossaryItem[] = [
@@ -698,15 +707,15 @@ const querysubNatBUData = [
 ];
 
 const userGroups = [
-  { label: "អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", active: 1976, inactive: 600 },
-  { label: "អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", active: 875, inactive: 300 },
-  { label: "អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", active: 72, inactive: 21 },
+  { label: { km: "អ្នកប្រើប្រាស់ថ្នាក់ជាតិ", en: "National-Level Users" }, active: 1976, inactive: 600 },
+  { label: { km: "អ្នកប្រើប្រាស់ថ្នាក់ក្រោមជាតិ", en: "Sub-national Users" }, active: 875, inactive: 300 },
+  { label: { km: "អ្នកប្រើប្រាស់តាមគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", en: "ABE Users" }, active: 72, inactive: 21 },
 ];
 
 const siteGroups = [
-  { label: "ការដ្ឋានថ្នាក់ជាតិ", count: 230, trend: { value: 1.61, up: true } },
-  { label: "ការដ្ឋានថ្នាក់ក្រោមជាតិ", count: 145, trend: { value: 0.84, up: true } },
-  { label: "ការដ្ឋានគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", count: 9, trend: { value: 0.01, up: true } },
+  { label: { km: "ការដ្ឋានថ្នាក់ជាតិ", en: "National-Level Sites" }, count: 230, trend: { value: 1.61, up: true } },
+  { label: { km: "ការដ្ឋានថ្នាក់ក្រោមជាតិ", en: "Sub-National Sites" }, count: 145, trend: { value: 0.84, up: true } },
+  { label: { km: "ការដ្ឋានគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", en: "ABE Sites" }, count: 9, trend: { value: 0.01, up: true } },
 ];
 
 const CAT_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fb923c", "#f472b6", "#facc15"];
@@ -723,10 +732,130 @@ const sitesTrend = { value: 0.26, up: true };
 const totalReports = BUData.reduce((s, d) => s + d.reports, 0);
 
 
-function fmt(n: number): string {
-  return n.toLocaleString();
+
+const reportCategoryLabels: Record<string, LocalizedText> = {
+  financial: { km: "របាយការណ៍ហិរញ្ញវត្ថុ", en: "Financial Reports" },
+  budgetExec: { km: "របាយការណ៍អនុវត្តថវិកា", en: "Budget Execution Reports" },
+  budgetClosing: { km: "របាយការណ៍បិទបញ្ជី", en: "Budget Closing Reports" },
+  settlementLaw: { km: "របាយការណ៍ច្បាប់ទូទាត់", en: "Budget Settlement Law Reports" },
+  standard: { km: "របាយការណ៍ស្តង់ដារអន្តរជាតិ", en: "International Standard Reports" },
+};
+
+const uiText: Record<string, LocalizedText> = {
+  navUsersSites: { km: "អ្នកប្រើប្រាស់ និងការដ្ឋាន", en: "Users and Sites" },
+  navReportsQueries: { km: "របាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការលម្អិត", en: "Reports and Queries" },
+  language: { km: "ភាសា", en: "Language" },
+  theme: { km: "ពណ៌ផ្ទៃ", en: "Theme" },
+  lightMode: { km: "ប្ដូរទៅផ្ទៃភ្លឺ", en: "Switch to light mode" },
+  darkMode: { km: "ប្ដូរទៅផ្ទៃងងឹត", en: "Switch to dark mode" },
+  khmer: { km: "ខ្មែរ", en: "Khmer" },
+  english: { km: "អង់គ្លេស", en: "English" },
+  totalSites: { km: "ចំនួនការដ្ឋានសរុប", en: "Total Sites" },
+  totalUsers: { km: "ចំនួនអ្នកប្រើប្រាស់សរុប", en: "Total Users" },
+  comparedLastMonth: { km: "ធៀបនឹងខែមុន", en: "vs. last month" },
+  active: { km: "សកម្ម", en: "Active" },
+  inactive: { km: "អសកម្ម", en: "Inactive" },
+  geographicDistribution: { km: "របាយភូមិសាស្ត្រ", en: "Geographic Distribution" },
+  provinceDetails: { km: "ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត", en: "Details by Capital/Province" },
+  province: { km: "រាជធានី/ខេត្ត", en: "Capital/Province" },
+  sites: { km: "ការដ្ឋាន", en: "Sites" },
+  users: { km: "អ្នកប្រើប្រាស់", en: "Users" },
+  totalReports: { km: "ចំនួនរបាយការណ៍សរុប", en: "Total Report Types" },
+  totalQueries: { km: "ចំនួនរបាយការណ៍ប្រតិបត្តិការលម្អិតសរុប", en: "Total Query Types" },
+  reportsByCategory: { km: "របាយការណ៍តាមប្រភេទ", en: "Reports by Category" },
+  queriesByFunction: { km: "របាយការណ៍ប្រតិបត្តិការលម្អិតតាមមុខងារ", en: "Queries by Function" },
+  topReports: { km: "ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥", en: "Top 5 Most Generated Reports" },
+  topQueries: { km: "ប្រភេទរបាយការណ៍ប្រតិបត្តិការលម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥", en: "Top 5 Most Generated Queries" },
+  totalGeneratedReports: { km: "ចំនួនការទាញរបាយការណ៍សរុប", en: "Total Generated Reports" },
+  totalGeneratedQueries: { km: "ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការលម្អិតសរុប", en: "Total Generated Queries" },
+  nationalUsage: { km: "ការទាញរបាយការណ៍ថ្នាក់ជាតិ", en: "National-level Report Usage" },
+  nationalUsageSubtext: { km: "ទិន្នន័យរបាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការលម្អិតថ្នាក់ជាតិដែលទាញចេញពី FMIS ច្រើនជាងគេ", en: "National-level FMIS reports and queries with the highest usage" },
+  subnationalUsage: { km: "ការទាញរបាយការណ៍ថ្នាក់ក្រោមជាតិ", en: "Sub-national Report Usage" },
+  subnationalUsageSubtext: { km: "ទិន្នន័យរបាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការលម្អិតថ្នាក់ក្រោមជាតិដែលទាញចេញពី FMIS ច្រើនជាងគេ", en: "Sub-national FMIS reports and queries with the highest usage" },
+  topReportUnits: { km: "អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០", en: "Top 10 Units Generating Reports" },
+  topQueryUnits: { km: "អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការលម្អិតច្រើនជាងគេទាំង ១០", en: "Top 10 Units Running Queries" },
+  back: { km: "ត្រឡប់ទៅក្រោយ", en: "Back" },
+  reportTypes: { km: "ប្រភេទរបាយការណ៍", en: "Report Types" },
+  queryTypes: { km: "ប្រភេទរបាយការណ៍ប្រតិបត្តិការលម្អិត", en: "Query Types" },
+  clickCategory: { km: "ចុចលើប្រភេទនីមួយៗដើម្បីមើលលម្អិត", en: "Select a category to view details" },
+  clickDetails: { km: "ចុចមើលលម្អិត", en: "Click to view details" },
+  details: { km: "លម្អិត", en: "Details" },
+  searchPlaceholder: { km: "ស្វែងរកតាមលេខកូដ ឈ្មោះ ឈ្មោះអង់គ្លេស ឬអង្គភាព…", en: "Search by code, name, Khmer name, or entity…" },
+  code: { km: "លេខកូដ", en: "Code" },
+  reportName: { km: "ឈ្មោះរបាយការណ៍", en: "Report Name" },
+  englishName: { km: "ឈ្មោះជាភាសាអង់គ្លេស", en: "English Name" },
+  khmerName: { km: "ឈ្មោះជាភាសាខ្មែរ", en: "Khmer Name" },
+  category: { km: "ប្រភេទរបាយការណ៍", en: "Category" },
+  entities: { km: "អង្គភាពប្រើប្រាស់", en: "Entities Use" },
+  noMatches: { km: "រកមិនឃើញទិន្នន័យដែលត្រូវគ្នា", en: "No matches found" },
+  close: { km: "បិទ", en: "Close" },
+  noGlossary: { km: "មិនទាន់មានការពិពណ៌នាសម្រាប់អក្សរកាត់នេះទេ។", en: "No description has been added for this shortcut." },
+  noDescription: { km: "មិនទាន់មានការពិពណ៌នា។", en: "No description is available." },
+  reports: { km: "របាយការណ៍", en: "Reports" },
+  queries: { km: "របាយការណ៍ប្រតិបត្តិការលម្អិត", en: "Queries" },
+  developedBy: { km: "រៀបចំឡើងដោយការិយាល័យគ្រប់គ្រងព័ត៌មាន", en: "Developed by the Office of Information Management" },
+  reportingPeriod: { km: "ទិន្នន័យក្នុងឆ្នាំ ២០២៦ (មករា-មិថុនា)", en: "Data for 2026 (January–June)" },
+};
+
+const organizationEnglishNames: Record<string, string> = {
+  GDNT: "General Department of National Treasury",
+  GID: "General Department of Identification",
+  GDPFMIT: "General Department of Information Technology",
+  GDIA: "General Department of Internal Audit",
+  GDB: "General Department of Budget",
+  DEF01: "Banteay Meanchey Department of Economy and Finance",
+  DEF05: "Kampong Speu Department of Economy and Finance",
+  DEF08: "Kandal Department of Economy and Finance",
+  LM10: "Ministry of Economy and Finance",
+  LM15: "Ministry of Commerce",
+  LM16: "Ministry of Education, Youth and Sport",
+  LM17: "Ministry of Agriculture, Forestry and Fisheries",
+  LM22: "Ministry of Post and Telecommunications",
+  LM26: "Ministry of Justice",
+  LM28: "Ministry of Land Management, Urban Planning and Construction",
+  LM72: "Ministry of Interior",
+  PT001: "Banteay Meanchey Provincial Treasury",
+  PT002: "Battambang Provincial Treasury",
+  PT003: "Kampong Cham Provincial Treasury",
+  PT004: "Kampong Chhnang Provincial Treasury",
+  PT005: "Kampong Speu Provincial Treasury",
+  PT006: "Kampong Thom Provincial Treasury",
+  PT008: "Kandal Provincial Treasury",
+  PT009: "Koh Kong Provincial Treasury",
+  PT010: "Kratie Provincial Treasury",
+  PT012: "Phnom Penh Capital Treasury",
+  PT014: "Prey Veng Provincial Treasury",
+  PT017: "Siem Reap Provincial Treasury",
+  PT018: "Preah Sihanoukville Provincial Treasury",
+  PT020: "Svay Rieng Provincial Treasury",
+  PT025: "Tboung Khmum Provincial Treasury",
+};
+
+
+const reportDetailMap = Object.fromEntries(
+  categoryData.flatMap((category) => category.details.map((detail) => [detail.code, detail]))
+) as Record<string, CategoryDetail>;
+
+const queryDetailMap = Object.fromEntries(
+  categoryQueryData.flatMap((category) => category.details.map((detail) => [detail.code, detail]))
+) as Record<string, CategoryDetail>;
+
+function getLocalizedName(detail: CategoryDetail | undefined, language: Language): string {
+  if (!detail) return "";
+  return language === "km" ? detail.name : detail.englishName;
 }
 
+function getOrganizationName(name: string, language: Language): string {
+  if (language === "km") return name;
+  const code = name.split(":")[0].trim();
+  const englishName = organizationEnglishNames[code];
+  return englishName ? `${code}: ${englishName}` : name;
+}
+
+
+function fmt(n: number): string {
+  return n.toLocaleString("en-US");
+}
 
 const TrendBadge = ({ value, up, size = "md" }: { value: number; up: boolean; size?: "sm" | "md" }) => {
   const iconSize = size === "sm" ? 7 : 8;
@@ -743,21 +872,17 @@ const TrendBadge = ({ value, up, size = "md" }: { value: number; up: boolean; si
   );
 };
 
-// ─── Tooltips ────────────────────────────────────────────────────────────────
-
-const CustomBarTooltip = ({ active, payload, label }: any) => {
+const CustomBarTooltip = ({ active, payload, label, valueLabel }: any) => {
   if (!active || !payload?.length) return null;
   const data = payload[0].payload;
   const displayLabel = data.fullName ? `${label}: ${data.fullName}` : label;
   return (
     <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
       <p className="text-foreground font-semibold mb-1">{displayLabel}</p>
-      <p className="text-sky-400">{payload[0].value.toLocaleString()}</p>
+      <p className="text-sky-400">{valueLabel}: {payload[0].value.toLocaleString()}</p>
     </div>
   );
 };
-
-// ─── Reusable KPI Card ────────────────────────────────────────────────────────
 
 const KpiCard = ({
   label, value, icon: Icon, color, bg, onClick,
@@ -766,7 +891,7 @@ const KpiCard = ({
 }) => (
   <div
     onClick={onClick}
-    className={`bg-card border border-border rounded-xl p-5 flex items-center gap-4 transition-colors
+    className={`bg-card/90 border border-border rounded-xl p-5 flex items-center gap-4 backdrop-blur-xl transition-all duration-300
       ${onClick ? "cursor-pointer hover:border-sky-400/40" : ""}`}
   >
     <div className={`${bg} p-3 rounded-xl`}>
@@ -779,14 +904,125 @@ const KpiCard = ({
   </div>
 );
 
-// ─── Expandable Detail Table (Code | Name | Category | Entity Used, click row for description) ──
+const FlagIcon = ({ language }: { language: Language }) => {
+  if (language === "km") {
+    return (
+      <svg
+        viewBox="0 0 30 20"
+        className="h-5 w-7 rounded-[2px] shadow-sm"
+        aria-hidden="true"
+      >
+        <rect width="30" height="20" fill="#032EA1" />
+        <rect y="5" width="30" height="10" fill="#E00025" />
+        <g fill="#FFFFFF">
+          <path d="M8 13.7h14v1.1H8z" />
+          <path d="M9.2 12.4h11.6v1.1H9.2z" />
+          <path d="M10.2 9.7h2.5v2.8h-2.5zM17.3 9.7h2.5v2.8h-2.5z" />
+          <path d="M13.4 8.7h3.2v3.8h-3.2z" />
+          <path d="M10.4 9.7l1.05-1.8 1.05 1.8zM13.55 8.7L15 6.4l1.45 2.3zM17.5 9.7l1.05-1.8 1.05 1.8z" />
+        </g>
+      </svg>
+    );
+  }
+
+  return (
+    <svg
+      viewBox="0 0 60 40"
+      className="h-5 w-7 rounded-[2px] shadow-sm"
+      aria-hidden="true"
+    >
+      <rect width="60" height="40" fill="#012169" />
+      <path d="M0 0l60 40M60 0L0 40" stroke="#FFFFFF" strokeWidth="8" />
+      <path d="M0 0l60 40M60 0L0 40" stroke="#C8102E" strokeWidth="4" />
+      <path d="M30 0v40M0 20h60" stroke="#FFFFFF" strokeWidth="12" />
+      <path d="M30 0v40M0 20h60" stroke="#C8102E" strokeWidth="7" />
+    </svg>
+  );
+};
+
+const LanguageSwitcher = ({ language, setLanguage, t }: {
+  language: Language;
+  setLanguage: (language: Language) => void;
+  t: (key: string) => string;
+}) => (
+  <div
+    className="flex items-center bg-card border border-border rounded-full p-1 gap-1"
+    role="group"
+    aria-label={t("language")}
+  >
+    <button
+      type="button"
+      onClick={() => setLanguage("km")}
+      aria-label="ប្តូរទៅភាសាខ្មែរ — Switch to Khmer"
+      title="ភាសាខ្មែរ"
+      aria-pressed={language === "km"}
+      className={`flex h-8 w-10 items-center justify-center rounded-full transition-all ${language === "km"
+        ? "bg-sky-400/20 ring-2 ring-sky-400"
+        : "opacity-60 hover:bg-muted hover:opacity-100"
+        }`}
+    >
+      <FlagIcon language="km" />
+    </button>
+
+    <button
+      type="button"
+      onClick={() => setLanguage("en")}
+      aria-label="Switch to English — ប្តូរទៅភាសាអង់គ្លេស"
+      title="English"
+      aria-pressed={language === "en"}
+      className={`flex h-8 w-10 items-center justify-center rounded-full transition-all ${language === "en"
+        ? "bg-sky-400/20 ring-2 ring-sky-400"
+        : "opacity-60 hover:bg-muted hover:opacity-100"
+        }`}
+    >
+      <FlagIcon language="en" />
+    </button>
+  </div>
+);
+
+
+const ThemeSwitcher = ({
+  theme,
+  setTheme,
+  t,
+}: {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  t: (key: string) => string;
+}) => {
+  const isDark = theme === "dark";
+  const nextTheme: Theme = isDark ? "light" : "dark";
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(nextTheme)}
+      aria-label={isDark ? t("lightMode") : t("darkMode")}
+      title={isDark ? t("lightMode") : t("darkMode")}
+      className="group flex h-[42px] w-[42px] items-center justify-center rounded-full border border-border bg-card text-foreground shadow-sm backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-sky-400/50 hover:bg-accent hover:text-sky-400 hover:shadow-[0_10px_30px_rgba(56,189,248,0.16)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
+    >
+      <span className="relative flex h-5 w-5 items-center justify-center">
+        <Sun
+          className={`absolute h-5 w-5 transition-all duration-300 ${isDark ? "rotate-0 scale-100 opacity-100" : "-rotate-90 scale-0 opacity-0"
+            }`}
+        />
+        <Moon
+          className={`absolute h-5 w-5 transition-all duration-300 ${isDark ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+            }`}
+        />
+      </span>
+    </button>
+  );
+};
 
 const ExpandableDetailTable = ({
-  rows, accent, categoryLabel,
+  rows, accent, categoryLabel, language, t,
 }: {
   rows: CategoryDetail[];
   accent: string;
   categoryLabel: string;
+  language: Language;
+  t: (key: string) => string;
 }) => {
   const [search, setSearch] = useState("");
   const [expandedCode, setExpandedCode] = useState<string | null>(null);
@@ -794,7 +1030,6 @@ const ExpandableDetailTable = ({
   const filtered = rows.filter((r) => {
     const q = search.trim().toLowerCase();
     if (!q) return true;
-
     return (
       r.code.toLowerCase().includes(q) ||
       r.name.toLowerCase().includes(q) ||
@@ -804,14 +1039,14 @@ const ExpandableDetailTable = ({
   });
 
   return (
-    <div className="bg-card border border-border rounded-xl overflow-hidden">
+    <div className="bg-card/90 border border-border rounded-xl overflow-hidden backdrop-blur-xl">
       <div className="p-4 border-b border-border">
         <input
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search by code, name, English name, or entity…"
+          placeholder={t("searchPlaceholder")}
           className="w-full bg-background border border-border rounded-lg px-3 py-2 text-xs outline-none focus:border-sky-400/40 text-foreground placeholder:text-muted-foreground"
-          style={{ fontFamily: "Hanuman" }}
+          style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}
         />
       </div>
 
@@ -819,55 +1054,53 @@ const ExpandableDetailTable = ({
         <table className="w-full text-xs">
           <thead className="sticky top-0 bg-card z-10">
             <tr className="border-b border-border">
-              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-20">លេខកូដ</th>
-              <th className="text-left px-5 py-3 text-muted-foreground font-medium">ឈ្មោះរបាយការណ៍</th>
-              <th className="text-left px-5 py-3 text-muted-foreground font-medium">ឈ្មោះរបាយការណ៍ជាភាសាអង់គ្លេស</th>
-              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-44">ប្រភេទរបាយការណ៍</th>
-              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-44">អង្គភាពប្រើប្រាស់</th>
-              <th className="w-8"></th>
+              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-20">{t("code")}</th>
+              <th className="text-left px-5 py-3 text-muted-foreground font-medium">{t("reportName")}</th>
+              <th className="text-left px-5 py-3 text-muted-foreground font-medium">{language === "km" ? t("englishName") : t("khmerName")}</th>
+              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-44">{t("category")}</th>
+              <th className="text-left px-5 py-3 text-muted-foreground font-medium w-44">{t("entities")}</th>
+              <th className="w-8" />
             </tr>
           </thead>
 
           <tbody>
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">
-                  No matches found
-                </td>
+                <td colSpan={6} className="px-5 py-8 text-center text-muted-foreground">{t("noMatches")}</td>
               </tr>
             )}
 
             {filtered.map((r) => {
               const isOpen = expandedCode === r.code;
+              const primaryName = language === "km" ? r.name : r.englishName;
+              const secondaryName = language === "km" ? r.englishName : r.name;
+              const description = r.description;
+
               return (
                 <Fragment key={r.code}>
                   <tr
-                    key={r.code}
                     onClick={() => setExpandedCode(isOpen ? null : r.code)}
-                    className="border-b border-border/50 hover:bg-white/[0.02] transition-colors cursor-pointer"
+                    className="border-b border-border/50 hover:bg-accent/35 transition-colors cursor-pointer"
                   >
                     <td className="px-5 py-3 font-mono font-semibold" style={{ color: accent }}>{r.code}</td>
-                    <td className="px-5 py-3 font-medium text-foreground" style={{ fontFamily: "Hanuman" }}>{r.name}</td>
-                    <td className="px-5 py-3 text-muted-foreground">{r.englishName}</td>
-                    <td className="px-5 py-3 text-muted-foreground" style={{ fontFamily: "Hanuman" }}>{categoryLabel}</td>
+                    <td className="px-5 py-3 font-medium text-foreground" style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}>{primaryName}</td>
+                    <td className="px-5 py-3 text-muted-foreground" style={{ fontFamily: language === "en" ? "Hanuman" : "inherit" }}>{secondaryName}</td>
+                    <td className="px-5 py-3 text-muted-foreground">{categoryLabel}</td>
                     <td className="px-5 py-3 text-muted-foreground">
-                      <EntityUsedCell value={r.entityUsed} />
+                      <EntityUsedCell value={r.entityUsed} language={language} t={t} />
                     </td>
                     <td className="px-5 py-3 text-muted-foreground">
-                      <svg
-                        width="10" height="10" viewBox="0 0 10 10" fill="none"
-                        className={`transition-transform ${isOpen ? "rotate-180" : ""}`}
-                      >
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className={`transition-transform ${isOpen ? "rotate-180" : ""}`}>
                         <path d="M2 3.5L5 6.5L8 3.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </td>
                   </tr>
 
                   {isOpen && (
-                    <tr key={`${r.code}-desc`} className="border-b border-border/50 bg-white/[0.015]">
+                    <tr className="border-b border-border/50 bg-accent/20">
                       <td colSpan={6} className="px-5 py-4">
                         <p className="text-[11px] text-muted-foreground leading-relaxed" style={{ fontFamily: "Hanuman", whiteSpace: "pre-wrap" }}>
-                          {r.description || "No description available."}
+                          {description}
                         </p>
                       </td>
                     </tr>
@@ -882,29 +1115,24 @@ const ExpandableDetailTable = ({
   );
 };
 
-const EntityUsedCell = ({ value }: { value?: string }) => {
+const EntityUsedCell = ({ value, language, t }: {
+  value?: string;
+  language: Language;
+  t: (key: string) => string;
+}) => {
   const [openShortcut, setOpenShortcut] = useState<string | null>(null);
+  const shortcuts = (value || "").split(",").map((item) => item.trim()).filter(Boolean);
 
-  const shortcuts = (value || "")
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean);
-
-  if (shortcuts.length === 0) {
-    return <span className="text-muted-foreground">—</span>;
-  }
-
+  if (shortcuts.length === 0) return <span className="text-muted-foreground">—</span>;
   const activeEntity = openShortcut ? entityGlossaryMap[openShortcut] : null;
 
   return (
-    <div
-      className="space-y-2"
-      onClick={(e) => e.stopPropagation()}
-    >
+    <div className="space-y-2" onClick={(e) => e.stopPropagation()}>
       <div className="flex flex-wrap gap-1.5">
         {shortcuts.map((shortcut) => {
           const isOpen = openShortcut === shortcut;
-
+          const glossary = entityGlossaryMap[shortcut];
+          const title = glossary ? (language === "km" ? glossary.khmerName : glossary.englishName) : t("noGlossary");
           return (
             <button
               key={shortcut}
@@ -913,15 +1141,10 @@ const EntityUsedCell = ({ value }: { value?: string }) => {
                 e.stopPropagation();
                 setOpenShortcut(isOpen ? null : shortcut);
               }}
-              className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold transition-colors
-                ${isOpen
-                  ? "border-sky-400/60 bg-sky-400/10 text-sky-300"
-                  : "border-border bg-background text-foreground hover:border-sky-400/50"
-                }`}
-              title={entityGlossaryMap[shortcut]?.englishName || "No glossary description added yet"}
+              className={`inline-flex items-center gap-1 rounded-full border px-2 py-1 text-[10px] font-semibold transition-colors ${isOpen ? "border-sky-400/60 bg-sky-400/10 text-sky-300" : "border-border bg-background text-foreground hover:border-sky-400/50"}`}
+              title={title}
             >
-              {shortcut}
-              <span className="text-[9px] text-muted-foreground">ⓘ</span>
+              {shortcut}<span className="text-[9px] text-muted-foreground">ⓘ</span>
             </button>
           );
         })}
@@ -931,42 +1154,16 @@ const EntityUsedCell = ({ value }: { value?: string }) => {
         <div className="rounded-lg border border-border bg-background/70 p-3 shadow-sm">
           <div className="flex items-center justify-between gap-3 mb-1">
             <p className="text-[11px] font-bold text-sky-400">{openShortcut}</p>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                setOpenShortcut(null);
-              }}
-              className="text-[10px] text-muted-foreground hover:text-foreground"
-            >
-              Close
+            <button type="button" onClick={(e) => { e.stopPropagation(); setOpenShortcut(null); }} className="text-[10px] text-muted-foreground hover:text-foreground">
+              {t("close")}
             </button>
           </div>
-
           {activeEntity ? (
-            <>
-              <p
-                className="text-[11px] text-foreground leading-relaxed"
-                style={{ fontFamily: "Hanuman" }}
-              >
-                {activeEntity.khmerName}
-              </p>
-              <p className="text-[11px] text-muted-foreground leading-relaxed mt-1">
-                {activeEntity.englishName}
-              </p>
-              {activeEntity.description && (
-                <p
-                  className="text-[11px] text-muted-foreground leading-relaxed mt-2"
-                  style={{ fontFamily: "Hanuman" }}
-                >
-                  {activeEntity.description}
-                </p>
-              )}
-            </>
-          ) : (
-            <p className="text-[11px] text-muted-foreground">
-              No glossary description added yet. Add this shortcut to the entityGlossary array.
+            <p className="text-[11px] text-foreground leading-relaxed" style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}>
+              {language === "km" ? activeEntity.khmerName : activeEntity.englishName}
             </p>
+          ) : (
+            <p className="text-[11px] text-muted-foreground">{t("noGlossary")}</p>
           )}
         </div>
       )}
@@ -974,50 +1171,39 @@ const EntityUsedCell = ({ value }: { value?: string }) => {
   );
 };
 
-// ─── Category Accordion (replaces TypeCard grid + separate table page) ───────
-
 const CategoryAccordion = ({
-  categories, expandedId, setExpandedId, colors, getName,
+  categories, expandedId, setExpandedId, colors, getName, language, t,
 }: {
   categories: { id: string; name: string; details: CategoryDetail[];[key: string]: any }[];
   expandedId: string | null;
   setExpandedId: (id: string | null) => void;
   colors: string[];
-  getName?: (c: any) => string;
+  getName: (c: any) => string;
+  language: Language;
+  t: (key: string) => string;
 }) => (
   <div className="flex flex-col gap-3">
     {categories.map((c, i) => {
       const isOpen = expandedId === c.id;
       const accent = colors[i % colors.length];
-      const displayName = getName ? getName(c) : c.name;
-
+      const displayName = getName(c);
       return (
-        <div key={c.id} className="bg-card border border-border rounded-xl overflow-hidden">
-          <button
-            onClick={() => setExpandedId(isOpen ? null : c.id)}
-            className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-white/[0.02] transition-colors"
-          >
+        <div key={c.id} className="bg-card/90 border border-border rounded-xl overflow-hidden backdrop-blur-xl">
+          <button onClick={() => setExpandedId(isOpen ? null : c.id)} className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-accent/35 transition-colors">
             <div>
-              <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "Hanuman" }}>{displayName}</p>
-              <p className="text-[10px] text-muted-foreground mt-0.5" style={{ fontFamily: "Hanuman" }}>
-                ចុចមើលលម្អិត · Click to view details
-              </p>
+              <p className="text-sm font-semibold text-foreground" style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}>{displayName}</p>
+              <p className="text-[10px] text-muted-foreground mt-0.5">{t("clickDetails")}</p>
             </div>
-
             <div className="flex items-center gap-3">
-              <span className="text-[10px] font-medium text-muted-foreground">លម្អិត</span>
-              <svg
-                width="14" height="14" viewBox="0 0 16 16" fill="none"
-                className={`text-muted-foreground transition-transform flex-shrink-0 ${isOpen ? "rotate-90" : ""}`}
-              >
+              <span className="text-[10px] font-medium text-muted-foreground">{t("details")}</span>
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className={`text-muted-foreground transition-transform flex-shrink-0 ${isOpen ? "rotate-90" : ""}`}>
                 <path d="M6 3L11 8L6 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
           </button>
-
           {isOpen && (
             <div className="border-t border-border p-4">
-              <ExpandableDetailTable rows={c.details} accent={accent} categoryLabel={displayName} />
+              <ExpandableDetailTable rows={c.details} accent={accent} categoryLabel={displayName} language={language} t={t} />
             </div>
           )}
         </div>
@@ -1026,9 +1212,7 @@ const CategoryAccordion = ({
   </div>
 );
 
-// ─── Reusable Horizontal Bar Chart ───────────────────────────────────────────
-
-const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAxisOrientation, title, margin }: {
+const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAxisOrientation, title, valueLabel, margin }: {
   data: any[];
   dataKey: string;
   color: string;
@@ -1036,80 +1220,109 @@ const HorizontalBarChart = ({ data, dataKey, color, reversed, labelPosition, yAx
   labelPosition: "right" | "insideLeft";
   yAxisOrientation: "left" | "right";
   title: string;
+  valueLabel: string;
   margin?: { top?: number; right?: number; left?: number; bottom?: number };
 }) => (
-  <div className="bg-card border border-border rounded-xl p-5">
+  <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl">
     <h2 className="text-sm font-semibold text-foreground mb-3">{title}</h2>
     <ResponsiveContainer width="100%" height={280}>
-      <BarChart
-        data={data}
-        layout="vertical"
-        margin={{ top: 0, right: 60, left: 8, bottom: 0, ...margin }}
-        barSize={10}
-      >
+      <BarChart data={data} layout="vertical" margin={{ top: 0, right: 60, left: 8, bottom: 0, ...margin }} barSize={10}>
         <XAxis type="number" hide reversed={reversed} />
-        <YAxis
-          type="category"
-          dataKey="name"
-          orientation={yAxisOrientation}
-          tick={{ fill: "#64748b", fontSize: 11, fontFamily: "Hanuman" }}
-          axisLine={false}
-          tickLine={false}
-          width={240}
-        />
-        <Tooltip
-          content={({ active, payload, label }) => {
-            if (!active || !payload?.length) return null;
-            return (
-              <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
-                <p className="text-foreground font-semibold mb-1">{label}</p>
-                <p style={{ color }}>{dataKey}: {payload[0].value.toLocaleString()}</p>
-              </div>
-            );
-          }}
-        />
+        <YAxis type="category" dataKey="name" orientation={yAxisOrientation} tick={{ fill: "var(--chart-axis)", fontSize: 11, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={250} />
+        <Tooltip content={({ active, payload, label }) => {
+          if (!active || !payload?.length) return null;
+          return (
+            <div className="bg-popover border border-border rounded-lg px-3 py-2 shadow-xl text-xs">
+              <p className="text-foreground font-semibold mb-1">{label}</p>
+              <p style={{ color }}>{valueLabel}: {payload[0].value.toLocaleString()}</p>
+            </div>
+          );
+        }} />
         <Bar dataKey={dataKey} fill={color} radius={[0, 4, 4, 0]}>
-          <LabelList
-            dataKey={dataKey}
-            position={labelPosition}
-            style={{ fill: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}
-            formatter={(v: number) => v.toLocaleString()}
-          />
+          <LabelList dataKey={dataKey} position={labelPosition} style={{ fill: "var(--chart-label)", fontSize: 11, fontFamily: "Hanuman" }} formatter={(v: number) => v.toLocaleString()} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
   </div>
 );
 
-// ─── App ─────────────────────────────────────────────────────────────────────
-
 export default function App() {
-  const [page, setPage] = useState<
-    "users" | "reports" | "reportTypes" | "queryTypes"
-  >("users");
+  const [page, setPage] = useState<"users" | "reports" | "reportTypes" | "queryTypes">("users");
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window === "undefined") return "km";
+    return window.localStorage.getItem("dashboard-language") === "en" ? "en" : "km";
+  });
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "light";
+
+    const savedTheme = window.localStorage.getItem("dashboard-theme");
+    if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  });
   const [expandedReportId, setExpandedReportId] = useState<string | null>(null);
   const [expandedQueryId, setExpandedQueryId] = useState<string | null>(null);
   const [hovered, setHovered] = useState<ProvinceData | null>(null);
 
-  const totals = useMemo(() => ({
-    queries: provinces.reduce((s, p) => s + p.queries, 0),
-  }), []);
+  useEffect(() => {
+    window.localStorage.setItem("dashboard-language", language);
+    document.documentElement.lang = language === "km" ? "km" : "en";
+  }, [language]);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const isDark = theme === "dark";
+
+    root.classList.toggle("dark", isDark);
+    root.style.colorScheme = theme;
+    root.dataset.theme = theme;
+    window.localStorage.setItem("dashboard-theme", theme);
+  }, [theme]);
+
+  const t = (key: string) => uiText[key]?.[language] ?? key;
+
+  const reportCategoryChartData = useMemo(() => categoryData.map((category) => ({
+    ...category,
+    name: reportCategoryLabels[category.id]?.[language] ?? category.name,
+  })), [language]);
+
+  const queryCategoryChartData = useMemo(() => categoryQueryData.map((category) => ({
+    ...category,
+    fullName: categoryQueryLabels[category.name]?.[language] ?? category.name,
+  })), [language]);
+
+  const reportTop5ChartData = useMemo(() => reportTop5gen.map((item) => ({
+    ...item,
+    fullName: getLocalizedName(reportDetailMap[item.name], language) || item.fullName,
+  })), [language]);
+
+  const queryTop5ChartData = useMemo(() => queryTop5gen.map((item) => ({
+    ...item,
+    fullName: getLocalizedName(queryDetailMap[item.name], language) || item.fullName,
+  })), [language]);
+
+  const localizedReportNatBUData = useMemo(() => reportNatBUData.map((item) => ({ ...item, name: getOrganizationName(item.name, language) })), [language]);
+  const localizedQueryNatBUData = useMemo(() => queryNatBUData.map((item) => ({ ...item, name: getOrganizationName(item.name, language) })), [language]);
+  const localizedReportSubNatBUData = useMemo(() => reportsubNatBUData.map((item) => ({ ...item, name: getOrganizationName(item.name, language) })), [language]);
+  const localizedQuerySubNatBUData = useMemo(() => querysubNatBUData.map((item) => ({ ...item, name: getOrganizationName(item.name, language) })), [language]);
 
   const CustomXAxisTick = ({ x, y, payload }: any) => {
-    const words = payload.value.split(" ");
+    const words = String(payload.value).split(" ");
     const lines: string[] = [];
     let current = "";
+    const lineLength = language === "km" ? 12 : 16;
     words.forEach((word: string) => {
       const test = current ? `${current} ${word}` : word;
-      if (test.length > 12) { lines.push(current); current = word; }
-      else { current = test; }
+      if (test.length > lineLength && current) { lines.push(current); current = word; }
+      else current = test;
     });
     if (current) lines.push(current);
     return (
       <g transform={`translate(${x},${y + 8})`}>
         {lines.map((line, i) => (
-          <text key={i} x={0} y={0} dy={i * 12 + 8} textAnchor="middle"
-            dominantBaseline="hanging" fill="#64748b" fontSize={12} fontFamily="Hanuman">
+          <text key={i} x={0} y={0} dy={i * 12 + 8} textAnchor="middle" dominantBaseline="hanging" fill="var(--chart-axis)" fontSize={12} fontFamily={language === "km" ? "Hanuman" : "inherit"}>
             {line}
           </text>
         ))}
@@ -1118,133 +1331,163 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <div className="max-w-[1400px] mx-auto px-6 py-8">
-
-        {/* Toggle Navigation */}
-        <div className="flex justify-end mb-6">
-          <div className="flex items-center bg-card border border-border rounded-full p-1 gap-1">
-            <button
-              onClick={() => setPage("users")}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all
-                ${page === "users" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              អ្នកប្រើប្រាស់ និងការដ្ឋាន
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-500 selection:bg-sky-400/25" style={{ position: "relative" }}>
+      <ParticleBackground theme={theme} />
+      <div className="max-w-[1400px] mx-auto px-6 py-8" style={{ position: "relative", zIndex: 1 }}>
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+          <div className="flex items-center gap-2">
+            <LanguageSwitcher language={language} setLanguage={setLanguage} t={t} />
+            <ThemeSwitcher theme={theme} setTheme={setTheme} t={t} />
+          </div>
+          <div className="flex items-center bg-card/90 border border-border rounded-full p-1 gap-1 shadow-sm backdrop-blur-xl">
+            <button onClick={() => setPage("users")} className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${page === "users" ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}>
+              {t("navUsersSites")}
             </button>
-            <button
-              onClick={() => setPage("reports")}
-              className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all
-                ${(page === "reports" || page === "reportTypes" || page === "queryTypes")
-                  ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              របាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិត
+            <button onClick={() => setPage("reports")} className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${(page === "reports" || page === "reportTypes" || page === "queryTypes") ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"}`}>
+              {t("navReportsQueries")}
             </button>
           </div>
         </div>
 
-        {/* ── PAGE: Users & Sites ── */}
         {page === "users" && (
           <>
-            <div className="grid grid-cols-2 gap-4 mb-6">
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl flex flex-col gap-3">
+                  <p className="text-muted-foreground text-sm font-medium tracking-widest uppercase font-hanuman">
+                    {t("totalSites")}
+                  </p>
 
-              {/* Sites Card */}
-              <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
-                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
-                  ចំនួនការដ្ឋានសរុប
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalSites)}</p>
-                  <TrendBadge value={sitesTrend.value} up={sitesTrend.up} />
-                  <span className="text-[10px] text-muted-foreground">ធៀបនឹងខែមុន</span>
-                </div>
-                <div className="border-t border-border pt-3 flex flex-col gap-2">
-                  {siteGroups.map((g) => (
-                    <div key={g.label} className="flex justify-between items-center">
-                      <p className="text-[10px] font-medium text-muted-foreground">{g.label}</p>
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-semibold text-foreground">{fmt(g.count)}</span>
-                        <TrendBadge value={g.trend.value} up={g.trend.up} size="sm" />
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-2xl font-semibold tracking-tight font-hanuman">
+                      {fmt(totalSites)}
+                    </p>
+
+                    <TrendBadge value={sitesTrend.value} up={sitesTrend.up} />
+
+                    <span className="text-xs text-muted-foreground">
+                      {t("comparedLastMonth")}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-border pt-3 flex flex-col gap-2">
+                    {siteGroups.map((g) => (
+                      <div
+                        key={g.label.km}
+                        className="flex justify-between items-center"
+                      >
+                        <p className="text-xs font-medium text-muted-foreground">
+                          {g.label[language]}
+                        </p>
+
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-semibold text-foreground">
+                            {fmt(g.count)}
+                          </span>
+
+                          <TrendBadge
+                            value={g.trend.value}
+                            up={g.trend.up}
+                            size="sm"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
+                </div>
+
+                <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl flex flex-col gap-3">
+                  <p className="text-muted-foreground text-sm font-medium tracking-widest uppercase font-hanuman">
+                    {t("totalUsers")}
+                  </p>
+
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-2xl font-semibold tracking-tight font-hanuman">
+                      {fmt(totalUsers)}
+                    </p>
+
+                    <TrendBadge value={usersTrend.value} up={usersTrend.up} />
+
+                    <span className="text-xs text-muted-foreground">
+                      {t("comparedLastMonth")}
+                    </span>
+                  </div>
+
+                  <div className="flex h-2 rounded-full overflow-hidden gap-[2px]">
+                    <div
+                      className="bg-emerald-400"
+                      style={{ flex: totalActive }}
+                    />
+                    <div
+                      className="bg-yellow-400"
+                      style={{ flex: totalInactive }}
+                    />
+                  </div>
+
+                  <div className="flex gap-3 text-xs text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+                      {fmt(totalActive)} {t("active")}
+                    </span>
+
+                    <span className="flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />
+                      {fmt(totalInactive)} {t("inactive")}
+                    </span>
+                  </div>
+
+                  <div className="border-t border-border pt-3 flex flex-col gap-2">
+                    {userGroups.map((g) => (
+                      <div
+                        key={g.label.km}
+                        className="flex justify-between items-center"
+                      >
+                        <p className="text-xs font-medium text-muted-foreground">
+                          {g.label[language]}
+                        </p>
+
+                        <div className="flex gap-2 text-xs">
+                          <span className="text-emerald-400 font-semibold">
+                            {fmt(g.active)}
+                          </span>
+
+                          <span className="text-muted-foreground">·</span>
+
+                          <span className="text-yellow-400 font-semibold">
+                            {fmt(g.inactive)}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-              {/* User Status Card */}
-              <div className="bg-card border border-border rounded-xl p-5 flex flex-col gap-3">
-                <p className="text-muted-foreground text-xs font-medium tracking-widest uppercase font-hanuman">
-                  ចំនួនអ្នកប្រើប្រាស់សរុប
-                </p>
-                <div className="flex items-baseline gap-2">
-                  <p className="text-2xl font-semibold tracking-tight font-hanuman">{fmt(totalUsers)}</p>
-                  <TrendBadge value={usersTrend.value} up={usersTrend.up} />
-                  <span className="text-[10px] text-muted-foreground">ធៀបនឹងខែមុន</span>
-                </div>
-                <div className="flex h-2 rounded-full overflow-hidden gap-[2px]">
-                  <div className="bg-emerald-400" style={{ flex: totalActive }} />
-                  <div className="bg-yellow-400" style={{ flex: totalInactive }} />
-                </div>
-                <div className="flex gap-3 text-[10px] text-muted-foreground">
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />{fmt(totalActive)} សកម្ម</span>
-                  <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-yellow-400 inline-block" />{fmt(totalInactive)} អសកម្ម</span>
-                </div>
-                <div className="border-t border-border pt-3 flex flex-col gap-2">
-                  {userGroups.map((g) => (
-                    <div key={g.label} className="flex justify-between items-center">
-                      <p className="text-[10px] font-medium text-muted-foreground">{g.label}</p>
-                      <div className="flex gap-2 text-[10px]">
-                        <span className="text-emerald-400 font-semibold">{fmt(g.active)}</span>
-                        <span className="text-muted-foreground">·</span>
-                        <span className="text-yellow-400 font-semibold">{fmt(g.inactive)}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            </>
 
-            {/* Cambodia Map */}
-            <div className="mb-2 flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-foreground">របាយភូមិសាស្ត្រ</h2>
-            </div>
-            <div className="h-[500px] w-full">
-              <CambodiaMap />
-            </div>
+            <div className="mb-2 flex items-center gap-2"><h2 className="text-sm font-semibold text-foreground">{t("geographicDistribution")}</h2></div>
+            <div className="h-[500px] w-full"><CambodiaMap language={language} theme={theme} /></div>
 
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-
-            {/* Province Ranking Table */}
-            <h2 className="text-sm font-semibold text-foreground mt-6 mb-4">ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត</h2>
-            <div className="bg-card border border-border rounded-xl overflow-hidden">
+            <h2 className="text-sm font-semibold text-foreground mt-16 mb-4">{t("provinceDetails")}</h2>
+            <div className="bg-card/90 border border-border rounded-xl overflow-hidden backdrop-blur-xl">
               <div className="overflow-auto max-h-[400px]">
                 <table className="w-full text-xs relative">
                   <thead className="sticky top-0 bg-card z-10">
                     <tr className="border-b border-border">
                       <th className="text-left px-5 py-3 text-muted-foreground font-medium">#</th>
-                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">រាជធានី ខេត្ត</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">ការដ្ឋាន</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">អ្នកប្រើប្រាស់</th>
+                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">{t("province")}</th>
+                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">{t("sites")}</th>
+                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">{t("users")}</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {[...provinces]
-                      .sort((a, b) => b.users - a.users)
-                      .map((p, i) => (
-                        <tr
-                          key={p.id}
-                          className="border-b border-border/50 hover:bg-white/[0.02] transition-colors"
-                          onMouseEnter={() => setHovered(p)}
-                          onMouseLeave={() => setHovered(null)}
-                        >
-                          <td className="px-5 py-3 text-muted-foreground">{i + 1}</td>
-                          <td className="px-5 py-3 font-medium text-foreground">{p.name}</td>
-                          <td className="px-5 py-3 text-right text-emerald-400">{fmt(p.sites)}</td>
-                          <td className="px-5 py-3 text-right text-sky-400 font-semibold">{fmt(p.users)}</td>
-                        </tr>
-                      ))}
+                    {[...provinces].sort((a, b) => b.users - a.users).map((p, i) => (
+                      <tr key={p.id} className="border-b border-border/50 hover:bg-accent/35 transition-colors" onMouseEnter={() => setHovered(p)} onMouseLeave={() => setHovered(null)}>
+                        <td className="px-5 py-3 text-muted-foreground">{i + 1}</td>
+                        <td className="px-5 py-3 font-medium text-foreground">{language === "km" ? p.name : p.englishName}</td>
+                        <td className="px-5 py-3 text-right text-emerald-400">{fmt(p.sites)}</td>
+                        <td className="px-5 py-3 text-right text-sky-400 font-semibold">{fmt(p.users)}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
@@ -1252,274 +1495,140 @@ export default function App() {
           </>
         )}
 
-        {/* ── PAGE: Reports & Queries ── */}
         {page === "reports" && (
           <>
-            {/* Unique Types KPI Cards (clickable → drill into type pages) */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <KpiCard
-                label="ចំនួនរបាយការណ៍សរុប"
-                value={fmt(60)}
-                icon={FileText}
-                color="text-sky-400"
-                bg="bg-sky-400/10"
-                onClick={() => setPage("reportTypes")}
-              />
-              <KpiCard
-                label="ចំនួនរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប"
-                value={fmt(21)}
-                icon={Search}
-                color="text-emerald-400"
-                bg="bg-emerald-400/10"
-                onClick={() => setPage("queryTypes")}
-              />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+              <KpiCard label={t("totalReports")} value={fmt(60)} icon={FileText} color="text-sky-400" bg="bg-sky-400/10" onClick={() => setPage("reportTypes")} />
+              <KpiCard label={t("totalQueries")} value={fmt(21)} icon={Search} color="text-emerald-400" bg="bg-emerald-400/10" onClick={() => setPage("queryTypes")} />
             </div>
 
-            {/* Category Charts */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-
-              {/* Reports by Category */}
-              <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  របាយការណ៍តាមប្រភេទ
-                </h2>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-4">
+              <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl">
+                <h2 className="text-sm font-semibold text-foreground mb-3">{t("reportsByCategory")}</h2>
                 <ResponsiveContainer width="100%" height={320}>
-                  <BarChart data={categoryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                  <BarChart data={reportCategoryChartData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={100} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
-                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <YAxis tick={{ fill: "var(--chart-axis)", fontSize: 12 }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip valueLabel={t("reports")} />} cursor={{ fill: "var(--chart-hover)" }} />
                     <Bar dataKey="reports" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="reports" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
-                      {categoryData.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                      <LabelList dataKey="reports" position="top" style={{ fill: "var(--chart-label)", fontSize: 12 }} />
+                      {reportCategoryChartData.map((_, i) => <Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />)}
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
               </div>
 
-              {/* FMIS Queries by Category */}
-              <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  របាយការណ៍ប្រតិបត្តិការណ៍លម្អិតតាមមុខងារ
-                </h2>
+              <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl">
+                <h2 className="text-sm font-semibold text-foreground mb-3">{t("queriesByFunction")}</h2>
                 <ResponsiveContainer width="100%" height={360}>
-                  <BarChart data={categoryQueryData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                  <BarChart data={queryCategoryChartData} margin={{ top: 20, right: 4, left: 0, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={100} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
-                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <YAxis tick={{ fill: "var(--chart-axis)", fontSize: 12 }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip valueLabel={t("queries")} />} cursor={{ fill: "var(--chart-hover)" }} />
                     <Bar dataKey="queries" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
-                      {categoryQueryData.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                      <LabelList dataKey="queries" position="top" style={{ fill: "var(--chart-label)", fontSize: 12 }} />
+                      {queryCategoryChartData.map((_, i) => <Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />)}
                     </Bar>
-                    <Legend
-                      verticalAlign="bottom"
-                      content={() => (
-                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
-                          {categoryQueryData.map((entry, i) => (
-                            <div key={entry.name} className="flex items-center gap-1.5">
-                              <span
-                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
-                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
-                              />
-                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
-                                {entry.name} — {categoryQueryLabels[entry.name]}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    />
+                    <Legend verticalAlign="bottom" content={() => (
+                      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                        {queryCategoryChartData.map((entry, i) => (
+                          <div key={entry.name} className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block flex-shrink-0" style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }} /><span style={{ color: "var(--chart-label)", fontSize: 11 }}>{entry.name} — {entry.fullName}</span></div>
+                        ))}
+                      </div>
+                    )} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Top 5 Charts */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              {/* Top 5 Generated Report */}
-              <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  ប្រភេទរបាយការណ៍ដែលទាញចេញច្រើនជាងគេទាំង៥
-                </h2>
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-4">
+              <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl">
+                <h2 className="text-sm font-semibold text-foreground mb-3">{t("topReports")}</h2>
                 <ResponsiveContainer width="100%" height={360}>
-                  <BarChart data={reportTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                  <BarChart data={reportTop5ChartData} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
-                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <YAxis tick={{ fill: "var(--chart-axis)", fontSize: 12 }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip valueLabel={t("reports")} />} cursor={{ fill: "var(--chart-hover)" }} />
                     <Bar dataKey="reports" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="reports" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
-                      {reportTop5gen.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                      <LabelList dataKey="reports" position="top" style={{ fill: "var(--chart-label)", fontSize: 12 }} />
+                      {reportTop5ChartData.map((_, i) => <Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />)}
                     </Bar>
-                    <Legend
-                      verticalAlign="bottom"
-                      content={() => (
-                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
-                          {reportTop5gen.map((entry, i) => (
-                            <div key={entry.name} className="flex items-center gap-1.5">
-                              <span
-                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
-                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
-                              />
-                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
-                                {entry.name}: {entry.fullName}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    />
+                    <Legend verticalAlign="bottom" content={() => (
+                      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                        {reportTop5ChartData.map((entry, i) => <div key={entry.name} className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block flex-shrink-0" style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }} /><span style={{ color: "var(--chart-label)", fontSize: 11 }}>{entry.name}: {entry.fullName}</span></div>)}
+                      </div>
+                    )} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
-              {/* Top 5 Generated Queries */}
-              <div className="bg-card border border-border rounded-xl p-5">
-                <h2 className="text-sm font-semibold text-foreground mb-3" style={{ fontFamily: "Hanuman" }}>
-                  ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតដែលទាញចេញច្រើនជាងគេទាំង៥
-                </h2>
+
+              <div className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl">
+                <h2 className="text-sm font-semibold text-foreground mb-3">{t("topQueries")}</h2>
                 <ResponsiveContainer width="100%" height={360}>
-                  <BarChart data={queryTop5gen} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.06)" vertical={false} />
+                  <BarChart data={queryTop5ChartData} margin={{ top: 20, right: 4, left: 20, bottom: 20 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--chart-grid)" vertical={false} />
                     <XAxis dataKey="name" tick={<CustomXAxisTick />} axisLine={false} tickLine={false} interval={0} height={40} />
-                    <YAxis tick={{ fill: "#64748b", fontSize: 12, fontFamily: "Hanuman" }} axisLine={false} tickLine={false} width={30} />
-                    <Tooltip content={<CustomBarTooltip />} cursor={{ fill: "rgba(148,163,184,0.04)" }} />
+                    <YAxis tick={{ fill: "var(--chart-axis)", fontSize: 12 }} axisLine={false} tickLine={false} width={30} />
+                    <Tooltip content={<CustomBarTooltip valueLabel={t("queries")} />} cursor={{ fill: "var(--chart-hover)" }} />
                     <Bar dataKey="queries" radius={[5, 5, 0, 0]}>
-                      <LabelList dataKey="queries" position="top" style={{ fill: "#94a3b8", fontSize: 12, fontFamily: "Hanuman" }} />
-                      {queryTop5gen.map((_, i) => (<Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />))}
+                      <LabelList dataKey="queries" position="top" style={{ fill: "var(--chart-label)", fontSize: 12 }} />
+                      {queryTop5ChartData.map((_, i) => <Cell key={i} fill={CAT_COLORS[i % CAT_COLORS.length]} />)}
                     </Bar>
-                    <Legend
-                      verticalAlign="bottom"
-                      content={() => (
-                        <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
-                          {queryTop5gen.map((entry, i) => (
-                            <div key={entry.name} className="flex items-center gap-1.5">
-                              <span
-                                className="w-2 h-2 rounded-full inline-block flex-shrink-0"
-                                style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }}
-                              />
-                              <span style={{ color: "#94a3b8", fontSize: 11, fontFamily: "Hanuman" }}>
-                                {entry.name}: {entry.fullName}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    />
+                    <Legend verticalAlign="bottom" content={() => (
+                      <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 mt-3">
+                        {queryTop5ChartData.map((entry, i) => <div key={entry.name} className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full inline-block flex-shrink-0" style={{ backgroundColor: CAT_COLORS[i % CAT_COLORS.length] }} /><span style={{ color: "var(--chart-label)", fontSize: 11 }}>{entry.name}: {entry.fullName}</span></div>)}
+                      </div>
+                    )} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Generated Report / Query Totals KPI Cards */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <KpiCard label="ចំនួនការទាញរបាយការណ៍សរុប" value={fmt(63516)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
-              <KpiCard label="ចំនួនការទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតសរុប" value={fmt(25331)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+              <KpiCard label={t("totalGeneratedReports")} value={fmt(63516)} icon={FileText} color="text-amber-400" bg="bg-amber-400/10" />
+              <KpiCard label={t("totalGeneratedQueries")} value={fmt(25331)} icon={Search} color="text-violet-400" bg="bg-violet-400/10" />
             </div>
 
-            {/* National Level */}
-            <h2 className="text-lg font-bold text-foreground mb-4">ការទាញរបាយការណ៍ថ្នាក់ជាតិ</h2>
-            <h4 className="text-xs text-muted-foreground">ទិន្នន័យរបាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតថ្នាក់ជាតិដែលទាញចេញពី FMIS ច្រើនជាងគេ</h4>
-            <br />
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <HorizontalBarChart
-                title="អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
-                data={reportNatBUData}
-                dataKey="reports"
-                color="#facc15"
-                labelPosition="right"
-                yAxisOrientation="left"
-                margin={{ right: 60, left: 0 }}
-              />
-              <HorizontalBarChart
-                title="អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
-                data={queryNatBUData}
-                dataKey="queries"
-                color="#38bdf8"
-                reversed
-                labelPosition="right"
-                yAxisOrientation="right"
-                margin={{ right: 60, left: 20 }}
-              />
+            <h2 className="text-lg font-bold text-foreground mb-4">{t("nationalUsage")}</h2>
+            <h4 className="text-xs text-muted-foreground">{t("nationalUsageSubtext")}</h4><br />
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
+              <HorizontalBarChart title={t("topReportUnits")} data={localizedReportNatBUData} dataKey="reports" valueLabel={t("reports")} color="#facc15" labelPosition="right" yAxisOrientation="left" margin={{ right: 60, left: 0 }} />
+              <HorizontalBarChart title={t("topQueryUnits")} data={localizedQueryNatBUData} dataKey="queries" valueLabel={t("queries")} color="#38bdf8" reversed labelPosition="right" yAxisOrientation="right" margin={{ right: 60, left: 20 }} />
             </div>
 
-            {/* Sub-National Level */}
-            <h2 className="text-lg font-bold text-foreground mb-4">ការទាញរបាយការណ៍ថ្នាក់ក្រោមជាតិ</h2>
-            <h4 className="text-xs text-muted-foreground">ទិន្នន័យរបាយការណ៍ និងរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតថ្នាក់ក្រោមជាតិដែលទាញចេញពី FMIS ច្រើនជាងគេ</h4>
-            <br />
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <HorizontalBarChart
-                title="អង្គភាពដែលទាញរបាយការណ៍ច្រើនជាងគេទាំង ១០"
-                data={reportsubNatBUData}
-                dataKey="reports"
-                color="#facc15"
-                labelPosition="right"
-                yAxisOrientation="left"
-                margin={{ right: 80, left: 0 }}
-              />
-              <HorizontalBarChart
-                title="អង្គភាពដែលទាញរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិតច្រើនជាងគេទាំង ១០"
-                data={querysubNatBUData}
-                dataKey="queries"
-                color="#38bdf8"
-                reversed
-                labelPosition="right"
-                yAxisOrientation="right"
-                margin={{ right: 80, left: 0 }}
-              />
+            <h2 className="text-lg font-bold text-foreground mb-4">{t("subnationalUsage")}</h2>
+            <h4 className="text-xs text-muted-foreground">{t("subnationalUsageSubtext")}</h4><br />
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-6">
+              <HorizontalBarChart title={t("topReportUnits")} data={localizedReportSubNatBUData} dataKey="reports" valueLabel={t("reports")} color="#facc15" labelPosition="right" yAxisOrientation="left" margin={{ right: 80, left: 0 }} />
+              <HorizontalBarChart title={t("topQueryUnits")} data={localizedQuerySubNatBUData} dataKey="queries" valueLabel={t("queries")} color="#38bdf8" reversed labelPosition="right" yAxisOrientation="right" margin={{ right: 80, left: 0 }} />
             </div>
           </>
         )}
 
-        {/* ── PAGE: Report Types (accordion drill-down from Total Reports) ── */}
         {page === "reportTypes" && (
           <>
-            <button
-              onClick={() => setPage("reports")}
-              className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1"
-            >
-              ← ត្រឡប់ទៅក្រោយ
-            </button>
-            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍</h2>
-            <p className="text-xs text-muted-foreground mb-6">ចុចលើប្រភេទនីមួយៗដើម្បីមើលលម្អិត</p>
-            <CategoryAccordion
-              categories={categoryData}
-              expandedId={expandedReportId}
-              setExpandedId={setExpandedReportId}
-              colors={CAT_COLORS}
-            />
+            <button onClick={() => setPage("reports")} className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1">← {t("back")}</button>
+            <h2 className="text-lg font-bold text-foreground mb-1">{t("reportTypes")}</h2>
+            <p className="text-xs text-muted-foreground mb-6">{t("clickCategory")}</p>
+            <CategoryAccordion categories={categoryData} expandedId={expandedReportId} setExpandedId={setExpandedReportId} colors={CAT_COLORS} language={language} t={t} getName={(c) => reportCategoryLabels[c.id]?.[language] ?? c.name} />
           </>
         )}
 
-        {/* ── PAGE: Query Types (accordion drill-down from Total Queries) ── */}
         {page === "queryTypes" && (
           <>
-            <button
-              onClick={() => setPage("reports")}
-              className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1"
-            >
-              ← ត្រឡប់ទៅក្រោយ
-            </button>
-            <h2 className="text-lg font-bold text-foreground mb-1">ប្រភេទរបាយការណ៍ប្រតិបត្តិការណ៍លម្អិត</h2>
-            <p className="text-xs text-muted-foreground mb-6">ចុចលើប្រភេទនីមួយៗដើម្បីមើលលម្អិត</p>
-            <CategoryAccordion
-              categories={categoryQueryData}
-              expandedId={expandedQueryId}
-              setExpandedId={setExpandedQueryId}
-              colors={CAT_COLORS}
-              getName={(c) => `${c.name} — ${categoryQueryLabels[c.name]}`}
-            />
+            <button onClick={() => setPage("reports")} className="text-xs text-muted-foreground hover:text-foreground mb-6 flex items-center gap-1">← {t("back")}</button>
+            <h2 className="text-lg font-bold text-foreground mb-1">{t("queryTypes")}</h2>
+            <p className="text-xs text-muted-foreground mb-6">{t("clickCategory")}</p>
+            <CategoryAccordion categories={categoryQueryData} expandedId={expandedQueryId} setExpandedId={setExpandedQueryId} colors={CAT_COLORS} language={language} t={t} getName={(c) => `${c.name} — ${categoryQueryLabels[c.name]?.[language] ?? c.name}`} />
           </>
         )}
 
-        {/* Footer */}
         <footer className="border-t border-border mt-10 pt-6 pb-4 flex flex-col items-center gap-1.5">
-          <p className="text-xs text-muted-foreground" style={{ fontFamily: "Hanuman" }}>
-            រៀបចំឡើងដោយការិយាល័យគ្រប់គ្រងព័ត៌មាន · Developed by OIM
-          </p>
-          <p className="text-sm font-semibold text-foreground" style={{ fontFamily: "Hanuman" }}>
-            ទិន្នន័យក្នុងឆ្នាំ ២០២៦ (មករា-មិថុនា)
-          </p>
+          <p className="text-xs text-muted-foreground">{t("developedBy")} · OIM</p>
+          <p className="text-sm font-semibold text-foreground">{t("reportingPeriod")}</p>
         </footer>
       </div>
     </div>

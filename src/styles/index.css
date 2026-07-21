@@ -8,6 +8,7 @@
 }
 
 body {
+    background-color: hsl(var(--background));
     /* background-image: url('/bg.png'); */
     background-size: cover;
     background-attachment: fixed;

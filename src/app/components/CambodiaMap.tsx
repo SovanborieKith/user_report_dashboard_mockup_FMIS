@@ -1,10 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import { useEffect, useRef } from "react";
 import { provinces } from "../data/provinces";
 
 type Theme = "light" | "dark";
+type Language = "km" | "en";
+
+type CambodiaMapProps = {
+  language?: Language;
+  theme?: Theme;
+};
 
 const THEME_CONFIG: Record<
   Theme,
@@ -46,23 +51,23 @@ const THEME_CONFIG: Record<
     zoomHoverBg: "#f0fdfa",
   },
   dark: {
-    pointColor: "#E5CB90",
-    gradientFrom: "rgb(8,47,73)",
-    gradientTo: "rgb(34,211,238)",
+    pointColor: "#7dd3fc",
+    gradientFrom: "#0c4a6e",
+    gradientTo: "#38bdf8",
     tileUrl: "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png",
-    tileOpacity: 0.42,
-    boundaryColor: "#e9ac1dff",
-    boundaryFill: "#0f2f38",
-    boundaryFillOpacity: 0.55,
+    tileOpacity: 0.5,
+    boundaryColor: "#38bdf8",
+    boundaryFill: "#071a33",
+    boundaryFillOpacity: 0.62,
     shellBg:
-      "radial-gradient(circle at 50% 50%, rgba(20,184,166,0.10), transparent 45%), linear-gradient(180deg, #07191f 0%, #041116 100%)",
-    dotBg: "#dffdf8",
-    labelColor: "#e7b019ff",
+      "radial-gradient(circle at 50% 45%, rgba(56,189,248,0.13), transparent 44%), linear-gradient(180deg, #07152a 0%, #030914 100%)",
+    dotBg: "#ffffff",
+    labelColor: "#f8fafc",
     labelShadow:
-      "0 0 5px rgba(0,0,0,0.9), 0 0 8px rgba(34,211,238,0.6), 0 0 16px rgba(20,184,166,0.35)",
-    zoomBg: "#0b1f26",
-    zoomColor: "#22d3ee",
-    zoomHoverBg: "#0f2f38",
+      "0 0 5px rgba(0,0,0,0.95), 0 0 10px rgba(125,211,252,0.85), 0 0 20px rgba(56,189,248,0.35)",
+    zoomBg: "#0a1830",
+    zoomColor: "#f8fafc",
+    zoomHoverBg: "#102746",
   },
 };
 
@@ -79,16 +84,18 @@ function escapeHtml(value: unknown): string {
     .replaceAll("'", "&#039;");
 }
 
-export default function CambodiaMap() {
+export default function CambodiaMap({ language = "km", theme = "light" }: CambodiaMapProps) {
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletRef = useRef<{ map: any; L: any } | null>(null);
   const markersRef = useRef<any[]>([]);
   const boundaryRef = useRef<any | null>(null);
   const tileLayerRef = useRef<any | null>(null);
 
-  const [theme, setTheme] = useState<Theme>("light");
   const themeRef = useRef<Theme>(theme);
   themeRef.current = theme;
+
+  const languageRef = useRef<Language>(language);
+  languageRef.current = language;
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -149,11 +156,11 @@ export default function CambodiaMap() {
             padding: [18, 18],
           });
 
-          drawDots(L, map, themeRef.current);
+          drawDots(L, map, themeRef.current, languageRef.current);
         })
         .catch(() => {
           // Fallback if GeoJSON is not available.
-          drawDots(L, map, themeRef.current);
+          drawDots(L, map, themeRef.current, languageRef.current);
         });
 
       setTimeout(() => map.invalidateSize(), 150);
@@ -173,7 +180,7 @@ export default function CambodiaMap() {
     };
   }, []);
 
-  // Swap tile layer, boundary style, and dots whenever theme changes
+  // Swap tile layer, boundary style, labels, and tooltips when theme or language changes
   useEffect(() => {
     if (!leafletRef.current) return;
     const { L, map } = leafletRef.current;
@@ -198,10 +205,15 @@ export default function CambodiaMap() {
       });
     }
 
-    drawDots(L, map, theme);
-  }, [theme]);
+    drawDots(L, map, theme, language);
+  }, [theme, language]);
 
-  function drawDots(L: any, map: any, currentTheme: Theme) {
+  function drawDots(
+    L: any,
+    map: any,
+    currentTheme: Theme,
+    currentLanguage: Language,
+  ) {
     markersRef.current.forEach((marker) => marker.remove());
     markersRef.current = [];
 
@@ -216,9 +228,12 @@ export default function CambodiaMap() {
       const dotSize = 7 + normalized * 7;
       const blinkDelay = ((index % 7) * 0.22 + normalized * 0.4).toFixed(2);
 
-      const name = escapeHtml(p.name);
+      const provinceName = currentLanguage === "km" ? p.name : p.englishName;
+      const name = escapeHtml(provinceName);
       const sites = fmt(Number(p.sites || 0));
       const users = fmt(Number(p.users || 0));
+      const sitesLabel = currentLanguage === "km" ? "ការដ្ឋានសរុប" : "Total Sites";
+      const usersLabel = currentLanguage === "km" ? "អ្នកប្រើប្រាស់សរុប" : "Total Users";
 
       const html = `
         <div 
@@ -259,12 +274,12 @@ export default function CambodiaMap() {
           <p class="fmis-tooltip-title">${name}</p>
 
           <div class="fmis-tooltip-row">
-            <span style="color:${cfg.pointColor}">Sites: ការដ្ឋានសរុប</span>
+            <span style="color:${cfg.pointColor}">${sitesLabel}</span>
             <strong>${sites}</strong>
           </div>
 
           <div class="fmis-tooltip-row">
-            <span style="color:${cfg.pointColor}">Users: អ្នកប្រើប្រាស់សរុប</span>
+            <span style="color:${cfg.pointColor}">${usersLabel}</span>
             <strong>${users}</strong>
           </div>
         </div>
@@ -285,7 +300,7 @@ export default function CambodiaMap() {
 
   return (
     <div
-      className="bg-card border border-border rounded-xl p-5"
+      className="bg-card/90 border border-border rounded-xl p-5 backdrop-blur-xl"
       data-fmis-theme={theme}
     >
       <style>{`
@@ -314,7 +329,7 @@ export default function CambodiaMap() {
 
         .leaflet-container {
           background: ${theme === "dark" ? "#06151a" : "#f1f5f9"} !important;
-          font-family: Hanuman, sans-serif;
+          font-family: ${language === "km" ? "Hanuman, sans-serif" : "Inter, system-ui, sans-serif"};
         }
 
         .leaflet-control-zoom {
@@ -349,24 +364,6 @@ export default function CambodiaMap() {
         .fmis-neon-div-icon {
           background: transparent !important;
           border: none !important;
-        }
-
-        .fmis-theme-toggle {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 30px;
-          height: 30px;
-          border-radius: 0.5rem;
-          border: 1px solid rgba(13, 148, 136, 0.3);
-          background: transparent;
-          color: #0d9488;
-          cursor: pointer;
-          transition: background 0.15s ease;
-        }
-
-        .fmis-theme-toggle:hover {
-          background: rgba(13, 148, 136, 0.1);
         }
 
         @keyframes fmisPulseRing {
@@ -491,7 +488,7 @@ export default function CambodiaMap() {
           transform: translate(-50%, -100%);
           white-space: nowrap;
           color: var(--label-color);
-          font-family: Hanuman, sans-serif;
+          font-family: ${language === "km" ? "Hanuman, sans-serif" : "Inter, system-ui, sans-serif"};
           font-size: 11px;
           font-weight: 700;
           letter-spacing: -0.2px;
@@ -513,7 +510,7 @@ export default function CambodiaMap() {
           width: 250px;
           padding: 14px;
           border-radius: 14px;
-          font-family: Hanuman, sans-serif;
+          font-family: ${language === "km" ? "Hanuman, sans-serif" : "Inter, system-ui, sans-serif"};
           backdrop-filter: blur(10px);
         }
 
@@ -579,31 +576,38 @@ export default function CambodiaMap() {
         <div>
           <h2
             className="text-sm font-semibold text-foreground"
-            style={{ fontFamily: "Hanuman" }}
+            style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}
           >
-            ទីតាំងភូមិសាស្ត្រ
+            {language === "km" ? "ទីតាំងភូមិសាស្ត្រ" : "Geographic Location"}
           </h2>
           <p
             className="text-xs text-muted-foreground mt-1"
-            style={{ fontFamily: "Hanuman" }}
+            style={{ fontFamily: language === "km" ? "Hanuman" : "inherit" }}
           >
-            ចំនួនអ្នកប្រើប្រាស់ និងការដ្ឋានតាមរាជធានី-ខេត្ត
+            {language === "km"
+              ? "ចំនួនអ្នកប្រើប្រាស់ និងការដ្ឋានតាមរាជធានី-ខេត្ត"
+              : "Users and sites by capital and province"}
           </p>
         </div>
 
-        <button
-          type="button"
-          className="fmis-theme-toggle"
-          onClick={() => setTheme((t) => (t === "light" ? "dark" : "light"))}
-          aria-label="Toggle map theme"
-          title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+        <div
+          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 text-[10px] font-medium text-muted-foreground backdrop-blur"
+          aria-label={language === "km" ? "ផែនទីធ្វើសមកាលកម្មតាមពណ៌ផ្ទៃ" : "Map follows dashboard theme"}
         >
-          {theme === "light" ? (
-            <Moon className="w-4 h-4" />
-          ) : (
-            <Sun className="w-4 h-4" />
-          )}
-        </button>
+          <span
+            className={`h-2 w-2 rounded-full ${theme === "dark"
+                ? "bg-sky-300 shadow-[0_0_10px_rgba(125,211,252,0.8)]"
+                : "bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"
+              }`}
+          />
+          {language === "km"
+            ? theme === "dark"
+              ? "ផ្ទៃងងឹត"
+              : "ផ្ទៃភ្លឺ"
+            : theme === "dark"
+              ? "Dark map"
+              : "Light map"}
+        </div>
       </div>
 
 

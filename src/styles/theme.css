@@ -1,114 +1,168 @@
+@import "tailwindcss";
+
 @custom-variant dark (&:is(.dark *));
 
 :root {
   --font-size: 16px;
-  --background: #f8fafc;
+
+  --background: #f7fbff;
   --foreground: #0f172a;
-  --card: #ffffff;
+
+  --card: rgba(255, 255, 255, 0.82);
   --card-foreground: #0f172a;
-  --popover: #ffffff;
+
+  --popover: rgba(255, 255, 255, 0.97);
   --popover-foreground: #0f172a;
+
   --primary: #0284c7;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
+
+  --secondary: #eef6fb;
   --secondary-foreground: #334155;
-  --muted: #f1f5f9;
+
+  --muted: #edf4f8;
   --muted-foreground: #64748b;
+
   --accent: #e0f2fe;
-  --accent-foreground: #0284c7;
+  --accent-foreground: #0369a1;
+
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  --border: rgba(15, 23, 42, 0.1);
-  --input: #f1f5f9;
-  --input-background: #f1f5f9;
+
+  --border: rgba(15, 23, 42, 0.10);
+  --input: #edf4f8;
+  --input-background: rgba(241, 245, 249, 0.88);
   --switch-background: #cbd5e1;
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --ring: #0284c7;
+  --ring: #0ea5e9;
+
   --chart-1: #0284c7;
   --chart-2: #059669;
   --chart-3: #7c3aed;
   --chart-4: #ea580c;
   --chart-5: #db2777;
+
+  --chart-axis: #64748b;
+  --chart-label: #64748b;
+  --chart-grid: rgba(100, 116, 139, 0.10);
+  --chart-hover: rgba(14, 165, 233, 0.05);
+
   --radius: 0.75rem;
-  --sidebar: #ffffff;
+
+  --sidebar: rgba(255, 255, 255, 0.94);
   --sidebar-foreground: #0f172a;
   --sidebar-primary: #0284c7;
   --sidebar-primary-foreground: #ffffff;
   --sidebar-accent: #f1f5f9;
   --sidebar-accent-foreground: #0f172a;
-  --sidebar-border: rgba(15, 23, 42, 0.1);
+  --sidebar-border: rgba(15, 23, 42, 0.10);
   --sidebar-ring: #0284c7;
+
+  --app-background:
+    radial-gradient(circle at 12% 8%, rgba(56, 189, 248, 0.12), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(14, 165, 233, 0.08), transparent 25%),
+    linear-gradient(180deg, #fbfdff 0%, #f4faff 48%, #f8fbff 100%);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.145 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border: oklch(0.269 0 0);
-  --input: oklch(0.269 0 0);
-  --ring: oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(0.269 0 0);
-  --sidebar-ring: oklch(0.439 0 0);
+  --background: #030817;
+  --foreground: #ffffff;
+
+  --card: rgba(8, 22, 44, 0.78);
+  --card-foreground: #ffffff;
+
+  --popover: rgba(7, 19, 39, 0.98);
+  --popover-foreground: #ffffff;
+
+  --primary: #38bdf8;
+  --primary-foreground: #02111f;
+
+  --secondary: #102442;
+  --secondary-foreground: #f8fafc;
+
+  --muted: #10233e;
+  --muted-foreground: #d7e2ef;
+
+  --accent: rgba(56, 189, 248, 0.14);
+  --accent-foreground: #bae6fd;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: rgba(148, 198, 255, 0.16);
+  --input: #10233e;
+  --input-background: rgba(13, 31, 57, 0.92);
+  --switch-background: #334155;
+  --ring: #38bdf8;
+
+  --chart-1: #38bdf8;
+  --chart-2: #34d399;
+  --chart-3: #a78bfa;
+  --chart-4: #fb923c;
+  --chart-5: #f472b6;
+
+  --chart-axis: #ffffff;
+  --chart-label: #dbeafe;
+  --chart-grid: rgba(186, 230, 253, 0.12);
+  --chart-hover: rgba(56, 189, 248, 0.08);
+
+  --sidebar: rgba(5, 16, 34, 0.94);
+  --sidebar-foreground: #ffffff;
+  --sidebar-primary: #38bdf8;
+  --sidebar-primary-foreground: #02111f;
+  --sidebar-accent: #102442;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(148, 198, 255, 0.16);
+  --sidebar-ring: #38bdf8;
+
+  --app-background:
+    radial-gradient(circle at 14% 8%, rgba(56, 189, 248, 0.16), transparent 30%),
+    radial-gradient(circle at 86% 12%, rgba(14, 116, 144, 0.13), transparent 27%),
+    radial-gradient(circle at 50% 100%, rgba(30, 64, 175, 0.10), transparent 36%),
+    linear-gradient(180deg, #061126 0%, #030817 52%, #020611 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
+
   --color-popover: var(--popover);
   --color-popover-foreground: var(--popover-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
+
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-input-background: var(--input-background);
   --color-switch-background: var(--switch-background);
   --color-ring: var(--ring);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -124,59 +178,161 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-background text-foreground;
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-
-  /**
-  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
-  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
-  */
-
   html {
     font-size: var(--font-size);
+    min-height: 100%;
+    background: var(--background);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    min-width: 320px;
+    min-height: 100vh;
+    margin: 0;
+    overflow-x: hidden;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    background-color: var(--background);
+    background-image: var(--app-background);
+    background-attachment: fixed;
+    transition:
+      color 300ms ease,
+      background-color 400ms ease,
+      border-color 300ms ease;
+  }
+
+  body,
+  #root {
+    min-height: 100vh;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  ::selection {
+    background: rgba(56, 189, 248, 0.25);
   }
 
   h1 {
     font-size: var(--text-2xl);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium, 500);
     line-height: 1.5;
   }
 
   h2 {
     font-size: var(--text-xl);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium, 500);
     line-height: 1.5;
   }
 
   h3 {
     font-size: var(--text-lg);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium, 500);
     line-height: 1.5;
   }
 
   h4 {
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium, 500);
     line-height: 1.5;
   }
 
-  label {
-    font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
-    line-height: 1.5;
-  }
-
+  label,
   button {
     font-size: var(--text-base);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium, 500);
     line-height: 1.5;
   }
 
   input {
     font-size: var(--text-base);
-    font-weight: var(--font-weight-normal);
+    font-weight: var(--font-weight-normal, 400);
     line-height: 1.5;
+  }
+}
+
+@layer utilities {
+  .font-hanuman {
+    font-family: "Hanuman", "Noto Sans Khmer", system-ui, sans-serif;
+  }
+
+  .glass-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 18px 50px rgba(2, 8, 23, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .dark .glass-panel {
+    box-shadow:
+      0 22px 70px rgba(0, 0, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 0 0 1px rgba(56, 189, 248, 0.02);
+  }
+
+  .theme-surface {
+    transition:
+      color 300ms ease,
+      background-color 400ms ease,
+      border-color 300ms ease,
+      box-shadow 300ms ease;
+  }
+}
+
+/* Smooth scrollbars for data tables */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(100, 116, 139, 0.36) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background: rgba(100, 116, 139, 0.34);
+  background-clip: padding-box;
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background: rgba(125, 211, 252, 0.26);
+  background-clip: padding-box;
+}
+
+/* Make Recharts text transition cleanly when switching themes */
+.recharts-text,
+.recharts-cartesian-axis-tick-value,
+.recharts-label-list text {
+  transition: fill 250ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
