@@ -6,7 +6,6 @@ import {
 import { Search, FileText, Sun, Moon } from "lucide-react";
 import CambodiaMap from "./components/CambodiaMap";
 import ParticleBackground from "./components/ParticleBackground";
-import { provinces, ProvinceData } from "./data/provinces";
 
 
 type Language = "km" | "en";
@@ -31,6 +30,26 @@ type EntityGlossaryItem = {
   khmerName: string;
   englishName: string;
   description?: string;
+};
+
+
+type UserSiteCategoryDetail = {
+  id: string;
+  name: LocalizedText;
+  sites?: number;
+  users?: number;
+  activeUsers?: number;
+  inactiveUsers?: number;
+};
+
+type UserSiteCategory = {
+  id: string;
+  label: LocalizedText;
+  /** Official number of sites/entities in this category. */
+  siteCount: number;
+  /** Optional category total before all detail rows are entered. */
+  userCount?: number;
+  details: UserSiteCategoryDetail[];
 };
 
 const categoryData: {
@@ -718,6 +737,3960 @@ const siteGroups = [
   { label: { km: "ការដ្ឋានគ្រឹះស្ថានរដ្ឋបាលសាធារណៈ", en: "ABE Sites" }, count: 9, trend: { value: 0.01, up: true } },
 ];
 
+
+/**
+ * User/site organization categories.
+ *
+ * Paste each organization's data into its matching `details` array.
+ * The category header always uses `siteCount`, so the official count remains
+ * visible even while the detail list is still being completed.
+ */
+const userSiteCategoryData: UserSiteCategory[] = [
+  {
+    id: "Ministry of Economy and Finance Top Management",
+    label: { km: "ថ្នាក់ដឹកនាំប្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance Top Management" },
+    siteCount: 0,
+    details: [
+      {
+        id: "meftop-001",
+        name: {
+          km: "ថ្នាក់ដឹកនាំ",
+          en: "Top Management",
+        },
+        users: 48,
+        activeUsers: 47,
+        inactiveUsers: 1,
+      },
+    ],
+  },
+  {
+    id: "Ministry of Economy and Finance General Departments",
+    label: { km: "អគ្គ.គនរបស់ប្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance General Departments" },
+    siteCount: 10,
+    details: [
+      {
+        id: "mefgd-001",
+        name: {
+          km: "អគ្គនាយកដ្ឋានថវិកា",
+          en: "General Department of National Treasury",
+        },
+        users: 114,
+        activeUsers: 75,
+        inactiveUsers: 39,
+      },
+      {
+        id: "mefgd-002",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសវនកម្មផ្ទៃក្នុង",
+          en: "General Department of Internal Audit",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "mefgd-003",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសហប្រតិបត្តិការអន្តរជាតិ និងគ្រប់គ្រងបំណុល",
+          en: "General Department of International Cooperation and Debt Management",
+        },
+        users: 25,
+        activeUsers: 21,
+        inactiveUsers: 4,
+      },
+      {
+        id: "mefgd-004",
+        name: {
+          km: "អគ្គនាយកដ្ឋានរតនាគាររជាតិ",
+          en: "General Department of National Treasury",
+        },
+        users: 134,
+        activeUsers: 102,
+        inactiveUsers: 32,
+      },
+      {
+        id: "mefgd-005",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគោលនយោបាយ",
+          en: "General Department of Policy",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "mefgd-006",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបច្ចេកវិទ្យាព័ត៌មានគ្រប់គ្រងហិរញ្ញវត្ថុសាធារណៈ",
+          en: "General Department of Public Finaicial Management and Information Technology",
+        },
+        users: 105,
+        activeUsers: 100,
+        inactiveUsers: 5,
+      },
+      {
+        id: "mefgd-007",
+        name: {
+          km: "អគ្គនាយកដ្ឋានលទ្ធកម្មសាធារណៈ",
+          en: "General Department of Public Procurement",
+        },
+        users: 63,
+        activeUsers: 49,
+        inactiveUsers: 14,
+      },
+      {
+        id: "mefgd-008",
+        name: {
+          km: "អគ្គនាយកដ្ឋានហិរញ្ញវត្ថុរដ្ឋបាលថ្នាក់ក្រោមជាតិ",
+          en: "General Department of Sub-National Administration Finance",
+        },
+        users: 11,
+        activeUsers: 7,
+        inactiveUsers: 4,
+      },
+      {
+        id: "mefgd-009",
+        name: {
+          km: "អគ្គនាយកដ្ឋានទ្រព្យសម្បត្តិរដ្ឋនិងចំណូលមិនមែនសារពើពន្ធ",
+          en: "General Department of State Assets and Non-Tax Revenue",
+        },
+        users: 2,
+        activeUsers: 0,
+        inactiveUsers: 2,
+      },
+      {
+        id: "mefgd-010",
+        name: {
+          km: "អគ្គាធិការដ្ឋាន",
+          en: "General Inspectorate",
+        },
+        users: 25,
+        activeUsers: 16,
+        inactiveUsers: 9,
+      },
+    ],
+  },
+  {
+    id: "ministries",
+    label: { km: "ក្រសួង", en: "Ministries" },
+    siteCount: 38,
+    details: [
+      {
+        id: "lm-01",
+        name: {
+          km: "ក្រសួងព្រះបរមរាជវាំង",
+          en: "Ministry of the Royal Palace",
+        },
+        users: 12,
+        activeUsers: 4,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-02",
+        name: {
+          km: "រដ្ឋសភា",
+          en: "National Assembly",
+        },
+        users: 8,
+        activeUsers: 5,
+        inactiveUsers: 3,
+      },
+      {
+        id: "lm-03",
+        name: {
+          km: "ព្រឹទ្ធសភា",
+          en: "Senate",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "lm-04",
+        name: {
+          km: "ក្រុមប្រឹក្សាធម្មនុញ្ញ",
+          en: "Constitutional Council of Cambodia",
+        },
+        users: 11,
+        activeUsers: 5,
+        inactiveUsers: 6,
+      },
+      {
+        id: "lm-05",
+        name: {
+          km: "ក្រសួងការពារជាតិ",
+          en: "Ministry of National Defence",
+        },
+        users: 18,
+        activeUsers: 14,
+        inactiveUsers: 4,
+      },
+      {
+        id: "lm-06",
+        name: {
+          km: "ក្រសួងអធិការកិច្ច",
+          en: "Ministry of Inspectorate",
+        },
+        users: 15,
+        activeUsers: 9,
+        inactiveUsers: 6,
+      },
+      {
+        id: "lm-07",
+        name: {
+          km: "ក្រសួងការបរទេស និងសហប្រតិបត្តិការអន្តរជាតិ",
+          en: "Ministry of Foreign Affairs and International Cooperation",
+        },
+        users: 18,
+        activeUsers: 10,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-08",
+        name: {
+          km: "ក្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ",
+          en: "Ministry of Economy and Finance",
+        },
+        users: 38,
+        activeUsers: 32,
+        inactiveUsers: 6,
+      },
+      {
+        id: "lm-09",
+        name: {
+          km: "ក្រសួងព័ត៌មាន",
+          en: "Ministry of Information",
+        },
+        users: 15,
+        activeUsers: 14,
+        inactiveUsers: 1,
+      },
+      {
+        id: "lm-10",
+        name: {
+          km: "ក្រសួងសុខាភិបាល",
+          en: "Ministry of Health",
+        },
+        users: 19,
+        activeUsers: 12,
+        inactiveUsers: 7,
+      },
+      {
+        id: "lm-11",
+        name: {
+          km: "ក្រសួងរ៉ែ និងថាមពល",
+          en: "Ministry of Mines and Energy",
+        },
+        users: 22,
+        activeUsers: 20,
+        inactiveUsers: 2,
+      },
+      {
+        id: "lm-12",
+        name: {
+          km: "ក្រសួងផែនការ",
+          en: "Ministry of Planning",
+        },
+        users: 20,
+        activeUsers: 15,
+        inactiveUsers: 5,
+      },
+      {
+        id: "lm-13",
+        name: {
+          km: "ក្រសួងពាណិជ្ជកម្ម",
+          en: "Ministry of Commerce",
+        },
+        users: 20,
+        activeUsers: 14,
+        inactiveUsers: 6,
+      },
+      {
+        id: "lm-14",
+        name: {
+          km: "ក្រសួងអប់រំ យុវជន និងកីឡា",
+          en: "Ministry of Education, Youth and Sport",
+        },
+        users: 45,
+        activeUsers: 31,
+        inactiveUsers: 14,
+      },
+      {
+        id: "lm-15",
+        name: {
+          km: "ក្រសួងកសិកម្ម រុក្ខាប្រមាញ់ និងនេសាទ",
+          en: "Ministry of Agriculture, Forestry and Fisheries",
+        },
+        users: 26,
+        activeUsers: 19,
+        inactiveUsers: 7,
+      },
+      {
+        id: "lm-16",
+        name: {
+          km: "ក្រសួងវប្បធម៌ និងវិចិត្រសិល្បៈ",
+          en: "Ministry of Culture and Fine Arts",
+        },
+        users: 20,
+        activeUsers: 15,
+        inactiveUsers: 5,
+      },
+      {
+        id: "lm-17",
+        name: {
+          km: "ក្រសួងបរិស្ថាន",
+          en: "Ministry of Environment",
+        },
+        users: 26,
+        activeUsers: 11,
+        inactiveUsers: 15,
+      },
+      {
+        id: "lm-18",
+        name: {
+          km: "ក្រសួងអភិវឌ្ឍន៍ជនបទ",
+          en: "Ministry of Rural Development",
+        },
+        users: 29,
+        activeUsers: 21,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-19",
+        name: {
+          km: "ក្រសួងសង្គមកិច្ច អតីតយុទ្ធជន",
+          en: "Ministry of Social Affairs, Veterans and Youth Rehabilitation",
+        },
+        users: 19,
+        activeUsers: 11,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-20",
+        name: {
+          km: "ក្រសួងប្រៃសណីយ៍ និងទូរគមនាគមន៍",
+          en: "Ministry of Posts and Telecommunications",
+        },
+        users: 24,
+        activeUsers: 18,
+        inactiveUsers: 6,
+      },
+      {
+        id: "lm-21",
+        name: {
+          km: "ក្រសួងធម្មការ និងសាសនា",
+          en: "Ministry of Cults and Religion",
+        },
+        users: 22,
+        activeUsers: 10,
+        inactiveUsers: 12,
+      },
+      {
+        id: "lm-22",
+        name: {
+          km: "ក្រសួងកិច្ចការនារី",
+          en: "Ministry of Women's Affairs",
+        },
+        users: 15,
+        activeUsers: 11,
+        inactiveUsers: 4,
+      },
+      {
+        id: "lm-23",
+        name: {
+          km: "ក្រសួងសាធារណការ និងដឹកជញ្ជូន",
+          en: "Ministry of Public Works and Transport",
+        },
+        users: 43,
+        activeUsers: 27,
+        inactiveUsers: 16,
+      },
+      {
+        id: "lm-24",
+        name: {
+          km: "ក្រសួងយុត្តិធម៌",
+          en: "Ministry of Justice",
+        },
+        users: 24,
+        activeUsers: 16,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-25",
+        name: {
+          km: "ក្រសួងទេសចរណ៍",
+          en: "Ministry of Tourism",
+        },
+        users: 24,
+        activeUsers: 9,
+        inactiveUsers: 15,
+      },
+      {
+        id: "lm-26",
+        name: {
+          km: "ក្រសួងរៀបចំដែនដី នគរូបនីយកម្ម",
+          en: "Ministry of Land Management, Urban Planning and Construction",
+        },
+        users: 25,
+        activeUsers: 15,
+        inactiveUsers: 10,
+      },
+      {
+        id: "lm-27",
+        name: {
+          km: "ក្រសួងធនធានទឹក និងឧតុនិយម",
+          en: "Ministry of Water Resources and Meteorology",
+        },
+        users: 28,
+        activeUsers: 20,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-28",
+        name: {
+          km: "គណៈកម្មាធិការជាតិរៀបចំការបោះឆ្នោត",
+          en: "National Election Committee",
+        },
+        users: 16,
+        activeUsers: 9,
+        inactiveUsers: 7,
+      },
+      {
+        id: "lm-29",
+        name: {
+          km: "អាជ្ញាធរសវនកម្មជាតិ (អគ្គលេខាធិការដ្ឋាន)",
+          en: "National Audit Authority (General Secretariat)",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "lm-30",
+        name: {
+          km: "ក្រសួងការងារ និងបណ្តុះបណ្តាលវិជ្ជាជីវៈ",
+          en: "Ministry of Labour and Vocational Training",
+        },
+        users: 20,
+        activeUsers: 8,
+        inactiveUsers: 12,
+      },
+      {
+        id: "lm-31",
+        name: {
+          km: "ស្ថាប័នប្រឆាំងអំពើពុករលួយ (អង្គភាពប្រឆាំងអំពើពុករលួយ)",
+          en: "Anti-Corruption Unit (ACU)",
+        },
+        users: 10,
+        activeUsers: 8,
+        inactiveUsers: 2,
+      },
+      {
+        id: "lm-32",
+        name: {
+          km: "ក្រសួងមុខងារសាធារណៈ",
+          en: "Ministry of Civil Service",
+        },
+        users: 16,
+        activeUsers: 13,
+        inactiveUsers: 3,
+      },
+      {
+        id: "lm-33",
+        name: {
+          km: "ក្រសួងឧស្សាហកម្ម វិទ្យាសាស្ត្រ បច្ចេកវិទ្យា និងនវានុវត្តន៍",
+          en: "Ministry of Industry, Science, Technology and Innovation",
+        },
+        users: 20,
+        activeUsers: 12,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-34",
+        name: {
+          km: "ក្រុមប្រឹក្សាអភិវឌ្ឍន៍កម្ពុជា",
+          en: "Council for the Development of Cambodia",
+        },
+        users: 13,
+        activeUsers: 10,
+        inactiveUsers: 3,
+      },
+      {
+        id: "lm-35",
+        name: {
+          km: "ទីស្តីការគណៈរដ្ឋមន្ត្រី",
+          en: "Council of Ministers",
+        },
+        users: 18,
+        activeUsers: 11,
+        inactiveUsers: 7,
+      },
+      {
+        id: "lm-36",
+        name: {
+          km: "រដ្ឋលេខាធិការដ្ឋានអាកាសចរស៊ីវិល",
+          en: "State Secretariat of Civil Aviation",
+        },
+        users: 28,
+        activeUsers: 20,
+        inactiveUsers: 8,
+      },
+      {
+        id: "lm-37",
+        name: {
+          km: "ក្រសួងមហាផ្ទៃ - ផ្នែកសន្តិសុខ",
+          en: "Ministry of Interior - Security Sector",
+        },
+        users: 27,
+        activeUsers: 8,
+        inactiveUsers: 19,
+      },
+      {
+        id: "lm-38",
+        name: {
+          km: "ក្រសួងមហាផ្ទៃ - រដ្ឋបាលទូទៅ",
+          en: "Ministry of Interior - General Administration",
+        },
+        users: 23,
+        activeUsers: 11,
+        inactiveUsers: 12,
+      },
+    ],
+  },
+  {
+    id: "fully-authorized-budget-entities",
+    label: {
+      km: "អង្គភាពថវិកាអាណាប័កផ្ទេរសិទ្ធិពេញលេញ",
+      en: "Fully Authorized Budget Entities",
+    },
+    siteCount: 115,
+    details: [
+      {
+        id: "abe-01",
+        name: {
+          km: "នាយកដ្ឋានវិស្វកម្ម",
+          en: "Department of Engineering",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-02",
+        name: {
+          km: "ក្រុមប្រឹក្សាជាតិគណនេយ្យ",
+          en: "National Accounting Council",
+        },
+        users: 9,
+        activeUsers: 5,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-03",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានគណៈកម្មការគ្រប់គ្រងល្បែងពាណិជ្ជកម្មកម្ពុជា",
+          en: "General Secretariat of the Commercial Gambling Management Commission of Cambodia",
+        },
+        users: 9,
+        activeUsers: 2,
+        inactiveUsers: 7,
+      },
+      {
+        id: "abe-04",
+        name: {
+          km: "គណៈកម្មការផលិតភាពកម្ពុជា",
+          en: "Cambodia Productivity Commission",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-05",
+        name: {
+          km: "អង្គភាព​ភាព​ជាដៃគូ​រវាង​រដ្ឋ និង​ឯកជន",
+          en: "Public-Private Partnership Unit",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-06",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាន នៃអាជ្ញាធរសេវាហិរញ្ញវត្ថុមិនមែនធនាគារ",
+          en: "General Secretariat of the Non-Bank Financial Services Authority",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-07",
+        name: {
+          km: "អគ្គនាយកដ្ឋានថវិកា",
+          en: "General Department of Budget",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-08",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគយនិងរដ្ឋាករកម្ពុជា",
+          en: "General Department of Customs and Excise of Cambodia",
+        },
+        users: 7,
+        activeUsers: 4,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-09",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសេដ្ឋកិច្ចឌីជីថល",
+          en: "General Department of Digital Economy",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-10",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសវនកម្មផ្ទៃក្នុង",
+          en: "General Department of Internal Audit",
+        },
+        users: 10,
+        activeUsers: 6,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-11",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសហប្រតិបត្តិការអន្តរជាតិ និងគ្រប់គ្រងបំណុល",
+          en: "General Department of International Cooperation and Debt Management",
+        },
+        users: 25,
+        activeUsers: 23,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-12",
+        name: {
+          km: "អគ្គនាយកដ្ឋានរតនាគាររជាតិ",
+          en: "General Department of National Treasury",
+        },
+        users: 11,
+        activeUsers: 5,
+        inactiveUsers: 6,
+      },
+      {
+        id: "abe-13",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគោលនយោបាយ",
+          en: "General Department of Policy",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-14",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបច្ចេកវិទ្យាព័ត៌មានគ្រប់គ្រងហិរញ្ញវត្ថុសាធារណៈ",
+          en: "General Department of Information Technology for Public Financial Management",
+        },
+        users: 9,
+        activeUsers: 9,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-15",
+        name: {
+          km: "អគ្គនាយកដ្ឋានលទ្ធកម្មសាធារណៈ",
+          en: "General Department of Public Procurement",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-16",
+        name: {
+          km: "អគ្គនាយកដ្ឋានដោះស្រាយផលប៉ះពាល់ដោយសារគម្រោងអភិវឌ្ឍន៍",
+          en: "General Department of Resettlement",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-17",
+        name: {
+          km: "អគ្គនាយកដ្ឋានហិរញ្ញវត្ថុរដ្ឋបាលថ្នាក់ក្រោមជាតិ",
+          en: "General Department of Sub-National Administration Finance",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-18",
+        name: {
+          km: "អគ្គនាយកដ្ឋានទ្រព្យសម្បត្តិរដ្ឋនិងចំណូលមិនមែនសារពើពន្ធ",
+          en: "General Department of State Property and Non-Tax Revenue",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-19",
+        name: {
+          km: "អគ្គនាយកដ្ឋានពន្ធដារ",
+          en: "General Department of Taxation",
+        },
+        users: 15,
+        activeUsers: 11,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-20",
+        name: {
+          km: "អគ្គាធិការដ្ឋាន",
+          en: "General Inspectorate",
+        },
+        users: 9,
+        activeUsers: 7,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-21",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានគណៈកម្មាធិការសេដ្ឋកិច្ចនិងធុរកិច្ចឌីជីថល",
+          en: "General Secretariat of the Digital Economy and Business Committee",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-22",
+        name: {
+          km: "អង្គភាពសវនកម្មផ្ទៃក្នុង នៃអាជ្ញាធរសេវាហិរញ្ញវត្ថុមិនមែនធនាគារ",
+          en: "Internal Audit Unit of the Non-Bank Financial Services Authority",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-23",
+        name: {
+          km: "និយ័តករធានារ៉ាប់រងកម្ពុជា",
+          en: "Insurance Regulator of Cambodia",
+        },
+        users: 7,
+        activeUsers: 3,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-24",
+        name: {
+          km: "លេខាធិការដ្ឋានក្រុមប្រឹក្សានីតិកម្ម",
+          en: "Secretariat of the Legislative Council",
+        },
+        users: 8,
+        activeUsers: 4,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-25",
+        name: {
+          km: "ទីភ្នាក់ងារជាតិបញ្ជាក់ចំណាយ",
+          en: "National Expenditure Certification Agency",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-26",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានក្រុមប្រឹក្សាជាតិគាំពារ​សង្គម",
+          en: "General Secretariat of the National Social Protection Council",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-27",
+        name: {
+          km: "និយ័តករអាជីវកម្មអចលនវត្ថុ និងបញ្ចាំ",
+          en: "Real Estate Business and Pawnshop Regulator",
+        },
+        users: 8,
+        activeUsers: 3,
+        inactiveUsers: 5,
+      },
+      {
+        id: "abe-28",
+        name: {
+          km: "គណៈកម្មការមូលបត្រកម្ពុជា",
+          en: "Securities and Exchange Regulator of Cambodia",
+        },
+        users: 17,
+        activeUsers: 9,
+        inactiveUsers: 8,
+      },
+      {
+        id: "abe-29",
+        name: {
+          km: "ឧត្តមក្រុមប្រឹក្សាសេដ្ឋកិច្ចជាតិ",
+          en: "Supreme National Economic Council",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-30",
+        name: {
+          km: "និយ័តករបរធនបាលកិច្ច",
+          en: "Trust Regulator",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-31",
+        name: {
+          km: "អាជ្ញាធរជាតិប្រយុទ្ធនឹងជំងឺអេដស៍",
+          en: "National AIDS Authority",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-32",
+        name: {
+          km: "អគ្គនាយកដ្ឋានថាមពល",
+          en: "General Department of Energy",
+        },
+        users: 10,
+        activeUsers: 4,
+        inactiveUsers: 6,
+      },
+      {
+        id: "abe-33",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកិច្ចការទូទៅ",
+          en: "General Department of General Affairs",
+        },
+        users: 1,
+        activeUsers: 1,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-34",
+        name: {
+          km: "អគ្គនាយកដ្ឋានធនធានរ៉ែ",
+          en: "General Department of Mineral Resources",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-35",
+        name: {
+          km: "អគ្គនាយកដ្ឋានប្រេងកាត",
+          en: "General Department of Petroleum",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-36",
+        name: {
+          km: "អគ្គនាយកដ្ឋានផែនការ",
+          en: "General Department of Planning",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-37",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានប្រជាជន និងការអភិវឌ្ឍ",
+          en: "General Secretariat for Population and Development",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-38",
+        name: {
+          km: "វិទ្យាស្ថានជាតិស្ថិតិ",
+          en: "National Institute of Statistics",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-39",
+        name: {
+          km: "អគ្គនាយកដ្ឋានការពារអ្នកប្រើប្រាស់ កិច្ចការប្រកួតប្រជែង និងបង្រ្កាបការក្លែងបន្លំ (ក.ប.ប.)",
+          en: "General Department of Consumer Protection, Competition and Fraud Repression",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-40",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសេវាពាណិជ្ជកម្ម",
+          en: "General Department of Trade Services",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-41",
+        name: {
+          km: "គណៈកម្មាធិការ​ទទួល​ស្គាល់​គុណ​ភាព​អប់រំនៃ​កម្ពុជា",
+          en: "Accreditation Committee of Cambodia",
+        },
+        users: 7,
+        activeUsers: 3,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-42",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគោលនយោបាយនិងផែនការ",
+          en: "General Department of Policy and Planning",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-43",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកីឡា",
+          en: "General Department of Sports",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-44",
+        name: {
+          km: "អគ្គនាយកដ្ឋានយុវជន",
+          en: "General Department of Youth",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-45",
+        name: {
+          km: "វិទ្យាស្ថានបច្ចេកវិទ្យាកម្ពុជា",
+          en: "Institute of Technology of Cambodia",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-46",
+        name: {
+          km: "វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ឈើទាល",
+          en: "Kampong Chheuteal Institute of Technology",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-47",
+        name: {
+          km: "វិទ្យាស្ថានបច្ចេកវិទ្យាកំពង់ស្ពឺ",
+          en: "Kampong Speu Institute of Technology",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-48",
+        name: {
+          km: "សាកលវិទ្យាល័យមានជ័យ",
+          en: "Mean Chey University",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-49",
+        name: {
+          km: "វិទ្យាសា្ថនជាតិអប់រំ",
+          en: "National Institute of Education",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-50",
+        name: {
+          km: "សាកលវិទ្យាល័យភូមិន្ទភ្នំពេញ",
+          en: "Royal University of Phnom Penh",
+        },
+        users: 6,
+        activeUsers: 1,
+        inactiveUsers: 5,
+      },
+      {
+        id: "abe-51",
+        name: {
+          km: "រដ្ឋបាលជលផល",
+          en: "Fisheries Administration",
+        },
+        users: 8,
+        activeUsers: 8,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-52",
+        name: {
+          km: "រដ្ឋបាលព្រៃឈើ",
+          en: "Forestry Administration",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-53",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកសិកម្ម",
+          en: "General Directorate of Agriculture",
+        },
+        users: 8,
+        activeUsers: 8,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-54",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសុខភាពសត្វនិងផលិតកម្មសត្វ",
+          en: "General Directorate of Animal Health and Production",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-55",
+        name: {
+          km: "អគ្គនាយកដ្ឋានរដ្ឋបាល និងហិរញ្ញវត្ថុ",
+          en: "General Department of Administration and Finance",
+        },
+        users: 3,
+        activeUsers: 1,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-56",
+        name: {
+          km: "អគ្គនាយកដ្ឋានចំណេះដឹងនិងព័ត៌មានបរិស្ថាន",
+          en: "General Department of Environmental Knowledge and Information",
+        },
+        users: 9,
+        activeUsers: 4,
+        inactiveUsers: 5,
+      },
+      {
+        id: "abe-57",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគាំពារបរិស្ថាន",
+          en: "General Department of Environmental Protection",
+        },
+        users: 9,
+        activeUsers: 5,
+        inactiveUsers: 4,
+      },
+      {
+        id: "abe-58",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសហគមន៍មូលដ្ឋាន",
+          en: "General Department of Local Communities",
+        },
+        users: 14,
+        activeUsers: 4,
+        inactiveUsers: 10,
+      },
+      {
+        id: "abe-59",
+        name: {
+          km: "អគ្គនាយកដ្ឋានរដ្ឋបាលការពារ និងអភិរក្សធម្មជាតិ",
+          en: "General Department of Nature Protection and Conservation Administration",
+        },
+        users: 13,
+        activeUsers: 8,
+        inactiveUsers: 5,
+      },
+      {
+        id: "abe-60",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានក្រុមប្រឹក្សាជាតិអភិវឌ្ឍន៍ដោយចីរភាព",
+          en: "General Secretariat of the National Council for Sustainable Development",
+        },
+        users: 12,
+        activeUsers: 6,
+        inactiveUsers: 6,
+      },
+      {
+        id: "abe-61",
+        name: {
+          km: "អគ្គនាយកដ្ឋានរដ្ឋបាល",
+          en: "General Department of Administration",
+        },
+        users: 2,
+        activeUsers: 1,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-62",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគ្រប់គ្រង​ធនធាន​វិសាលគមន៍ហ្វ្រេកង់ស៍វិទ្យុ",
+          en: "General Department of Radio Frequency Spectrum Management",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-63",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបច្ចេកវិទ្យាគមនាគមន៍និងព័ត៌មាន",
+          en: "General Department of Information and Communications Technology",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-64",
+        name: {
+          km: "អគ្គនាយកដ្ឋានប្រៃសណីយ៍",
+          en: "General Department of Posts",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-65",
+        name: {
+          km: "អគ្កាធិការដ្ឋាន",
+          en: "General Inspectorate",
+        },
+        users: 10,
+        activeUsers: 8,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-66",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានគណៈកម្មាធិការរដ្ឋាភិបាលឌីជីថល",
+          en: "General Secretariat of the Digital Government Committee",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-67",
+        name: {
+          km: "អគ្គនាយកដ្ឋានទូរគមនាគមន៍",
+          en: "General Department of Telecommunications",
+        },
+        users: 8,
+        activeUsers: 8,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-68",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកិច្ចការសាសនា",
+          en: "General Department of Religious Affairs",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-69",
+        name: {
+          km: "អគ្គាធិការដ្ឋានពុទ្ធិកសិក្សាជាតិ",
+          en: "General Inspectorate of National Buddhist Education",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-70",
+        name: {
+          km: "អគ្គនាយកដ្ឋានភស្តុភារកម្ម",
+          en: "General Department of Logistics",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-71",
+        name: {
+          km: "អគ្គនាយកដ្ឋានផែនការ និងគោលនយោបាយ",
+          en: "General Department of Planning and Policy",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-72",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសាធារណការ",
+          en: "General Department of Public Works",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-73",
+        name: {
+          km: "អគ្គនាយកដ្ឋានដឹកជញ្ជូនផ្លូវគោក",
+          en: "General Department of Land Transport",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-74",
+        name: {
+          km: "អគ្គនាយកដ្ឋានប្រព័ន្ធចម្រោះទឹកកខ្វក់",
+          en: "General Department of Wastewater Treatment Systems",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-75",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបច្ចេកទេស",
+          en: "General Department of Technical Affairs",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-76",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបច្ចេកវិទ្យា និងទំនាកទំនងសារធារណៈ",
+          en: "General Department of Technology and Public Relations",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-77",
+        name: {
+          km: "អគ្គនាយកដ្ឋានដឹកជញជូនផ្លូវទឹក ផ្លូវសមុ្រទ និងកំពង់ផែ",
+          en: "General Department of Waterway, Maritime Transport and Ports",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-78",
+        name: {
+          km: "វិទ្យាស្ថានតេជោសែន សាធារណការ និងដឹកជញ្ជូន",
+          en: "Techo Sen Institute of Public Works and Transport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-79",
+        name: {
+          km: "អគ្គាធិការដ្ឋានកិច្ចការតុលាការ",
+          en: "General Inspectorate of Judicial Affairs",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-80",
+        name: {
+          km: "សាលាឧទ្ធរណ៍ និងមហាអយ្យការអមសាលាឧទ្ធរណ៍",
+          en: "Court of Appeal and the Prosecutor General's Office Attached to the Court of Appeal",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-81",
+        name: {
+          km: "ឧត្តមក្រុមប្រឹក្សានៃអង្គចៅក្រម",
+          en: "Supreme Council of the Magistracy",
+        },
+        users: 10,
+        activeUsers: 5,
+        inactiveUsers: 5,
+      },
+      {
+        id: "abe-82",
+        name: {
+          km: "អគ្គនាយកដានកិច្ចការរដ្ឋប្បវេណី",
+          en: "General Department of Civil Affairs",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-83",
+        name: {
+          km: "អគ្គនាយកដ្ឋាន​កិច្ចការទោសព្រហ្មទណ្ឌ",
+          en: "General Department of Criminal Affairs",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-84",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកិច្ចការអយ្យការ និងព្រហ្មទណ្ឌ",
+          en: "General Department of Prosecution and Criminal Affairs",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-85",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកិច្ចការរដ្ឋបាលតុលាការ",
+          en: "General Department of Court Administration",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-86",
+        name: {
+          km: "អគ្គនាយកដ្ឋានអភិវឌ្ឍន៍វិស័យយុត្តិធម៌",
+          en: "General Department of Justice Sector Development",
+        },
+        users: 7,
+        activeUsers: 4,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-87",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាន នៃគណៈកម្មាធិការដឹកនាំការកែទម្រង់ប្រព័ន្ធយុត្តិធម៌",
+          en: "General Secretariat of the Steering Committee for Justice System Reform",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-88",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាននៃអាជ្ញាធរជាតិដោះស្រាយវិវាទក្រៅប្រព័ន្ធតុលាការ",
+          en: "General Secretariat of the National Authority for Out-of-Court Dispute Resolution",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-89",
+        name: {
+          km: "រាជបណ្ឌិតសភាវិជ្ជាជីវៈតុលាការ",
+          en: "Royal Academy for Judicial Professions",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-90",
+        name: {
+          km: "លេខាធិការដ្ឋានក្រុមប្រឹក្សានីតិកម្ម និងយុត្តិធម៌",
+          en: "Secretariat of the Council for Legislation and Justice",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-91",
+        name: {
+          km: "តុលាការកំពូល",
+          en: "Supreme Court",
+        },
+        users: 7,
+        activeUsers: 4,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-92",
+        name: {
+          km: "គណៈកម្មាធិការជាតិទន្លេមេគង្គ",
+          en: "Cambodia National Mekong Committee",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-93",
+        name: {
+          km: "អាជ្ញាធរទន្លេសាប",
+          en: "Tonle Sap Authority",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-94",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាននៃគណៈវិស្វករកម្ពុជា",
+          en: "General Secretariat of the Board of Engineers Cambodia",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-95",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋានក្រុមប្រឹក្សាជាតិប្រាក់ឈ្នួលអប្បបរមា",
+          en: "General Secretariat of the National Council on Minimum Wage",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-96",
+        name: {
+          km: "ទីភ្នាក់ងារមុខរបរ និងការងារ",
+          en: "National Employment Agency",
+        },
+        users: 8,
+        activeUsers: 8,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-97",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគ្រប់គ្រងមុខងារសាធារណ",
+          en: "General Department of Civil Service Management",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-98",
+        name: {
+          km: "អគ្គនាយកដ្ឋានគោលនយោបាយមុខងារសាធារណ:",
+          en: "General Department of Civil Service Policy",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-99",
+        name: {
+          km: "អគ្គាធិការដ្ឋាន",
+          en: "General Inspectorate",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-100",
+        name: {
+          km: "អគ្គនាយកដ្ឋានប្រព័ន្ធគ្រប់គ្រងមន្ត្រីតាមឌីជីថល",
+          en: "General Department of Digital Civil Servant Management Systems",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-101",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាននៃគណៈកម្មាធិការកែទម្រង់រដ្ឋបាលសាធារណៈ",
+          en: "General Secretariat of the Public Administration Reform Committee",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-102",
+        name: {
+          km: "សាលាភូមិន្ទរដ្ឋបាល",
+          en: "Royal School of Administration",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-103",
+        name: {
+          km: "អគ្គនាយកដ្ឋានកិច្ចការទូទៅ",
+          en: "General Department of General Affairs",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "abe-104",
+        name: {
+          km: "អគ្គនាយកដ្ឋានវាយតម្លៃទទួលស្គាល់នៃកម្ពុជា",
+          en: "General Department of Accreditation of Cambodia",
+        },
+        users: 10,
+        activeUsers: 4,
+        inactiveUsers: 6,
+      },
+      {
+        id: "abe-105",
+        name: {
+          km: "អគ្គនាយកដ្ឋានទឹកស្អាត",
+          en: "General Department of Potable Water",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-106",
+        name: {
+          km: "អគ្គនាយកដ្ឋានឧស្សាហកម្ម",
+          en: "General Department of Industry",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-107",
+        name: {
+          km: "អគ្គនាយកដ្ឋានសហគ្រាសធុនតូចនិងមធ្យម និងសិប្បកម្ម",
+          en: "General Department of Small and Medium Enterprises and Handicrafts",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-108",
+        name: {
+          km: "អគ្គនាយកដ្ឋានវិទ្យាសាស្រ្ត បច្ចេកវិទ្យា និងនវានុវត្តន៍",
+          en: "General Department of Science, Technology and Innovation",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-109",
+        name: {
+          km: "វិទ្យាស្ថានស្តង់ដារកម្ពុជា",
+          en: "Institute of Standards of Cambodia",
+        },
+        users: 13,
+        activeUsers: 10,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-110",
+        name: {
+          km: "មជ្ឍមណ្ឌលមាត្រាសាស្រ្តជាតិ",
+          en: "National Metrology Center",
+        },
+        users: 12,
+        activeUsers: 9,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-111",
+        name: {
+          km: "វិទ្យាស្ថានជាតិវិទ្យាសាស្រ្ត បច្ចេកវិទ្យា និងនវានុវត្តន៍",
+          en: "National Institute of Science, Technology and Innovation",
+        },
+        users: 9,
+        activeUsers: 9,
+        inactiveUsers: 0,
+      },
+      {
+        id: "abe-112",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាន នៃអាជ្ញាធរជាតិប្រយុទ្ធប្រឆាំងគ្រឿងញៀន",
+          en: "General Secretariat of the National Authority for Combating Drugs",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "abe-113",
+        name: {
+          km: "គណៈកម្មាធិការជាតិប្រឆាំងទារុណកម្ម អំពើឃោរឃៅ អំពើអមនុស្សធម៌ អំពើធ្វើទុក្ខបុកម្នេញ ឬទារុណកម្ម (គ.ជ.ប.ទ)",
+          en: "National Committee Against Torture and Other Cruel, Inhuman or Degrading Treatment or Punishment",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-114",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាននៃគណៈកម្មាធិការជាតិ ប្រយុទ្ធប្រឆាំងអំពើជួញដូរមនុស្ស",
+          en: "General Secretariat of the National Committee for Counter Trafficking",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "abe-115",
+        name: {
+          km: "អគ្គលេខាធិការដ្ឋាននៃគណៈកម្មាធិការជាតិសុវត្ថិភាពចរាចរណ៍ផ្លូវគោក",
+          en: "General Secretariat of the National Road Safety Committee",
+        },
+        users: 7,
+        activeUsers: 4,
+        inactiveUsers: 3,
+      },
+    ],
+  },
+  {
+    id: "partially-authorized-budget-entities",
+    label: {
+      km: "អង្គភាពថវិកាអាណាប័កផ្ទេរសិទ្ធិមិនពេញលេញ",
+      en: "Partially Authorized Budget Entities",
+    },
+    siteCount: 16,
+    details: [
+      {
+        id: "be-01",
+        name: {
+          km: "នាយកដ្ឋានអធិការកិច្ច និងបណ្តឹងតវ៉ា",
+          en: "Department of Inspection and Complaints",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-02",
+        name: {
+          km: "វិទ្យាស្ថានគរុកោសល្យបាត់ដំបង",
+          en: "Battambang Teacher Education College",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-03",
+        name: {
+          km: "នាយកដ្ឋានអភិវឌ្ឍកម្មវិធីសិក្សា",
+          en: "Department of Curriculum Development",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-04",
+        name: {
+          km: "នាយកដ្ឋានអប់រំកុមារតូច",
+          en: "Department of Early Childhood Education",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-05",
+        name: {
+          km: "នាយកដ្ឋានអធិការកិច្ចគុណភាពអប់រំ",
+          en: "Department of Educational Quality Inspection",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-06",
+        name: {
+          km: "នាយកដ្ឋានឧត្តមសិក្សា",
+          en: "Department of Higher Education",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-07",
+        name: {
+          km: "នាយកដ្ឋានសុខភាពសិក្សា",
+          en: "Department of School Health",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-08",
+        name: {
+          km: "នាយកដ្ឋានសវនកម្មផ្ទៃក្នុង",
+          en: "Department of Internal Audit",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-09",
+        name: {
+          km: "នាយកដ្ឋានអប់រំក្រៅប្រព័ន្ធ",
+          en: "Department of Non-Formal Education",
+        },
+        users: 4,
+        activeUsers: 2,
+        inactiveUsers: 2,
+      },
+      {
+        id: "be-10",
+        name: {
+          km: "នាយកដ្ឋានបឋមសិក្សា",
+          en: "Department of Primary Education",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-11",
+        name: {
+          km: "នាយកដ្ឋានមធ្យមសិក្សាចំណេះទូទៅ",
+          en: "Department of General Secondary Education",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-12",
+        name: {
+          km: "នាយកដ្ឋានស្រាវជ្រាវវិទ្យាសាស្ត្រ",
+          en: "Department of Scientific Research",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-13",
+        name: {
+          km: "អគ្គនាយកដ្ឋានបណ្តុះបណ្តាល និងវិក្រឹតការ",
+          en: "General Department of Training and Qualification",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-14",
+        name: {
+          km: "នាយកដ្ឋានតម្រង់ទិសវិជ្ជាជីវៈ",
+          en: "Department of Vocational Guidance",
+        },
+        users: 2,
+        activeUsers: 2,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-15",
+        name: {
+          km: "វិទ្យាស្ថានគរុកោសល្យរាជធានីភ្នំពេញ",
+          en: "Phnom Penh Teacher Education College",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "be-16",
+        name: {
+          km: "នាយកដ្ឋានផ្លូវដែក",
+          en: "Department of Railroad",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+    ],
+  },
+  {
+    id: "capital-provincial-administrations",
+    label: {
+      km: "រដ្ឋបាលរាជធានី-ខេត្ត",
+      en: "Capital-Provincial Administrations",
+    },
+    siteCount: 25,
+    details: [
+      {
+        id: "pv-001",
+        name: {
+          km: "រដ្ឋបាល ខេត្តបន្ទាយមានជ័យ",
+          en: "Banteay Mean Chey Capital Administration",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "pv-002",
+        name: {
+          km: "រដ្ឋបាល ខេត្តបាត់ដំបង",
+          en: "Battambang Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 5,
+        inactiveUsers: 6,
+      },
+      {
+        id: "pv-003",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកំពង់ចាម",
+          en: "Kampong Cham Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 6,
+        inactiveUsers: 5,
+      },
+      {
+        id: "pv-004",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកំពង់ឆ្នាំង",
+          en: "Kampong Chhnang Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 6,
+        inactiveUsers: 5,
+      },
+      {
+        id: "pv-005",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកំពង់ស្ពឺ",
+          en: "Kampong Speu Provincial Administration",
+        },
+        users: 9,
+        activeUsers: 5,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-006",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកំពង់ធំ",
+          en: "Kampong Thom Provincial Administration",
+        },
+        users: 10,
+        activeUsers: 5,
+        inactiveUsers: 5,
+      },
+      {
+        id: "pv-007",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកំពត",
+          en: "Kampot Provincial Administration",
+        },
+        users: 12,
+        activeUsers: 5,
+        inactiveUsers: 7,
+      },
+      {
+        id: "pv-008",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកណ្តាល",
+          en: "Kandal Provincial Administration",
+        },
+        users: 14,
+        activeUsers: 10,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-009",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកោះកុង",
+          en: "Koh Kong Provincial Administration",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "pv-010",
+        name: {
+          km: "រដ្ឋបាល ខេត្តក្រចេះ",
+          en: "Kratie Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 6,
+        inactiveUsers: 5,
+      },
+      {
+        id: "pv-011",
+        name: {
+          km: "រដ្ឋបាល ខេត្តមណ្ឌលគិរី",
+          en: "Mondulkiri Provincial Administration",
+        },
+        users: 10,
+        activeUsers: 6,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-012",
+        name: {
+          km: "រដ្ឋបាល រាជធានីភ្នំពេញ",
+          en: "Phnom Penh Provincial Administration",
+        },
+        users: 15,
+        activeUsers: 7,
+        inactiveUsers: 8,
+      },
+      {
+        id: "pv-013",
+        name: {
+          km: "រដ្ឋបាល ខេត្តព្រះវិហារ",
+          en: "Preah Vihear Provincial Administration",
+        },
+        users: 13,
+        activeUsers: 5,
+        inactiveUsers: 8,
+      },
+      {
+        id: "pv-014",
+        name: {
+          km: "រដ្ឋបាល ខេត្តព្រៃវែង",
+          en: "Prey Veng Provincial Administration",
+        },
+        users: 10,
+        activeUsers: 6,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-015",
+        name: {
+          km: "រដ្ឋបាល ខេត្តពោធិ៍សាត់",
+          en: "Pursat Provincial Administration",
+        },
+        users: 15,
+        activeUsers: 7,
+        inactiveUsers: 8,
+      },
+      {
+        id: "pv-016",
+        name: {
+          km: "រដ្ឋបាល ខេត្តរតនគិរី",
+          en: "Rattanakiri Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 7,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-017",
+        name: {
+          km: "រដ្ឋបាល ខេត្តសៀមរាប",
+          en: "Siem Reap Provincial Administration",
+        },
+        users: 9,
+        activeUsers: 5,
+        inactiveUsers: 4,
+      },
+      {
+        id: "pv-018",
+        name: {
+          km: "រដ្ឋបាល ខេត្តព្រះសីហនុ",
+          en: "Preah Sihanoukville Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pv-019",
+        name: {
+          km: "រដ្ឋបាល ខេត្តស្ទឹងត្រែង",
+          en: "Steung Treng Provincial Administration",
+        },
+        users: 10,
+        activeUsers: 5,
+        inactiveUsers: 5,
+      },
+      {
+        id: "pv-020",
+        name: {
+          km: "រដ្ឋបាល ខេត្តស្វាយរៀង",
+          en: "Svay Rieng Provincial Administration",
+        },
+        users: 10,
+        activeUsers: 9,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pv-021",
+        name: {
+          km: "រដ្ឋបាល ខេត្តតាកែវ",
+          en: "Takeo Provincial Administration",
+        },
+        users: 8,
+        activeUsers: 5,
+        inactiveUsers: 3,
+      },
+      {
+        id: "pv-022",
+        name: {
+          km: "រដ្ឋបាល ខេត្តឧត្តរមានជ័យ",
+          en: "Oddar Meanchey Provincial Administration",
+        },
+        users: 11,
+        activeUsers: 5,
+        inactiveUsers: 6,
+      },
+      {
+        id: "pv-023",
+        name: {
+          km: "រដ្ឋបាល ខេត្តកែប",
+          en: "Kep Provincial Administration",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pv-024",
+        name: {
+          km: "រដ្ឋបាល ខេត្តប៉ៃលិន",
+          en: "Pailin Provincial Administration",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "pv-025",
+        name: {
+          km: "រដ្ឋបាល ខេត្តត្បូងឃ្មុំ",
+          en: "Tboung Khmum Provincial Administration",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+
+
+    ],
+  },
+  {
+    id: "capital-provincial-treasuries",
+    label: {
+      km: "រតនាគាររាជធានី-ខេត្ត",
+      en: "Capital-Provincial Treasuries",
+    },
+    siteCount: 25,
+    details: [
+      {
+        id: "pt-001",
+        name: {
+          km: "រតនាគារ ខេត្តបន្ទាយមានជ័យ",
+          en: "Banteay Mean Chey Provincial Treasury",
+        },
+        users: 16,
+        activeUsers: 16,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-002",
+        name: {
+          km: "រតនាគារ ខេត្តបាត់ដំបង",
+          en: "Battambang Provincial Treasury",
+        },
+        users: 15,
+        activeUsers: 15,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-003",
+        name: {
+          km: "រតនាគារ ខេត្តកំពង់ចាម",
+          en: "Kampong Cham Provincial Treasury",
+        },
+        users: 12,
+        activeUsers: 12,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-004",
+        name: {
+          km: "រតនាគារ ខេត្តកំពង់ឆ្នាំង",
+          en: "Kampong Chhnang Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "pt-005",
+        name: {
+          km: "រតនាគារ ខេត្តកំពង់ស្ពឺ",
+          en: "Kampong Speu Provincial Treasury",
+        },
+        users: 19,
+        activeUsers: 18,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-006",
+        name: {
+          km: "រតនាគារ ខេត្តកំពង់ធំ",
+          en: "Kampong Thom Provincial Treasury",
+        },
+        users: 13,
+        activeUsers: 13,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-007",
+        name: {
+          km: "រតនាគារ ខេត្តកំពត",
+          en: "Kampot Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-008",
+        name: {
+          km: "រតនាគារ ខេត្តកណ្តាល",
+          en: "Kandal Provincial Treasury",
+        },
+        users: 13,
+        activeUsers: 12,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-009",
+        name: {
+          km: "រតនាគារ ខេត្តកោះកុង",
+          en: "Koh Kong Provincial Treasury",
+        },
+        users: 9,
+        activeUsers: 9,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-010",
+        name: {
+          km: "រតនាគារ ខេត្តក្រចេះ",
+          en: "Kratie Provincial Treasury",
+        },
+        users: 12,
+        activeUsers: 12,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-011",
+        name: {
+          km: "រតនាគារ ខេត្តមណ្ឌលគិរី",
+          en: "Mondulkiri Provincial Treasury",
+        },
+        users: 10,
+        activeUsers: 9,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-012",
+        name: {
+          km: "រតនាគារ រាជធានីភ្នំពេញ",
+          en: "Phnom Penh Capital Treasury",
+        },
+        users: 26,
+        activeUsers: 25,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-013",
+        name: {
+          km: "រតនាគារ ខេត្តព្រះវិហារ",
+          en: "Preah Vihear Provincial Treasury",
+        },
+        users: 12,
+        activeUsers: 12,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-014",
+        name: {
+          km: "រតនាគារ ខេត្តព្រៃវែង",
+          en: "Prey Veng Provincial Treasury",
+        },
+        users: 13,
+        activeUsers: 11,
+        inactiveUsers: 2,
+      },
+      {
+        id: "pt-015",
+        name: {
+          km: "រតនាគារ ខេត្តពោធិ៍សាត់",
+          en: "Pursat Provincial Treasury",
+        },
+        users: 13,
+        activeUsers: 11,
+        inactiveUsers: 2,
+      },
+      {
+        id: "pt-016",
+        name: {
+          km: "រតនាគារ ខេត្តរតនគិរី",
+          en: "Rattanakiri Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-017",
+        name: {
+          km: "រតនាគារ ខេត្តសៀមរាប",
+          en: "Siem Reap Provincial Treasury",
+        },
+        users: 12,
+        activeUsers: 11,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-018",
+        name: {
+          km: "រតនាគារ ខេត្តព្រះសីហនុ",
+          en: "Preah Sihanoukville Provincial Treasury",
+        },
+        users: 9,
+        activeUsers: 8,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-019",
+        name: {
+          km: "រតនាគារ ខេត្តស្ទឹងត្រែង",
+          en: "Steung Treng Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 11,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-020",
+        name: {
+          km: "រតនាគារ ខេត្តស្វាយរៀង",
+          en: "Svay Rieng Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 11,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-021",
+        name: {
+          km: "រតនាគារ ខេត្តតាកែវ",
+          en: "Takeo Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 11,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-022",
+        name: {
+          km: "រតនាគារ ខេត្តឧត្តរមានជ័យ",
+          en: "Oddar Meanchey Provincial Treasury",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-023",
+        name: {
+          km: "រតនាគារ ខេត្តកែប",
+          en: "Kep Provincial Treasury",
+        },
+        users: 11,
+        activeUsers: 11,
+        inactiveUsers: 0,
+      },
+      {
+        id: "pt-024",
+        name: {
+          km: "រតនាគារ ខេត្តប៉ៃលិន",
+          en: "Pailin Provincial Treasury",
+        },
+        users: 13,
+        activeUsers: 12,
+        inactiveUsers: 1,
+      },
+      {
+        id: "pt-025",
+        name: {
+          km: "រតនាគារ ខេត្តត្បូងឃ្មុំ",
+          en: "Tboung Khmum Provincial Treasury",
+        },
+        users: 14,
+        activeUsers: 13,
+        inactiveUsers: 1,
+      },
+    ],
+  },
+  {
+    id: "departments-of-economy-and-finance",
+    label: {
+      km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុរាជធានី-ខេត្ត",
+      en: "Departments of Economy and Finance",
+    },
+    siteCount: 25,
+    details: [
+      {
+        id: "def-001",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តបន្ទាយមានជ័យ",
+          en: "Banteay Mean Chey Department of Economy and Finance",
+        },
+        users: 17,
+        activeUsers: 13,
+        inactiveUsers: 4,
+      },
+      {
+        id: "def-002",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តបាត់ដំបង",
+          en: "Battambang Department of Economy and Finance",
+        },
+        users: 22,
+        activeUsers: 17,
+        inactiveUsers: 5,
+      },
+      {
+        id: "def-003",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកំពង់ចាម",
+          en: "Kampong Cham Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 9,
+        inactiveUsers: 3,
+      },
+      {
+        id: "def-004",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកំពង់ឆ្នាំង",
+          en: "Kampong Chhnang Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 10,
+        inactiveUsers: 2,
+      },
+      {
+        id: "def-005",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកំពង់ស្ពឺ",
+          en: "Kampong Speu Department of Economy and Finance",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-006",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកំពង់ធំ",
+          en: "Kampong Thom Department of Economy and Finance",
+        },
+        users: 9,
+        activeUsers: 6,
+        inactiveUsers: 3,
+      },
+      {
+        id: "def-007",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកំពត",
+          en: "Kampot Department of Economy and Finance",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "def-008",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកណ្តាល",
+          en: "Kandal Department of Economy and Finance",
+        },
+        users: 13,
+        activeUsers: 9,
+        inactiveUsers: 4,
+      },
+      {
+        id: "def-009",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកោះកុង",
+          en: "Koh Kong Department of Economy and Finance",
+        },
+        users: 10,
+        activeUsers: 9,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-010",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តក្រចេះ",
+          en: "Kratie Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 8,
+        inactiveUsers: 4,
+      },
+      {
+        id: "def-011",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តមណ្ឌលគិរី",
+          en: "Mondulkiri Department of Economy and Finance",
+        },
+        users: 9,
+        activeUsers: 7,
+        inactiveUsers: 2,
+      },
+      {
+        id: "def-012",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ រាជធានីភ្នំពេញ",
+          en: "Phnom Penh Capital Department of Economy and Finance",
+        },
+        users: 16,
+        activeUsers: 10,
+        inactiveUsers: 6,
+      },
+      {
+        id: "def-013",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តព្រះវិហារ",
+          en: "Preah Vihear Department of Economy and Finance",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "def-014",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តព្រៃវែង",
+          en: "Prey Veng Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 10,
+        inactiveUsers: 2,
+      },
+      {
+        id: "def-015",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តពោធិ៍សាត់",
+          en: "Pursat Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 11,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-016",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តរតនគិរី",
+          en: "Rattanakiri Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 10,
+        inactiveUsers: 2,
+      },
+      {
+        id: "def-017",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តសៀមរាប",
+          en: "Siem Reap Department of Economy and Finance",
+        },
+        users: 15,
+        activeUsers: 8,
+        inactiveUsers: 7,
+      },
+      {
+        id: "def-018",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តព្រះសីហនុ",
+          en: "Preah Sihanoukville Department of Economy and Finance",
+        },
+        users: 14,
+        activeUsers: 12,
+        inactiveUsers: 2,
+      },
+      {
+        id: "def-019",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តស្ទឹងត្រែង",
+          en: "Steung Treng Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 11,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-020",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តស្វាយរៀង",
+          en: "Svay Rieng Department of Economy and Finance",
+        },
+        users: 13,
+        activeUsers: 12,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-021",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តតាកែវ",
+          en: "Takeo Department of Economy and Finance",
+        },
+        users: 14,
+        activeUsers: 11,
+        inactiveUsers: 3,
+      },
+      {
+        id: "def-022",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តឧត្តរមានជ័យ",
+          en: "Oddar Meanchey Department of Economy and Finance",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-023",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តកែប",
+          en: "Kep Department of Economy and Finance",
+        },
+        users: 11,
+        activeUsers: 11,
+        inactiveUsers: 0,
+      },
+      {
+        id: "def-024",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តប៉ៃលិន",
+          en: "Pailin Department of Economy and Finance",
+        },
+        users: 13,
+        activeUsers: 12,
+        inactiveUsers: 1,
+      },
+      {
+        id: "def-025",
+        name: {
+          km: "មន្ទីរសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ ខេត្តត្បូងឃ្មុំ",
+          en: "Tboung Khmum Department of Economy and Finance",
+        },
+        users: 12,
+        activeUsers: 9,
+        inactiveUsers: 3,
+      },
+    ],
+  },
+  {
+    id: "administrative-public-entities",
+    label: {
+      km: "គ្រឹះស្ថានរដ្ឋបាលសាធារណៈ",
+      en: "Administrative Public Entities",
+    },
+    siteCount: 9,
+    details: [
+      {
+        id: "ape-01",
+        name: {
+          km: "មជ្ឈមណ្ឌលបណ្តុះធុរកិច្ចថ្មី តេជោ",
+          en: "Techo Startup Center",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "ape-02",
+        name: {
+          km: "វិទ្យាស្ថានសេដ្ឋកិច្ចនិងហិរញ្ញវត្ថុ",
+          en: "University of Economy and Finance",
+        },
+        users: 11,
+        activeUsers: 8,
+        inactiveUsers: 3,
+      },
+      {
+        id: "ape-03",
+        name: {
+          km: "សាកលវិទ្យាល័យវិទ្យាសាស្ត្រសុខាភិបាល",
+          en: "University of Health Sciences",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "ape-04",
+        name: {
+          km: "សាកលវិទ្យាល័យភូមិន្ទនីតិសាស្ត្រនិងវិទ្យាសាស្ត្រសេដ្ឋកិច្ច",
+          en: "Royal University of Law and Economics",
+        },
+        users: 10,
+        activeUsers: 7,
+        inactiveUsers: 3,
+      },
+      {
+        id: "ape-05",
+        name: {
+          km: "សាកលវិទ្យាល័យជាតិបាត់ដំបង",
+          en: "National University of Battambang",
+        },
+        users: 12,
+        activeUsers: 11,
+        inactiveUsers: 1,
+      },
+      {
+        id: "ape-06",
+        name: {
+          km: "វិទ្យាស្ថានស្រាវជ្រាវ និងអភិវឌ្ឍន៍កសិកម្មកម្ពុជា",
+          en: "Cambodian Agricultural Research and Development Institute",
+        },
+        users: 10,
+        activeUsers: 5,
+        inactiveUsers: 5,
+      },
+      {
+        id: "ape-07",
+        name: {
+          km: "សាកលវិទ្យាល័យភូមិន្ទកសិកម្ម",
+          en: "Royal University of Agriculture",
+        },
+        users: 11,
+        activeUsers: 10,
+        inactiveUsers: 1,
+      },
+      {
+        id: "ape-08",
+        name: {
+          km: "គ្រឹះស្ថានអង្គរ",
+          en: "Angkor Enterprise",
+        },
+        users: 9,
+        activeUsers: 8,
+        inactiveUsers: 1,
+      },
+      {
+        id: "ape-09",
+        name: {
+          km: "រាជបណ្ឌិត្យសភាកម្ពុជា",
+          en: "Royal Academy of Cambodia",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+    ],
+  },
+  {
+    id: "municipalities-districts-khans",
+    label: {
+      km: "ក្រុង ស្រុក ខណ្ឌ",
+      en: "Municipalities, Districts and Khans",
+    },
+    siteCount: 95,
+    details: [
+      {
+        id: "md-01",
+        name: {
+          km: "រដ្ឋបាលក្រុងសិរីសោភ័ណ",
+          en: "Serei Saophoan City",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-02",
+        name: {
+          km: "រដ្ឋបាលក្រុងប៉ោយប៉ែត",
+          en: "Poipet City",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-03",
+        name: {
+          km: "រដ្ឋបាលក្រុងបាត់ដំបង",
+          en: "Battambang City",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-04",
+        name: {
+          km: "រដ្ឋបាលក្រុងកំពង់ចាម",
+          en: "Kampong Cham City",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-05",
+        name: {
+          km: "រដ្ឋបាលក្រុងកំពង់ឆ្នាំង",
+          en: "Kampong Chhnang City",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-06",
+        name: {
+          km: "រដ្ឋបាលស្រុកបរសេដ្ឋ",
+          en: "Bor Seth District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-07",
+        name: {
+          km: "រដ្ឋបាលក្រុងច្បារមន",
+          en: "Chbar Morn City",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "md-08",
+        name: {
+          km: "រដ្ឋបាលស្រុកគងពិសី",
+          en: "Kong Pisei District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-09",
+        name: {
+          km: "រដ្ឋបាលស្រុកឱរ៉ាល់",
+          en: "Aoral District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-10",
+        name: {
+          km: "រដ្ឋបាលស្រុកភ្នំស្រួច",
+          en: "Phnom Sruoch District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-11",
+        name: {
+          km: "រដ្ឋបាលស្រុកសំរោងទង",
+          en: "Samraong Tong District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-12",
+        name: {
+          km: "រដ្ឋបាលស្រុកថ្ពង",
+          en: "Thpong District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-13",
+        name: {
+          km: "រដ្ឋបាលក្រុងឧដុង្គម៉ែជ័យ",
+          en: "Oudong Me Chey District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-14",
+        name: {
+          km: "រដ្ឋបាលស្រុកសាមគ្គីមុនីជ័យ",
+          en: "Samaki Munichey District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-15",
+        name: {
+          km: "រដ្ឋបាលស្រុកបារាយណ៍",
+          en: "Baray District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-16",
+        name: {
+          km: "រដ្ឋបាលស្រុកកំពង់ស្វាយ",
+          en: "Kampong Svay District",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-17",
+        name: {
+          km: "រដ្ឋបាលក្រុងស្ទឹងសែន",
+          en: "Steung Sen City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-18",
+        name: {
+          km: "រដ្ឋបាលស្រុកប្រាសាទបាល័ង្គ",
+          en: "Prasat Balang District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-19",
+        name: {
+          km: "រដ្ឋបាលស្រុកប្រាសាទសំបូរ",
+          en: "Prasat Sambo District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-20",
+        name: {
+          km: "រដ្ឋបាលស្រុកសណ្ដាន់",
+          en: "Sandan District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-21",
+        name: {
+          km: "រដ្ឋបាលស្រុកសន្ទុក",
+          en: "Santuk District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-22",
+        name: {
+          km: "រដ្ឋបាលស្រុកស្ទោង",
+          en: "Stoung District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-23",
+        name: {
+          km: "រដ្ឋបាលស្រុកតាំងគោក",
+          en: "Tang Kok District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-24",
+        name: {
+          km: "រដ្ឋបាលក្រុងកំពត",
+          en: "Kampot City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-25",
+        name: {
+          km: "រដ្ឋបាលក្រុងបូកគោ",
+          en: "Bokor City",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-26",
+        name: {
+          km: "រដ្ឋបាលស្រុកកណ្តាលស្ទឹង",
+          en: "Kandal Stueng District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-27",
+        name: {
+          km: "រដ្ឋបាលស្រុកកៀនស្វាយ",
+          en: "Kean Svay District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-28",
+        name: {
+          km: "រដ្ឋបាលស្រុកខ្សាច់កណ្តាល",
+          en: "Khsach Kandal District",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-29",
+        name: {
+          km: "រដ្ឋបាលស្រុកកោះធំ",
+          en: "Koh Thom District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-30",
+        name: {
+          km: "រដ្ឋបាលស្រុកលើកដែក",
+          en: "Leuk Dek District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-31",
+        name: {
+          km: "រដ្ឋបាលស្រុកល្វាឯម",
+          en: "Lvea Aem District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-32",
+        name: {
+          km: "រដ្ឋបាលស្រុកមុខកំពូល",
+          en: "Muk Kampul District",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "md-33",
+        name: {
+          km: "រដ្ឋបាលស្រុកអង្គស្នួល",
+          en: "Ang Snoul District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-34",
+        name: {
+          km: "រដ្ឋបាលស្រុកពញាឮ",
+          en: "Pounhear Leu District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-35",
+        name: {
+          km: "រដ្ឋបាលស្រុកស្អាង",
+          en: "Sa'ang District",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-36",
+        name: {
+          km: "រដ្ឋបាលក្រុងតាខ្មៅ",
+          en: "Takhmao City",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-37",
+        name: {
+          km: "រដ្ឋបាលក្រុងសំពៅពូន",
+          en: "Sampov Poun City",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-38",
+        name: {
+          km: "រដ្ឋបាលក្រុងអរិយក្សត្រ",
+          en: "Areyksat City",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-39",
+        name: {
+          km: "រដ្ឋបាលក្រុងខេមរភូមិន្ទ",
+          en: "Khemrakphumint City",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-40",
+        name: {
+          km: "រដ្ឋបាលក្រុងក្រចេះ",
+          en: "Kratie City",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-41",
+        name: {
+          km: "រដ្ឋបាលក្រុងសែនមនោរម្យ",
+          en: "Sen Monorom City",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-42",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌចំការមន",
+          en: "Chamkar Mon District",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-43",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌដូនពេញ",
+          en: "Doun Penh District",
+        },
+        users: 6,
+        activeUsers: 2,
+        inactiveUsers: 4,
+      },
+      {
+        id: "md-44",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌ៧មករា",
+          en: "7 Makara District",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-45",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌទួលគោក",
+          en: "Tuol Kouk District",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-46",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌដង្កោ",
+          en: "Dangkao District",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-47",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌមានជ័យ",
+          en: "Mean Chey District",
+        },
+        users: 6,
+        activeUsers: 2,
+        inactiveUsers: 4,
+      },
+      {
+        id: "md-48",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌឫស្សីកែវ",
+          en: "Russey Keo District",
+        },
+        users: 7,
+        activeUsers: 5,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-49",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌសែនសុខ",
+          en: "Sen Sok District",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-50",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌពោធិ៍សែនជ័យ",
+          en: "Por Sen Chey District",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-51",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌជ្រោយចង្វារ",
+          en: "Chroy Changva District",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "md-52",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌព្រែកព្នៅ",
+          en: "Prek Pnov District",
+        },
+        users: 5,
+        activeUsers: 2,
+        inactiveUsers: 3,
+      },
+      {
+        id: "md-53",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌច្បារអំពៅ",
+          en: "Chbar Ampov District",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-54",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌបឹងកេងកង",
+          en: "Boeng Keng Kang District",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-55",
+        name: {
+          km: "រដ្ឋបាលខណ្ឌកំបូល",
+          en: "Kamboul District",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-56",
+        name: {
+          km: "រដ្ឋបាលក្រុងព្រះវិហារ",
+          en: "Preah Vihear City",
+        },
+        users: 8,
+        activeUsers: 3,
+        inactiveUsers: 5,
+      },
+      {
+        id: "md-57",
+        name: {
+          km: "រដ្ឋបាលស្រុកបាភ្នំ",
+          en: "Ba Phnom District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-58",
+        name: {
+          km: "រដ្ឋបាលស្រុកកំចាយមារ",
+          en: "Kamchay Mea District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-59",
+        name: {
+          km: "រដ្ឋបាលស្រុកកំពង់ត្របែក",
+          en: "Kampong Trabek District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-60",
+        name: {
+          km: "រដ្ឋបាលស្រុកកញ្ជ្រៀច",
+          en: "Kanh Chriech District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-61",
+        name: {
+          km: "រដ្ឋបាលស្រុកមេសាង",
+          en: "Mesang District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-62",
+        name: {
+          km: "រដ្ឋបាលស្រុកពាមជរ",
+          en: "Peam Chor District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-63",
+        name: {
+          km: "រដ្ឋបាលស្រុកពាមរក៍",
+          en: "Peam Ro District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-64",
+        name: {
+          km: "រដ្ឋបាលស្រុកពារាំង",
+          en: "Peareang District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-65",
+        name: {
+          km: "រដ្ឋបាលស្រុកព្រះស្ដេច",
+          en: "Preah Sdach District",
+        },
+        users: 3,
+        activeUsers: 3,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-66",
+        name: {
+          km: "រដ្ឋបាលក្រុងព្រៃវែង",
+          en: "Prey Veng City",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-67",
+        name: {
+          km: "រដ្ឋបាលស្រុកពោធិ៍រៀង",
+          en: "Pur Rieng District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-68",
+        name: {
+          km: "រដ្ឋបាលស្រុកស៊ីធរកណ្តាល",
+          en: "Sithor Kandal District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-69",
+        name: {
+          km: "រដ្ឋបាលស្រុកស្វាយអន្ទរ",
+          en: "Svay Antor District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-70",
+        name: {
+          km: "រដ្ឋបាលក្រុងពោធិ៍សាត់",
+          en: "Pursat City",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-71",
+        name: {
+          km: "រដ្ឋបាលក្រុងបានលុង",
+          en: "Ban Lung City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-72",
+        name: {
+          km: "រដ្ឋបាលស្រុកអង្គរជុំ",
+          en: "Angkor Chum District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-73",
+        name: {
+          km: "រដ្ឋបាលស្រុកអង្គរធំ",
+          en: "Angkor Thom District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-74",
+        name: {
+          km: "រដ្ឋបាលស្រុកបន្ទាយស្រី",
+          en: "Banteay Srey District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-75",
+        name: {
+          km: "រដ្ឋបាលស្រុកជីក្រែង",
+          en: "Chi Kraeng District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-76",
+        name: {
+          km: "រដ្ឋបាលស្រុកក្រឡាញ់",
+          en: "Kralanh District",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-77",
+        name: {
+          km: "រដ្ឋបាលស្រុកពួក",
+          en: "Pouk District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-78",
+        name: {
+          km: "រដ្ឋបាលស្រុកប្រាសាទបាគង",
+          en: "Prasat Bakong District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-79",
+        name: {
+          km: "រដ្ឋបាលក្រុងសៀមរាប",
+          en: "Siem Reap City",
+        },
+        users: 4,
+        activeUsers: 3,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-80",
+        name: {
+          km: "រដ្ឋបាលស្រុកសូត្រនិគម",
+          en: "Sot Nikum District",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-81",
+        name: {
+          km: "រដ្ឋបាលស្រុកស្រីស្នំ",
+          en: "Srey Snam District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-82",
+        name: {
+          km: "រដ្ឋបាលស្រុកស្វាយលើ",
+          en: "Svay Leu District",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-83",
+        name: {
+          km: "រដ្ឋបាលស្រុកវ៉ារិន",
+          en: "Varin District",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-84",
+        name: {
+          km: "ក្រុងរុនតាឯកតេជោសែន",
+          en: "Run Ta Ek Techo Sen City",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-85",
+        name: {
+          km: "រដ្ឋបាលក្រុងព្រះសីហនុ",
+          en: "Preah Sihanoukville City",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-86",
+        name: {
+          km: "រដ្ឋបាលក្រុងកោះរ៉ុង",
+          en: "Koh Rong City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-87",
+        name: {
+          km: "រដ្ឋបាលក្រុងកំពង់សោម",
+          en: "Kampong Saom City",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "md-88",
+        name: {
+          km: "រដ្ឋបាលក្រុងស្ទឹងត្រែង",
+          en: "Steung Treng City",
+        },
+        users: 7,
+        activeUsers: 6,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-89",
+        name: {
+          km: "រដ្ឋបាលក្រុងស្វាយរៀង",
+          en: "Svay Rieng City",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-90",
+        name: {
+          km: "រដ្ឋបាលក្រុងបាវិត",
+          en: "Bavet City",
+        },
+        users: 6,
+        activeUsers: 3,
+        inactiveUsers: 3,
+      },
+      {
+        id: "md-91",
+        name: {
+          km: "រដ្ឋបាលក្រុងដូនកែវ",
+          en: "Doun Keo City",
+        },
+        users: 7,
+        activeUsers: 3,
+        inactiveUsers: 4,
+      },
+      {
+        id: "md-92",
+        name: {
+          km: "រដ្ឋបាលក្រុងសំរោង",
+          en: "Samraong City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-93",
+        name: {
+          km: "រដ្ឋបាលក្រុងកែប",
+          en: "Kep City",
+        },
+        users: 5,
+        activeUsers: 3,
+        inactiveUsers: 2,
+      },
+      {
+        id: "md-94",
+        name: {
+          km: "រដ្ឋបាលក្រុងប៉ៃលិន",
+          en: "Pailin City",
+        },
+        users: 5,
+        activeUsers: 4,
+        inactiveUsers: 1,
+      },
+      {
+        id: "md-95",
+        name: {
+          km: "រដ្ឋបាលក្រុងសួង",
+          en: "Suong City",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+    ],
+  },
+  {
+    id: "departments-of-education-youth-sport",
+    label: {
+      km: "មន្ទីរអប់រំ យុវជន និងកីឡា រាជធានី-ខេត្ត",
+      en: "Departments of Education, Youth and Sport",
+    },
+    siteCount: 25,
+    details: [
+      {
+        id: "doeys-01",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តបន្ទាយមានជ័យ",
+          en: "Banteay Mean Chey Department of Education, Youth and Sport",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-02",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តបាត់ដំបង",
+          en: "Battambang Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 4,
+        inactiveUsers: 2,
+      },
+      {
+        id: "doeys-03",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកំពង់ចាម",
+          en: "Kampong Cham Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "doeys-04",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកំពង់ឆ្នាំង",
+          en: "Kampong Chhnang Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 5,
+        inactiveUsers: 1,
+      },
+      {
+        id: "doeys-05",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកំពង់ស្ពឺ",
+          en: "Kampong Speu Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-06",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកំពង់ធំ",
+          en: "Kampong Thom Department of Education, Youth and Sport",
+        },
+        users: 8,
+        activeUsers: 6,
+        inactiveUsers: 2,
+      },
+      {
+        id: "doeys-07",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកំពត",
+          en: "Kampot Department of Education, Youth and Sport",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-08",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកណ្តាល",
+          en: "Kandal Department of Education, Youth and Sport",
+        },
+        users: 9,
+        activeUsers: 7,
+        inactiveUsers: 2,
+      },
+      {
+        id: "doeys-09",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកោះកុង",
+          en: "Koh Kong Department of Education, Youth and Sport",
+        },
+        users: 8,
+        activeUsers: 5,
+        inactiveUsers: 3,
+      },
+      {
+        id: "doeys-10",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តក្រចេះ",
+          en: "Kratie Department of Education, Youth and Sport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-11",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តមណ្ឌលគិរី",
+          en: "Mondulkiri Department of Education, Youth and Sport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-12",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា រាជធានីភ្នំពេញ",
+          en: "Phnom Penh Capital Department of Education, Youth and Sport",
+        },
+        users: 8,
+        activeUsers: 8,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-13",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តព្រះវិហារ",
+          en: "Preah Vihear Department of Education, Youth and Sport",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-14",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តព្រៃវែង",
+          en: "Prey Veng Department of Education, Youth and Sport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-15",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តពោធិ៍សាត់",
+          en: "Pursat Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-16",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តរតនគិរី",
+          en: "Rattanakiri Department of Education, Youth and Sport",
+        },
+        users: 9,
+        activeUsers: 7,
+        inactiveUsers: 2,
+      },
+      {
+        id: "doeys-17",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តសៀមរាប",
+          en: "Siem Reap Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-18",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តព្រះសីហនុ",
+          en: "Preah Sihanouk Department of Education, Youth and Sport",
+        },
+        users: 4,
+        activeUsers: 4,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-19",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តស្ទឹងត្រែង",
+          en: "Steung Treng Department of Education, Youth and Sport",
+        },
+        users: 7,
+        activeUsers: 7,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-20",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តស្វាយរៀង",
+          en: "Svay Rieng Department of Education, Youth and Sport",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+      {
+        id: "doeys-21",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តតាកែវ",
+          en: "Takeo Department of Education, Youth and Sport",
+        },
+        users: 9,
+        activeUsers: 9,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-22",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តឧត្តរមានជ័យ",
+          en: "Oddar Meanchey Department of Education, Youth and Sport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-23",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តកែប",
+          en: "Kep Department of Education, Youth and Sport",
+        },
+        users: 5,
+        activeUsers: 5,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-24",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តប៉ៃលិន",
+          en: "Pailin Department of Education, Youth and Sport",
+        },
+        users: 6,
+        activeUsers: 6,
+        inactiveUsers: 0,
+      },
+      {
+        id: "doeys-25",
+        name: {
+          km: "មន្ទីរអប់រំ យុវជន និងកីឡា ខេត្តត្បូងឃ្មុំ",
+          en: "Tboung Khmum Department of Education, Youth and Sport",
+        },
+        users: 8,
+        activeUsers: 7,
+        inactiveUsers: 1,
+      },
+    ],
+  },
+];
+
 const CAT_COLORS = ["#38bdf8", "#34d399", "#a78bfa", "#fb923c", "#f472b6", "#facc15"];
 
 
@@ -757,6 +4730,11 @@ const uiText: Record<string, LocalizedText> = {
   inactive: { km: "អសកម្ម", en: "Inactive" },
   geographicDistribution: { km: "របាយភូមិសាស្ត្រ", en: "Geographic Distribution" },
   provinceDetails: { km: "ទិន្នន័យលម្អិតតាមរាជធានី/ខេត្ត", en: "Details by Capital/Province" },
+  usersSitesByCategory: { km: "ទិន្នន័យអ្នកប្រើប្រាស់ និងការដ្ឋានតាមប្រភេទអង្គភាព", en: "Users and Sites by Organization Category" },
+  organizations: { km: "អង្គភាព", en: "Organizations" },
+  organization: { km: "ឈ្មោះអង្គភាព", en: "Organization" },
+  code: { km: "កូដ", en: "Code" },
+  terminated: { km: "បញ្ចប់ការប្រើប្រាស់", en: "Terminated" },
   province: { km: "រាជធានី/ខេត្ត", en: "Capital/Province" },
   sites: { km: "ការដ្ឋាន", en: "Sites" },
   users: { km: "អ្នកប្រើប្រាស់", en: "Users" },
@@ -1171,6 +5149,208 @@ const EntityUsedCell = ({ value, language, t }: {
   );
 };
 
+const UserSiteCategoryAccordion = ({
+  categories,
+  expandedId,
+  setExpandedId,
+  language,
+  t,
+}: {
+  categories: UserSiteCategory[];
+  expandedId: string | null;
+  setExpandedId: (id: string | null) => void;
+  language: Language;
+  t: (key: string) => string;
+}) => {
+  const optionalNumber = (value?: number) =>
+    value === undefined ? "—" : fmt(value);
+
+  return (
+    <div className="flex flex-col gap-3">
+      {categories.map((category, index) => {
+        const isOpen = expandedId === category.id;
+        const accent = CAT_COLORS[index % CAT_COLORS.length];
+        const enteredSites = category.details.reduce(
+          (sum, detail) => sum + (detail.sites ?? 1),
+          0,
+        );
+        const calculatedUsers = category.details.reduce(
+          (sum, detail) => sum + (detail.users ?? 0),
+          0,
+        );
+        const displayedUsers = category.userCount ?? calculatedUsers;
+        const hasUserData =
+          category.userCount !== undefined ||
+          category.details.some((detail) => detail.users !== undefined);
+        const isComplete = enteredSites === category.siteCount;
+
+        return (
+          <div
+            key={category.id}
+            className="bg-card/90 border border-border rounded-xl overflow-hidden backdrop-blur-xl"
+            style={{ borderLeftColor: accent, borderLeftWidth: 3 }}
+          >
+            <button
+              type="button"
+              onClick={() => setExpandedId(isOpen ? null : category.id)}
+              className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-accent/35 transition-colors"
+              aria-expanded={isOpen}
+              aria-controls={`${category.id}-details`}
+            >
+              <div className="min-w-0">
+                <p
+                  className="text-sm font-semibold text-foreground leading-relaxed"
+                  style={{
+                    fontFamily: language === "km" ? "Hanuman" : "inherit",
+                  }}
+                >
+                  {category.label[language]}
+                </p>
+
+                <p
+                  className={`text-[11px] mt-1 ${isComplete && category.siteCount > 0
+                    ? "text-emerald-500"
+                    : "text-muted-foreground"
+                    }`}
+                >
+                  {language === "km"
+                    ? `${fmt(
+                      category.siteCount,
+                    )} អង្គភាព`
+                    : `${fmt(
+                      category.siteCount,
+                    )} organizations`}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0">
+                <div className="text-right min-w-[52px]">
+                  <p className="text-sm font-semibold text-emerald-500">
+                    {fmt(category.siteCount)}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {t("sites")}
+                  </p>
+                </div>
+
+                <div className="text-right min-w-[58px]">
+                  <p className="text-sm font-semibold text-sky-500">
+                    {hasUserData ? fmt(displayedUsers) : "—"}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {t("users")}
+                  </p>
+                </div>
+
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  className={`text-muted-foreground transition-transform duration-200 ${isOpen ? "rotate-90" : ""
+                    }`}
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M6 3L11 8L6 13"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+            </button>
+
+            {isOpen && (
+              <div
+                id={`${category.id}-details`}
+                className="border-t border-border"
+              >
+                {category.details.length === 0 ? (
+                  <div className="p-5">
+                    <div className="rounded-lg border border-dashed border-border bg-background/45 px-4 py-6 text-center">
+                      <p
+                        className="text-sm font-medium text-foreground"
+                        style={{
+                          fontFamily:
+                            language === "km" ? "Hanuman" : "inherit",
+                        }}
+                      >
+                        {language === "km"
+                          ? "មិនទាន់មានទិន្នន័យលម្អិត"
+                          : "No detailed organization data yet"}
+                      </p>
+
+                    </div>
+                  </div>
+                ) : (
+                  <div className="overflow-auto max-h-[430px]">
+                    <table className="w-full min-w-[900px] text-xs relative">
+                      <thead className="sticky top-0 bg-card z-10">
+                        <tr className="border-b border-border">
+                          <th className="text-left px-5 py-3 text-muted-foreground font-medium">
+                            #
+                          </th>
+                          <th className="text-left px-5 py-3 text-muted-foreground font-medium">
+                            {t("organization")}
+                          </th>
+                          <th className="text-right px-5 py-3 text-muted-foreground font-medium">
+                            {t("users")}
+                          </th>
+                          <th className="text-right px-5 py-3 text-muted-foreground font-medium">
+                            {t("active")}
+                          </th>
+                          <th className="text-right px-5 py-3 text-muted-foreground font-medium">
+                            {t("inactive")}
+                          </th>
+
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {category.details.map((detail, detailIndex) => (
+                          <tr
+                            key={detail.id}
+                            className="border-b border-border/50 hover:bg-accent/35 transition-colors"
+                          >
+                            <td className="px-5 py-3 text-muted-foreground">
+                              {detailIndex + 1}
+                            </td>
+                            <td
+                              className="px-5 py-3 font-medium text-foreground"
+                              style={{
+                                fontFamily:
+                                  language === "km" ? "Hanuman" : "inherit",
+                              }}
+                            >
+                              {detail.name[language]}
+                            </td>
+                            <td className="px-5 py-3 text-right text-sky-500 font-semibold">
+                              {optionalNumber(detail.users)}
+                            </td>
+                            <td className="px-5 py-3 text-right text-emerald-500">
+                              {optionalNumber(detail.activeUsers)}
+                            </td>
+                            <td className="px-5 py-3 text-right text-yellow-500">
+                              {optionalNumber(detail.inactiveUsers)}
+                            </td>
+
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 const CategoryAccordion = ({
   categories, expandedId, setExpandedId, colors, getName, language, t,
 }: {
@@ -1264,7 +5444,7 @@ export default function App() {
   });
   const [expandedReportId, setExpandedReportId] = useState<string | null>(null);
   const [expandedQueryId, setExpandedQueryId] = useState<string | null>(null);
-  const [hovered, setHovered] = useState<ProvinceData | null>(null);
+  const [expandedUserSiteCategoryId, setExpandedUserSiteCategoryId] = useState<string | null>(null);
 
   useEffect(() => {
     window.localStorage.setItem("dashboard-language", language);
@@ -1467,31 +5647,17 @@ export default function App() {
             <div className="mb-2 flex items-center gap-2"><h2 className="text-sm font-semibold text-foreground">{t("geographicDistribution")}</h2></div>
             <div className="h-[500px] w-full"><CambodiaMap language={language} theme={theme} /></div>
 
-            <h2 className="text-sm font-semibold text-foreground mt-16 mb-4">{t("provinceDetails")}</h2>
-            <div className="bg-card/90 border border-border rounded-xl overflow-hidden backdrop-blur-xl">
-              <div className="overflow-auto max-h-[400px]">
-                <table className="w-full text-xs relative">
-                  <thead className="sticky top-0 bg-card z-10">
-                    <tr className="border-b border-border">
-                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">#</th>
-                      <th className="text-left px-5 py-3 text-muted-foreground font-medium">{t("province")}</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">{t("sites")}</th>
-                      <th className="text-right px-5 py-3 text-muted-foreground font-medium">{t("users")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...provinces].sort((a, b) => b.users - a.users).map((p, i) => (
-                      <tr key={p.id} className="border-b border-border/50 hover:bg-accent/35 transition-colors" onMouseEnter={() => setHovered(p)} onMouseLeave={() => setHovered(null)}>
-                        <td className="px-5 py-3 text-muted-foreground">{i + 1}</td>
-                        <td className="px-5 py-3 font-medium text-foreground">{language === "km" ? p.name : p.englishName}</td>
-                        <td className="px-5 py-3 text-right text-emerald-400">{fmt(p.sites)}</td>
-                        <td className="px-5 py-3 text-right text-sky-400 font-semibold">{fmt(p.users)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <h2 className="text-sm font-semibold text-foreground mt-16 mb-4">
+              {t("usersSitesByCategory")}
+            </h2>
+
+            <UserSiteCategoryAccordion
+              categories={userSiteCategoryData}
+              expandedId={expandedUserSiteCategoryId}
+              setExpandedId={setExpandedUserSiteCategoryId}
+              language={language}
+              t={t}
+            />
           </>
         )}
 
