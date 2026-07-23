@@ -748,7 +748,7 @@ const siteGroups = [
 const userSiteCategoryData: UserSiteCategory[] = [
   {
     id: "Ministry of Economy and Finance Top Management",
-    label: { km: "ថ្នាក់ដឹកនាំប្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance Top Management" },
+    label: { km: "ថ្នាក់ដឹកនាំក្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance Top Management" },
     siteCount: 0,
     details: [
       {
@@ -765,7 +765,7 @@ const userSiteCategoryData: UserSiteCategory[] = [
   },
   {
     id: "Ministry of Economy and Finance General Departments",
-    label: { km: "អគ្គ.គនរបស់ប្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance General Departments" },
+    label: { km: "អគ្គ.គន្លឹះរបស់ក្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ", en: "Ministry of Economy and Finance General Departments" },
     siteCount: 10,
     details: [
       {
